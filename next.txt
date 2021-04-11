@@ -1,0 +1,7 @@
+que que a gente tem que fazer:
+* criar a rede neural
+* treinar a rede neural
+* converter a rede para web
+* o esquema que baixa os jogos
+* css da vida
+* traduzir o site
