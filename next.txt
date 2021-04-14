@@ -1,7 +1,9 @@
 que que a gente tem que fazer:
+* adicionar loading bunitin
+* html do site resposta
+* puxar os dados dos jogos
 * criar a rede neural
 * treinar a rede neural
 * converter a rede para web
-* o esquema que baixa os jogos
-* css da vida
+* css da vida (fazer os css para mobile primeiro depois desktop)
 * traduzir o site
