@@ -33,20 +33,26 @@
             What is the perfect chess opening for you?
         </h1>
         <h2>
-            Are you tired of always playing 1.e4? Worry no more. <br>
-            MyChessOpening will find the perfect opening for any  <br>
+            Are you tired of always playing 1.e4? Worry no more. 
+            MyChessOpening will find the perfect opening for any 
             kind of player: noobs, pros or masters.
         </h2>
 
         <p>
-            We can find what opening would be perfect for you using a simple test:
-            you only need to choose between 2 middlegame positions deciding what would you like
-            to play the most, and them we do the rest!
+            We use our special artificial intelligence that exams
+            your online chess matches in order to find what opening suits 
+            you better.    
+            
         </p>
 
-        <button onclick="redirect()">
-            Start my test!
-        </button>
+        <form action="test/" method="POST">
+            <input type="text" name="username" placeholder="Type your username" id="username">
+            <input id="lichess" type="radio" name="site" value="lichess.com"> 
+            <label for="lichess">lichess.com</label>
+            <input id="chess" type="radio" name="site" value="chess.com">  
+            <label for="chess">chess.com</label>
+            <input type="submit" value="Analyse games">
+        </form>
 
     </body>
 </html>
