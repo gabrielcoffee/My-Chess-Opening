@@ -36,5 +36,17 @@ while True:
                 break
         if lance == 20:
             print(board.fen())
-            with open("positions.txt", "a+") as file:
-                file.write(board.fen() + "\n")
+            currentFen = board.fen()
+            toAppend =  True
+            try:
+                with open("positions.txt", "r") as fileRead:
+                    lines = fileRead.readlines()
+                    if (currentFen + "\n") in lines:
+                        toAppend = False
+                    fileRead.close()
+            except FileNotFoundError:
+                toAppend = True
+            if toAppend:
+                with open("positions.txt", "a+") as fileWrite:
+                    fileWrite.write(board.fen() + "\n")
+                    fileWrite.close()

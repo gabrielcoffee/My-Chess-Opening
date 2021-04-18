@@ -1,9 +1,12 @@
 import stockfish_port
 import pandas as pd
 
-st = stockfish_port.Stockfish("G:/Downloads/stockfish_13_win_x64_bmi2/stockfish_13_win_x64_bmi2/stockfish_13_win_x64_bmi2.exe")
+stockfish_path = input("Stockfish path: ")
+file_path = input("File path: ")
 
-with open("G:/Documentos/Projects/positions.txt", "r") as positions:
+st = stockfish_port.Stockfish(stockfish_path)
+
+with open(file_path, "r") as positions:
     positions_list = positions.readlines()
 
 final_positions = []
@@ -16,7 +19,8 @@ values_dict = {"position": [], "Pawns":[], "Knights":[], "Bishops":[],
                         "Rooks":[], "Queens":[], "Mobility":[], "King":[], "Threats":[],
                         "Passed":[], "Space":[]}
 
-
+total_positions = len(positions_list)
+current_position = 0
 
 for position in positions_list:
     st.set_fen_position(position[0:-2])
@@ -46,15 +50,17 @@ for position in positions_list:
             elif element[0].split()[0] == "Passed":
                 values_dict["Passed"].append(float(value))
             elif element[0].split()[0] == "Space":
-                values_dict["Space"].append(float(value))
-        
-
+                values_dict["Space"].append(float(value))  
     except IndexError:
-        print("Socorro")
         continue
+
+    current_position += 1
+    print("{}/{} \r".format(current_position, total_positions))
 
 for keys in values_dict.keys():
     print(len(values_dict[keys]))
 dataframe = pd.DataFrame(values_dict)
 
 print(dataframe.head())
+
+dataframe.to_csv("dataframe.csv")
