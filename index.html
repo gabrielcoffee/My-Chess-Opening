@@ -24,30 +24,42 @@
         </title>
     </head>
     <body>
-        <h1>
-            What is the perfect chess opening for you?
-        </h1>
-        <h2>
-            Are you tired of always playing 1.e4? Worry no more. 
-            MyChessOpening will find the perfect opening for any 
-            kind of player: noobs, pros or masters.
-        </h2>
-
-        <p>
-            We use our special artificial intelligence that exams
-            your online chess matches in order to find what opening suits 
-            you better.    
-            
-        </p>
+        <header>
+            <h1>MyChessOpening</h1>
+            <nav>
+                <ul>
+                    <li>Home</li>
+                    <li><a href="test/">Test</a></li>
+                    <li>Openings</li>
+                    <li>About</li>
+                </ul>
+            </nav>
+        </header>
         
-        <form action="loading_games/" method="POST">
-            <input type="text" name="username" placeholder="Type your username" id="username">
-            <input id="lichess" type="radio" name="site" value="lichess.com"> 
-            <label for="lichess">lichess.com</label>
-            <input id="chess" type="radio" name="site" value="chess.com">  
-            <label for="chess">chess.com</label>
-            <input type="submit" value="Analyse games">
-        </form>
+        <script>
+            function redirecionar(){
+                location.href = "test/"
+            }
+        </script>
+
+        <h2>
+            Openings really matter
+        </h2>
+        <p>
+            Despite what Bobby Fischer said about the large opening theory we have nowadays, openings 
+            play a crucial role in the game: It sets how the middle-game - the most important part of the game -
+            is going to be. 
+        </p>
+        <p>
+            So you better be prepared to play the openings that lead to a middle-game position where you are more comfortable
+            with, and suits your playing style. 
+        </p>
+        <p>
+            In order to help you in this task, we've created an AI that analyses your online games and finds what is the best 
+            opening for you!
+        </p>
+
+        <button onclick="redirecionar()">Take the test!</button>
 
     </body>
 </html>
