@@ -18,6 +18,8 @@ while True:
 
     games = pgn.loads(r.text)
 
+    appended = 0
+
     for game in games:
         board = chess.Board()
         lance = 0
@@ -41,7 +43,9 @@ while True:
             except FileNotFoundError:
                 toAppend = True
             if toAppend:
-                print(board.fen())
+                appended += 1
                 with open("positions.txt", "a+") as fileWrite:
                     fileWrite.write(board.fen() + "\n")
                     fileWrite.close()
+
+    print("{} games appended".format(appended))
