@@ -1,10 +1,5 @@
-"""
-This program downloads an amount of games from an user at
-lichess.org
-and then appends the position at the 10th move
-to a text file which will be used to 
-train the neural network
-"""
+# this program uses lichess api to download games from any 
+# user and then appends the fen of the 10th move to a file
 
 import chess
 import requests
@@ -35,7 +30,6 @@ while True:
             if lance == 20:
                 break
         if lance == 20:
-            print(board.fen())
             currentFen = board.fen()
             toAppend =  True
             try:
@@ -47,6 +41,7 @@ while True:
             except FileNotFoundError:
                 toAppend = True
             if toAppend:
+                print(board.fen())
                 with open("positions.txt", "a+") as fileWrite:
                     fileWrite.write(board.fen() + "\n")
                     fileWrite.close()

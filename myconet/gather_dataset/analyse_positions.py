@@ -1,3 +1,5 @@
+# this program uses a port of stockfish to evaluate each position on the file
+
 import stockfish_port
 import pandas as pd
 

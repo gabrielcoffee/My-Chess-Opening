@@ -1,7 +1,6 @@
 que que a gente tem que fazer:
 * html do site resposta
 * puxar os dados dos jogos
-* criar a rede neural
 * treinar a rede neural
 * converter a rede para web
 * css da vida (fazer os css para mobile primeiro depois desktop)
