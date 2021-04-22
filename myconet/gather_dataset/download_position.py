@@ -30,7 +30,6 @@ while True:
             if lance == 20:
                 break
         if lance == 20:
-            print(board.fen())
             currentFen = board.fen()
             toAppend =  True
             try:
@@ -42,6 +41,7 @@ while True:
             except FileNotFoundError:
                 toAppend = True
             if toAppend:
+                print(board.fen())
                 with open("positions.txt", "a+") as fileWrite:
                     fileWrite.write(board.fen() + "\n")
                     fileWrite.close()
