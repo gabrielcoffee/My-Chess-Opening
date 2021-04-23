@@ -3,13 +3,20 @@
     $username = $_POST['username'];
     $website = $_POST['website'];
 
-    echo "<script>";
+    if ($website == "lichess.org"){
+        echo "<script src='load_lichessorg.js'></script>\n";
+    }
+    else{
+        echo "<script src='load_chesscom.js'></script>\n";
+    }
+
+    echo "<script> \n";
     echo "var username = '";
     echo $username;
 
-    echo "';var website = '";
+    echo "';\nvar website = '";
     echo $website;
-    echo "';</script>";
+    echo "';\n</script>";
     ?>
 <html>
     <head>
@@ -49,11 +56,15 @@
         </style>
     </head>
     <body>
-        <h1>
+        <h1 id="status">
             The artificial intelligence is interpreting your games...
         </h1>
 
         <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-
     </body>
+
+    <script>
+        load_games(username);
+    </script>
+
 </html>
