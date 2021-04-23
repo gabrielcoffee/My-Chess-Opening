@@ -1,4 +1,16 @@
 <!DOCTYPE html>
+<?php
+    $username = $_POST['username'];
+    $website = $_POST['website'];
+
+    echo "<script>";
+    echo "var username = '";
+    echo $username;
+
+    echo "';var website = '";
+    echo $website;
+    echo "';</script>";
+    ?>
 <html>
     <head>
         <link rel="apple-touch-icon" sizes="57x57" href="../../icon/apple-icon-57x57.png">
@@ -36,7 +48,6 @@
             }
         </style>
     </head>
-    <script src="load.js"></script>
     <body>
         <h1>
             The artificial intelligence is interpreting your games...

@@ -20,18 +20,18 @@
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
         <title>
-            MyChessOpening Test
+            MyChessOpening
         </title>
     </head>
     <body>
         <header>
-            <h1>Test</h1>
+            <h1>MyChessOpening</h1>
             <nav>
                 <ul>
                     <li><a href="../">Home</a></li>
                     <li>Test</li>
                     <li>Openings</li>
-                    <li><a href="../about/">About</a></li>
+                    <li>About</li>
                 </ul>
             </nav>
         </header>
@@ -45,11 +45,11 @@
             ex eget aliquam placerat, mi turpis blandit enim, eget suscipit   
         </p>
 
-        <form action="loading/" method="POST">
+        <form method="POST" action="loading/">
             <input type="text" name="username" placeholder="Type your username" id="username">
-            <input id="lichess" type="radio" name="site" value="lichess.com"> 
-            <label for="lichess">lichess.com</label>
-            <input id="chess" type="radio" name="site" value="chess.com">  
+            <input id="lichess" type="radio" name="website" value="lichess.org"> 
+            <label for="lichess">lichess.org</label>
+            <input id="chess" type="radio" name="website" value="chess.com">  
             <label for="chess">chess.com</label>
             <input type="submit" value="Analyse games">
         </form>
