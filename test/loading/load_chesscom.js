@@ -27,6 +27,10 @@ function correctMonth(month){
     }
 }
 
+function updateProgressMessage(newMessage){
+    document.getElementById("status").innerHTML = "Downloading games from chess.com API";
+}
+
 async function fetchGames(url){
     let fetcher = await fetch(url, {method: 'GET',})
     .then(function(response){
@@ -40,15 +44,29 @@ async function load_games(username){
     
     var data = new Date(Date.now());
     var year = data.getFullYear();
-    var month = correctMonth(data.getMonth()); //correct month returns the actual month - 1;
+    var month = correctMonth(data.getMonth()); //date.getmonth() returns the actual month - 1;
 
     var url = "https://api.chess.com/pub/player/"+ username +"/games/" + year + month;
 
     let response = fetchGames(url);
 
     response.then(function(gamesJson){
-        //process games here
-    })
+        var wonGames = [];
+        var games = gamesJson.games;
+        for (var i = 0; i < gamesJson.games.length; i++){
+            if (games[i].black.username == username && games[i].black.result == "win" ||
+                games[i].white.username == username && games[i].white.result == "win"){
+                wonGames.push(games[i]);
+            }
+        }
+        return wonGames;
+    });
+    response.then(function(gamesArray){
+        for (var i = 0; i < gamesArray.games.length; i++){
+            console.log(gamesArray.games[i].pgn);
+        }
+        
+    });
 
     return response;
 }
