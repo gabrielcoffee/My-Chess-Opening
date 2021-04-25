@@ -31,6 +31,21 @@ function updateProgressMessage(newMessage){
     document.getElementById("status").innerHTML = newMessage;
 }
 
+async function verifyPlayer(username){
+    var isPlayerValid = true;
+    var url = "https://api.chess.com/pub/player/"+ username;
+    
+    var fetcher = await fetch(url, {method: 'GET'})
+    .then(function(playerData){
+        if (!playerData.ok){
+            throw new Error("Player not found");
+        }
+        return playerData.json();
+    })
+    .catch(e => isPlayerValid = false);
+    return isPlayerValid;
+}
+
 async function fetchGames(url){
     let fetcher = await fetch(url, {method: 'GET',})
     .then(function(response){
@@ -42,7 +57,16 @@ async function fetchGames(url){
 
 async function load_games(username){
     
-    updateProgressMessage("Downloading games from chess.com API")
+    updateProgressMessage("Finding player");
+
+    var isPlayerValid = await verifyPlayer(username);
+
+    if (!isPlayerValid){
+        location.href = "../playerNotFound";
+    }
+    else{
+        updateProgressMessage("Downloading games from chess.com API");
+    }
 
     var data = new Date(Date.now());
     var year = data.getFullYear();
