@@ -57,7 +57,7 @@ async function fetchGames(url){
 
 async function load_games(username){
     
-    updateProgressMessage("Finding player");
+    updateProgressMessage("Searching player");
 
     var isPlayerValid = await verifyPlayer(username);
 

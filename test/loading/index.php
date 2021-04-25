@@ -1,6 +1,7 @@
 <?php
     $username = $_POST['username'];
     $website = $_POST['website'];
+    $amount = $_POST['amount'];
 
     session_start();
     $_SESSION["playername"] = $username;
@@ -14,11 +15,16 @@
     }
 
     echo "<script> \n";
+    
     echo "var username = '";
     echo $username;
 
     echo "';\nvar website = '";
     echo $website;
+
+    echo "';\nvar amount = '";
+    echo $amount;
+
     echo "';\n</script>";
     ?>
 <!DOCTYPE html>
@@ -42,22 +48,13 @@
         <meta name="msapplication-TileImage" content="../../icon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
-
+        
         <link rel="stylesheet" type="text/css" href="progress_bar.css">
+        <link rel="stylesheet" type="text/css" href="background.css">
 
         <title>
             MyChessOpening
         </title>
-
-        <!--TODO COLOCAR ESSES STYLES EM UM CSS SEPARADO -hugo -->
-        <style>
-            body{
-               background-color: black; 
-            }
-            h1{
-                color: white;
-            }
-        </style>
     </head>
     <body>
         <h1 id="status">
