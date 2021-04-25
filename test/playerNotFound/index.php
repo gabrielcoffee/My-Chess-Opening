@@ -1,27 +1,14 @@
 <?php
-    $username = $_POST['username'];
-    $website = $_POST['website'];
-
     session_start();
-    $_SESSION["playername"] = $username;
-    $_SESSION["sitename"] = $website;
-
-    if ($website == "lichess.org"){
-        echo "<script src='load_lichessorg.js'></script>\n";
-    }
-    else{
-        echo "<script src='load_chesscom.js'></script>\n";
-    }
 
     echo "<script> \n";
     echo "var username = '";
-    echo $username;
-
-    echo "';\nvar website = '";
-    echo $website;
+    echo $_SESSION["playername"];
+    echo "';\n var website = '";
+    echo $_SESSION["sitename"];
     echo "';\n</script>";
     ?>
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
     <head>
         <link rel="apple-touch-icon" sizes="57x57" href="../../icon/apple-icon-57x57.png">
@@ -43,31 +30,37 @@
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
 
-        <link rel="stylesheet" type="text/css" href="progress_bar.css">
-
         <title>
-            MyChessOpening
         </title>
 
-        <!--TODO COLOCAR ESSES STYLES EM UM CSS SEPARADO -hugo -->
-        <style>
-            body{
-               background-color: black; 
-            }
-            h1{
-                color: white;
-            }
-        </style>
+        <script>
+            document.title = username + " not found";
+        </script>
     </head>
     <body>
-        <h1 id="status">
+        <h1>
+            Player Not Found
         </h1>
 
-        <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <session id="message">
+        </session>
+
+        <form method="POST" action="../loading/">
+            <input type="text" name="username" placeholder="Type your username" id="username">
+            <input id="lichess" type="radio" name="website" value="lichess.org"> 
+            <label for="lichess">lichess.org</label>
+            <input id="chess" type="radio" name="website" value="chess.com">  
+            <label for="chess">chess.com</label>
+            <input type="submit" value="Analyse games">
+        </form>
+
     </body>
 
     <script>
-        load_games(username);
-    </script>
+        var message = document.createElement("p");
+        message.innerHTML = "We couldn't find player " + username + " in " + website +
+        " database, check if the data is correct and try again";
 
+        document.getElementById("message").appendChild(message);
+    </script>
 </html>
