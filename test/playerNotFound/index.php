@@ -30,39 +30,62 @@
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
 
-        <title>
-        </title>
+        <script src="../../scripts/errormessages.js"></script>
 
         <script>
-            document.title = username + " not found";
+            async function checkRedirecting(){
+                if (website == "lichess.org"){
+                    var isPlayerValid = true;
+                    var url = "https://lichess.org/api/user/"+ username;
+
+                    var fetcher = await fetch(url, {method: 'GET'})
+                    .then(function(playerData){
+                        if (!playerData.ok){
+                            throw new Error("Player not found");
+                        }
+                        return playerData.json();
+                    })
+                    .catch(e => isPlayerValid = false);
+                    
+                    if (isPlayerValid){
+                        location.href = "../searchInterrupted";
+                    }
+                    else{
+                        playerNotFound(username, website);
+                    }
+                }   
+                else{
+                    var isPlayerValid = true;
+                    var url = "https://api.chess.com/pub/player/"+ username;
+                    
+                    var fetcher = await fetch(url, {method: 'GET'})
+                    .then(function(playerData){
+                        if (!playerData.ok){
+                            throw new Error("Player not found");
+                        }
+                        return playerData.json();
+                    })
+                    .catch(e => isPlayerValid = false);
+                    if (isPlayerValid){
+                        location.href = "../searchInterrupted/";
+                    }
+                    else{
+                        playerNotFound(username, website);
+                    }
+                }
+            }
+
+            checkRedirecting();        
         </script>
+
+        <title>
+            Something went wrong
+        </title>
+
     </head>
     <body>
-        <h1>
-            Player Not Found
-        </h1>
-
-        <session id="message">
-        </session>
-
-        <form method="POST" action="../loading/">
-            <input type="text" name="username" placeholder="Type your username" id="username">
-            <input id="lichess" type="radio" name="website" value="lichess.org"> 
-            <label for="lichess">lichess.org</label>
-            <input id="chess" type="radio" name="website" value="chess.com">  
-            <label for="chess">chess.com</label>
-            <input type="submit" value="Analyse games">
-        </form>
 
     </body>
-
-    <script>
-        var message = document.createElement("p");
-        message.innerHTML = "We couldn't find player " + username + " in " + website +
-        " database, check if the data is correct and try again";
-
-        document.getElementById("message").appendChild(message);
-    </script>
     
     <?php
         session_unset();
