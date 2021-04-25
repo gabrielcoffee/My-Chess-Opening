@@ -28,7 +28,7 @@ function correctMonth(month){
 }
 
 function updateProgressMessage(newMessage){
-    document.getElementById("status").innerHTML = "Downloading games from chess.com API";
+    document.getElementById("status").innerHTML = newMessage;
 }
 
 async function fetchGames(url){
@@ -42,6 +42,8 @@ async function fetchGames(url){
 
 async function load_games(username){
     
+    updateProgressMessage("Downloading games from chess.com API")
+
     var data = new Date(Date.now());
     var year = data.getFullYear();
     var month = correctMonth(data.getMonth()); //date.getmonth() returns the actual month - 1;
@@ -59,6 +61,7 @@ async function load_games(username){
                 wonGames.push(games[i]);
             }
         }
+        // add a way to verify that we could get a good amount of games with wonGames.length
         return wonGames;
     });
     response.then(function(gamesArray){
