@@ -63,4 +63,9 @@
 
         document.getElementById("message").appendChild(message);
     </script>
+    
+    <?php
+        session_unset();
+        session_destroy();
+    ?>
 </html>
