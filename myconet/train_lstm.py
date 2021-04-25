@@ -12,7 +12,7 @@ labels = (df["Pawns"], df["Knights"], df["Bishops"], df["Rooks"],
         df["Passed"], df["Space"])
 
 
-text_dataset = tf.data.Dataset.from_tensor_slices((features, labels)).batch(15)
+text_dataset = tf.data.Dataset.from_tensor_slices((features, labels)).batch(64)
 
 model = tf.keras.Sequential()
 
