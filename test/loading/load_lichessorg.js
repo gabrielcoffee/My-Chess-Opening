@@ -30,7 +30,15 @@ async function fetchGames(url)
 
     let fetcher = await fetch(url, myInit)
     .then(function(response){
-        return response.json();
+        return response.text();
+    })
+    .then(function(text){
+        newtext = text.split("\n");
+        gamesJson = {"games": []};
+        for (var i = 0; i < newtext.length - 1; i++){
+            gamesJson.games.push(JSON.parse(newtext[i]));
+        }
+        return gamesJson;
     });
     
     return fetcher;
@@ -50,7 +58,7 @@ async function load_games(username)
         updateProgressMessage("Downloading games from lichess.org API");
     }
 
-    var url = "https://lichess.org/api/games/user/" + username + "?max=20";
+    var url = "https://lichess.org/api/games/user/" + username + "?max=50";
 
     let response = fetchGames(url);
 
