@@ -42,22 +42,13 @@
         <meta name="msapplication-TileImage" content="../../icon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
-
+        
         <link rel="stylesheet" type="text/css" href="progress_bar.css">
+        <link rel="stylesheet" type="text/css" href="background.css">
 
         <title>
             MyChessOpening
         </title>
-
-        <!--TODO COLOCAR ESSES STYLES EM UM CSS SEPARADO -hugo -->
-        <style>
-            body{
-               background-color: black; 
-            }
-            h1{
-                color: white;
-            }
-        </style>
     </head>
     <body>
         <h1 id="status">
