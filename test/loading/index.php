@@ -1,6 +1,7 @@
 <?php
     $username = $_POST['username'];
     $website = $_POST['website'];
+    $amount = $_POST['amount'];
 
     session_start();
     $_SESSION["playername"] = $username;
@@ -14,11 +15,16 @@
     }
 
     echo "<script> \n";
+    
     echo "var username = '";
     echo $username;
 
     echo "';\nvar website = '";
     echo $website;
+
+    echo "';\nvar amount = '";
+    echo $amount;
+
     echo "';\n</script>";
     ?>
 <!DOCTYPE html>
