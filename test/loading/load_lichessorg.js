@@ -44,7 +44,7 @@ async function fetchGames(url)
     return fetcher;
 }
 
-async function load_games(username)
+async function load_games(username, amout)
 {
     
     updateProgressMessage("Searching player");
@@ -59,6 +59,10 @@ async function load_games(username)
     }
 
     var url = "https://lichess.org/api/games/user/" + username + "?max=50";
+
+    if (amount != "all"){
+        url += "?max=" + amount;
+    }
 
     let response = fetchGames(url);
 

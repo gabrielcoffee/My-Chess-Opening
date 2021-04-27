@@ -55,7 +55,7 @@ async function fetchGames(url){
     return fetcher;
 }
 
-async function load_games(username){
+async function load_games(username, amount){
     
     updateProgressMessage("Searching player");
 
@@ -85,7 +85,7 @@ async function load_games(username){
                 wonGames.push(games[i]);
             }
         }
-        // add a way to verify that we could get a good amount of games with wonGames.length
+        // TODO add a way to verify that we could get a good amount of games with wonGames.length
         return wonGames;
     });
     response.then(function(gamesArray){
