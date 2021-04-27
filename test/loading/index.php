@@ -64,7 +64,7 @@
     </body>
 
     <script>
-        load_games(username);
+        load_games(username, amount);
     </script>
 
 </html>

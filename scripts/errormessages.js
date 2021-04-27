@@ -63,6 +63,37 @@ function playerNotFound(username, website){
 
     formulary.appendChild(input4);
 
+    var selects = document.createElement("select");
+    selects.setAttribute("id", "amount"");
+    selects.setAttribute("name", "amount");
+
+    var opt1 = document.createElement("option");
+    opt1.innerHTML = 25;
+    opt1.setAttribute("value", "25");
+    selects.appendChild(opt1);
+
+    var opt2 = document.createElement("option");
+    opt2.innerHTML = 50;
+    opt2.setAttribute("value", "50");
+    selects.appendChild(opt2);
+    
+    var opt3 = document.createElement("option");
+    opt3.innerHTML = 100;
+    opt3.setAttribute("value", "100");
+    selects.appendChild(opt3);
+    
+    var opt4 = document.createElement("option");
+    opt4.innerHTML = 150;
+    opt4.setAttribute("value", "150");
+    selects.appendChild(opt4);
+    
+    var opt5 = document.createElement("option");
+    opt5.innerHTML = Analyse all games;
+    opt5.setAttribute("value", "all");
+    selects.appendChild(opt5);
+
+    formulary.appendChild(selects);
+
     document.body.appendChild(formulary);
 
 }
