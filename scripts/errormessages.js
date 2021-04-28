@@ -64,7 +64,7 @@ function playerNotFound(username, website){
     formulary.appendChild(input4);
 
     var selects = document.createElement("select");
-    selects.setAttribute("id", "amount"");
+    selects.setAttribute("id", "amount");
     selects.setAttribute("name", "amount");
 
     var opt1 = document.createElement("option");
@@ -88,12 +88,11 @@ function playerNotFound(username, website){
     selects.appendChild(opt4);
     
     var opt5 = document.createElement("option");
-    opt5.innerHTML = Analyse all games;
+    opt5.innerHTML = "Analyse all games";
     opt5.setAttribute("value", "all");
     selects.appendChild(opt5);
 
     formulary.appendChild(selects);
 
     document.body.appendChild(formulary);
-
 }
