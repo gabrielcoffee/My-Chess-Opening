@@ -1,6 +1,6 @@
 que que a gente tem que fazer:
 * html do site resposta
-* fazer a opção de selecionar quantos jogos o cara quer
+* fazer a opção de selecionar quantos jogos o cara quer (apenas no loadchesscom.js)
 * analisar os jogos 
 * treinar a rede neural
 * converter a rede para web

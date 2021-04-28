@@ -44,7 +44,7 @@ async function fetchGames(url)
     return fetcher;
 }
 
-async function load_games(username, amout)
+async function load_games(username, amount)
 {
     
     updateProgressMessage("Searching player");
