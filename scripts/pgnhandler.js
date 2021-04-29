@@ -13,22 +13,85 @@ class Board{
 
         this.turn = "w";
         
-        this.castles = {
-            white_kingside: true,
-            black_kingside: true,
-            white_queenside: true,
-            black_queenside: true
-        };
+        this.castles = "1111";
 
-        this.en_passant_square = "-";
+        this.enPassantSquare = "-";
 
         this.halfmoves = 0;
         
-        this.fullmove = 1;
+        this.fullmoves = 1;
+
+        this.currentFen = this.fen();
     }
 
     fen(){
+        var emptySquares = 0;
+        var squareCount = 0;
 
+        var positionFen = "";
+
+        for (var row = 0; row < 8; row++){
+            for (var column = 0; column < 8; column++){
+                if (this.representation[row][column] != " "){
+                    if (emptySquares != 0){
+                        positionFen += emptySquares.toString();
+                        emptySquares = 0;
+                    }
+                    positionFen += this.representation[row][column];
+                }
+                else{
+                    emptySquares++;
+                }
+
+                if (column == 7){
+                    if (emptySquares != 0){
+                        positionFen += emptySquares.toString();
+                        emptySquares = 0;
+                    }
+                    if (row != 7){
+                        positionFen += "/";
+                    }
+                }
+            }
+        }
+
+        positionFen += " ";
+
+        positionFen += this.turn;
+
+        positionFen += " ";
+
+        if (this.castles == "0000"){
+            positionFen += "- ";
+        }
+        else{
+            if (this.castles[0] == "1"){
+                positionFen += "K";
+            }
+            if (this.castles[1] == "1"){
+                positionFen += "Q";
+            }
+            if (this.castles[2] == "1"){
+                positionFen += "k";
+            }
+            if (this.castles[3] == "1"){
+                positionFen += "q";
+            }
+        }
+
+        positionFen += " ";
+
+        positionFen += this.enPassantSquare;
+
+        positionFen += " ";
+
+        positionFen += this.halfmoves.toString();
+
+        positionFen += " ";
+
+        positionFen += this.fullmoves.toString();
+
+        return positionFen;
     }
 }
 
