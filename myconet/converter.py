@@ -58,4 +58,4 @@ def converter(text):
         except IndexError:
             text_list.append(0)
 
-    return np.array(text_list, dtype="int64")
+    return np.array([text_list], dtype="int64")
