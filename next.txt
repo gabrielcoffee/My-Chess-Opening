@@ -9,3 +9,4 @@ que que a gente tem que fazer:
 * css da vida (fazer os css para mobile primeiro depois desktop)
 * colocar os styles dentro do html em arquivos css separados
 * traduzir o site
+* colocar o google analytics no site
