@@ -52,6 +52,8 @@
         <link rel="stylesheet" type="text/css" href="progress_bar.css">
         <link rel="stylesheet" type="text/css" href="background.css">
 
+        <script src="../../scripts/chess.js"></script>
+
         <title>
             MyChessOpening
         </title>
