@@ -31,6 +31,15 @@ function updateProgressMessage(newMessage){
     document.getElementById("status").innerHTML = newMessage;
 }
 
+function split_moves(pgn){
+    var moves = [];
+    var pgn_elements_array = pgn.split(" ");
+    for (var move = 29; move < pgn_elements_array.length; move += 4){
+        moves.push(pgn_elements_array[move]);
+    }
+    return moves;
+}
+
 async function verifyPlayer(username){
     var isPlayerValid = true;
     var url = "https://api.chess.com/pub/player/"+ username;
@@ -89,10 +98,22 @@ async function load_games(username, amount){
         return wonGames;
     });
     response.then(function(gamesArray){
+        var positions = [];
         for (var i = 0; i < gamesArray.games.length; i++){
-            console.log(gamesArray.games[i].pgn);
+            moves = split_moves(gamesArray.games[i].pgn);
+
+            var board = new Chess();
+            for (var move = 0; move <= 10; move++){
+                board.move(moves[move]);
+            }
+
+            var fen = board.fen();
+            console.log(fen);
+
+            positions.push(fen);
         }
-        
+        return positions;
+
     });
 
     return response;
