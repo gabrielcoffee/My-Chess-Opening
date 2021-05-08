@@ -58,11 +58,8 @@ async function load_games(username, amount)
         updateProgressMessage("Downloading games from lichess.org API");
     }
 
-    var url = "https://lichess.org/api/games/user/" + username + "?max=50";
-
-    if (amount != "all"){
-        url += "?max=" + amount;
-    }
+    var url = "https://lichess.org/api/games/user/" + username;
+    url += "?max=" + amount;
 
     let response = fetchGames(url);
 
