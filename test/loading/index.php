@@ -7,13 +7,6 @@
     $_SESSION["playername"] = $username;
     $_SESSION["sitename"] = $website;
 
-    if ($website == "lichess.org"){
-        echo "<script src='load_lichessorg.js'></script>\n";
-    }
-    else{
-        echo "<script src='load_chesscom.js'></script>\n";
-    }
-
     echo "<script> \n";
     
     echo "var username = '";
@@ -26,6 +19,14 @@
     echo $amount;
 
     echo "';\n</script>";
+
+    if ($website == "lichess.org"){
+        echo "<script src='load_lichessorg.js'></script>\n";
+    }
+    else{
+        echo "<script src='load_chesscom.js'></script>\n";
+    }
+
     ?>
 <!DOCTYPE html>
 <html>
@@ -51,6 +52,13 @@
         
         <link rel="stylesheet" type="text/css" href="progress_bar.css">
         <link rel="stylesheet" type="text/css" href="background.css">
+
+        <script>
+            // changes the message displayed at the document h1
+            function updateProgressMessage(newMessage){
+                document.getElementById("status").innerHTML = newMessage;
+            }
+        </script>
 
         <script src="../../scripts/chess.js"></script>
 
