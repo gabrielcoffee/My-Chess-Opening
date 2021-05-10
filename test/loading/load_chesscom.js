@@ -176,6 +176,9 @@ async function load_games(username, amount){
             break;
         }
 
+        // TODO talvez exibir no h1 a quantidade de jogos que ja foram baixados tipo: baixando (122/150)
+        // ou a porcentagem
+
         if (provisionalMonth == 0){
             provisionalMonth = 11;
             year--;

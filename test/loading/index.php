@@ -66,7 +66,7 @@
         <script>        
             async function main(){    
                 gameMovesJSON = await load_games(username, amount);
-                console.log(gameMovesJSON);
+                console.log(parseFen(gameMovesJSON));
             }
         </script>
 
@@ -78,7 +78,11 @@
         <h1 id="status">
         </h1>
 
-        <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="lds-grid">
+            <div></div><div></div><div></div>
+            <div></div><div></div><div></div>
+            <div></div><div></div><div></div>
+        </div>
     </body>
 
     <script>
