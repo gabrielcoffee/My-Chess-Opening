@@ -61,6 +61,7 @@
         </script>
 
         <script src="../../scripts/chess.js"></script>
+        <script src="fenDealer.js"></script>
 
         <title>
             MyChessOpening
