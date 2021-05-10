@@ -63,6 +63,13 @@
         <script src="../../scripts/chess.js"></script>
         <script src="fenDealer.js"></script>
 
+        <script>        
+            async function main(){    
+                gameMovesJSON = await load_games(username, amount);
+                console.log(parseFen(gameMovesJSON));
+            }
+        </script>
+
         <title>
             MyChessOpening
         </title>
@@ -71,11 +78,15 @@
         <h1 id="status">
         </h1>
 
-        <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="lds-grid">
+            <div></div><div></div><div></div>
+            <div></div><div></div><div></div>
+            <div></div><div></div><div></div>
+        </div>
     </body>
 
     <script>
-        load_games(username, amount);
+        main();
     </script>
 
 </html>

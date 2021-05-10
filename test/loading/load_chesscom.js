@@ -111,13 +111,7 @@ async function load_games(username, amount){
 
     var quantityOfGames = parseInt(amount) / 4;  //this value needs to be divided by 4 because there are 4 possible sub-results 
 
-    try{
-        // TODO STOP USING SESSION STORAGE, PUT EVERYTHING IN A OBJECT INSTEAD
-        sessionStorage.setItem("game", '{"winsW": [], "winsB": [], "lossW": [], "lossB": []}');
-    }
-    catch{
-        // TODO criar uma mensagem ou uma pagina de erro avisando ao usuário para ativar o sessionStorage do seu navegador
-    }
+    var jsonGames = {"winsW": [], "winsB": [], "lossW": [], "lossB": []};
     
     updateProgressMessage("Downloading games from chess.com API");
 
@@ -129,7 +123,6 @@ async function load_games(username, amount){
     while (true){
         
         if (provisionalMonth == monthJoined && year == yearJoined){
-            sessionStorage.clear(); // stop using session storage
             // TODO escrever uma mensagem melhor kakakakakakaka
             updateProgressMessage("Vai jogá fi");
             break;
@@ -152,47 +145,39 @@ async function load_games(username, amount){
 
             // separate the games
             if (games[i].black.username == username && games[i].black.result == "win"){
-                var jsonGames = JSON.parse(sessionStorage.getItem("game"));
                 if (jsonGames.winsW.length != quantityOfGames){
                     jsonGames.winsW.push(split_moves(games[i].pgn));
-                    sessionStorage.setItem("game", JSON.stringify(jsonGames));
                 }
             }
             else if(games[i].white.username == username && games[i].white.result == "win"){
-                var jsonGames = JSON.parse(sessionStorage.getItem("game"));
                 if (jsonGames.winsB.length != quantityOfGames){
                     jsonGames.winsB.push(split_moves(games[i].pgn));
-                    sessionStorage.setItem("game", JSON.stringify(jsonGames));
                 }
             }
             else if (games[i].white.username == username && games[i].black.result == "win" && losesWhite != quantityOfGames){
-                var jsonGames = JSON.parse(sessionStorage.getItem("game"));
                 if (jsonGames.lossW.length != quantityOfGames){
                     jsonGames.lossW.push(split_moves(games[i].pgn));
-                    sessionStorage.setItem("game", JSON.stringify(jsonGames));
                 }
             }
             else if (games[i].black.username == username && games[i].white.result == "win" && losesBlack != quantityOfGames){
-                var jsonGames = JSON.parse(sessionStorage.getItem("game"));
                 if (jsonGames.lossB.length != quantityOfGames){
                     jsonGames.lossB.push(split_moves(games[i].pgn));
-                    sessionStorage.setItem("game", JSON.stringify(jsonGames));
                 }
             }
         }
 
-        // stop using session storage, it was a bad idea
-        var gamesJson = JSON.parse(sessionStorage.getItem("game"));
-
-        var winsWhite = gamesJson.winsW.length;
-        var winsBlack = gamesJson.winsB.length;
-        var losesWhite = gamesJson.lossW.length;
-        var losesBlack = gamesJson.lossB.length;
+        var winsWhite = jsonGames.winsW.length;
+        var winsBlack = jsonGames.winsB.length;
+        var losesWhite = jsonGames.lossW.length;
+        var losesBlack = jsonGames.lossB.length;
 
         // breaks the loop when all the necessary games are gotten
         if (areGamesDone(winsWhite, winsBlack, losesWhite, losesBlack, quantityOfGames)){
             break;
         }
+
+        // TODO talvez exibir no h1 a quantidade de jogos que ja foram baixados tipo: baixando (122/150)
+        // ou a porcentagem
 
         if (provisionalMonth == 0){
             provisionalMonth = 11;
@@ -202,5 +187,7 @@ async function load_games(username, amount){
             provisionalMonth--;
         }
     }
+
+    return jsonGames;
 
 }
