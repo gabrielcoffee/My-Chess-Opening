@@ -1,3 +1,6 @@
+var yearJoined;
+var monthJoined;
+
 // converts the Date.month() output to our known months
 function correctMonth(month){
     switch(month){
@@ -66,6 +69,14 @@ async function verifyPlayer(username){
         yearJoined = joinedDate.getFullYear();
         monthJoined = joinedDate.getMonth();
 
+        if (monthJoined == 0){
+            monthJoined = 11;
+            yearJoined--;
+        }
+        else{
+            monthJoined--;
+        }
+
         return playerData;
     })
     .catch(e => isPlayerValid = false);
@@ -94,9 +105,6 @@ async function load_games(username, amount){
 
     var quantityOfGames = parseInt(amount) / 4;
 
-    var yearJoined;
-    var monthJoined;
-
     try{
         sessionStorage.setItem("game", '{"winsW": [], "winsB": [], "lossW": [], "lossB": []}');
     }
@@ -106,21 +114,12 @@ async function load_games(username, amount){
     
     updateProgressMessage("Downloading games from chess.com API");
 
-
-    var batch = 0;
+    var data = new Date(Date.now());
+    var year = data.getFullYear();
+    var provisionalMonth =  data.getMonth();
 
     while (true){
-        var data = new Date(Date.now());
-        var year = data.getFullYear();
-        var provisionalMonth =  data.getMonth() - batch;
-
-        //tem um erro aqui, não fiz a verificação para o -2 em diante...
-        // preciso converter numeros negativos para o modulo deles entre 0 a 12
-        if (provisionalMonth == -1){
-            provisionalMonth = 11;
-            year -= 1;
-        }
-
+        
         if (provisionalMonth == monthJoined && year == yearJoined){
             updateProgressMessage("Vai jogá fi");
             break;
@@ -129,42 +128,45 @@ async function load_games(username, amount){
         var month = correctMonth(provisionalMonth); //date.getmonth() returns the actual month - 1;
 
         var url = "https://api.chess.com/pub/player/"+ username +"/games/" + year + month;
-    
+
         let response = await fetchGames(url);
     
         var games = response.games;
-
-        console.log(games);
 
         for (var i = 0; i < games.length; i++){
             if (games[i].rules != "chess"){
                 continue;
             }
 
-            if (games[i].black.username == username && games[i].black.result == "win" && winsWhite != quantityOfGames){
+            if (games[i].black.username == username && games[i].black.result == "win"){
                 var jsonGames = JSON.parse(sessionStorage.getItem("game"));
-                jsonGames.winsW.push(split_moves(games[i].pgn));
-                sessionStorage.setItem("game", JSON.stringify(jsonGames));
+                if (jsonGames.winsW.length != quantityOfGames){
+                    jsonGames.winsW.push(split_moves(games[i].pgn));
+                    sessionStorage.setItem("game", JSON.stringify(jsonGames));
+                }
             }
-            else if(games[i].white.username == username && games[i].white.result == "win" && winsBlack != quantityOfGames){
+            else if(games[i].white.username == username && games[i].white.result == "win"){
                 var jsonGames = JSON.parse(sessionStorage.getItem("game"));
-                jsonGames.winsB.push(split_moves(games[i].pgn));
-                sessionStorage.setItem("game", JSON.stringify(jsonGames));
+                if (jsonGames.winsB.length != quantityOfGames){
+                    jsonGames.winsB.push(split_moves(games[i].pgn));
+                    sessionStorage.setItem("game", JSON.stringify(jsonGames));
+                }
             }
             else if (games[i].white.username == username && games[i].black.result == "win" && losesWhite != quantityOfGames){
                 var jsonGames = JSON.parse(sessionStorage.getItem("game"));
-                jsonGames.lossW.push(split_moves(games[i].pgn));
-                sessionStorage.setItem("game", JSON.stringify(jsonGames));
+                if (jsonGames.lossW.length != quantityOfGames){
+                    jsonGames.lossW.push(split_moves(games[i].pgn));
+                    sessionStorage.setItem("game", JSON.stringify(jsonGames));
+                }
             }
             else if (games[i].black.username == username && games[i].white.result == "win" && losesBlack != quantityOfGames){
                 var jsonGames = JSON.parse(sessionStorage.getItem("game"));
-                console.log(games[i].pgn)
-                jsonGames.lossB.push(split_moves(games[i].pgn));
-                sessionStorage.setItem("game", JSON.stringify(jsonGames));
+                if (jsonGames.lossB.length != quantityOfGames){
+                    jsonGames.lossB.push(split_moves(games[i].pgn));
+                    sessionStorage.setItem("game", JSON.stringify(jsonGames));
+                }
             }
         }
-
-        batch++;
 
         var gamesJson = JSON.parse(sessionStorage.getItem("game"));
 
@@ -175,8 +177,15 @@ async function load_games(username, amount){
 
         // this is not breaking the loop
         if (areGamesDone(winsWhite, winsBlack, losesWhite, losesBlack, quantityOfGames)){
-            updateProgressMessage("foi");
             break;
+        }
+
+        if (provisionalMonth == 0){
+            provisionalMonth = 11;
+            year--;
+        }
+        else{
+            provisionalMonth--;
         }
 
         // TODO OTHER PAGES THAT CONTAIN THE FORMULARY HAVEN'T THE UPDATED VALUES
