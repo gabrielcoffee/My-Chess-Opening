@@ -63,6 +63,13 @@
         <script src="../../scripts/chess.js"></script>
         <script src="fenDealer.js"></script>
 
+        <script>        
+            async function main(){    
+                gameMovesJSON = await load_games(username, amount);
+                console.log(gameMovesJSON);
+            }
+        </script>
+
         <title>
             MyChessOpening
         </title>
@@ -75,7 +82,7 @@
     </body>
 
     <script>
-        load_games(username, amount);
+        main();
     </script>
 
 </html>
