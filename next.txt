@@ -1,12 +1,8 @@
 que que a gente tem que fazer:
 * html do site resposta
-* fazer a opção de selecionar quantos jogos o cara quer (apenas no loadchesscom.js)
-* analisar os jogos 
-* treinar a rede neural
-* converter a rede para web
+* separar a quantidade certa de resultados das partidas carregadas no load_lichess.js
 * fazer um catalogo de aberturas
 * escrever a página "sobre"
 * css da vida (fazer os css para mobile primeiro depois desktop)
-* colocar os styles dentro do html em arquivos css separados
 * traduzir o site
 * colocar o google analytics no site
