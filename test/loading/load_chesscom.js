@@ -113,7 +113,9 @@ async function load_games(username, amount){
 
     var jsonGames = {"winsW": [], "winsB": [], "lossW": [], "lossB": []};
     
-    updateProgressMessage("Downloading games from chess.com API");
+    var downloadedGames = 0;
+
+    updateProgressMessage("Downloading games from chess.com API 0%");
 
     // gets the current date to start searching
     var data = new Date(Date.now());
@@ -147,24 +149,30 @@ async function load_games(username, amount){
             if (games[i].black.username == username && games[i].black.result == "win"){
                 if (jsonGames.winsW.length != quantityOfGames){
                     jsonGames.winsW.push(split_moves(games[i].pgn));
+                    downloadedGames++;
                 }
             }
             else if(games[i].white.username == username && games[i].white.result == "win"){
                 if (jsonGames.winsB.length != quantityOfGames){
                     jsonGames.winsB.push(split_moves(games[i].pgn));
+                    downloadedGames++;
                 }
             }
             else if (games[i].white.username == username && games[i].black.result == "win" && losesWhite != quantityOfGames){
                 if (jsonGames.lossW.length != quantityOfGames){
                     jsonGames.lossW.push(split_moves(games[i].pgn));
+                    downloadedGames++;
                 }
             }
             else if (games[i].black.username == username && games[i].white.result == "win" && losesBlack != quantityOfGames){
                 if (jsonGames.lossB.length != quantityOfGames){
                     jsonGames.lossB.push(split_moves(games[i].pgn));
+                    downloadedGames++;
                 }
             }
         }
+
+        updateProgressMessage("Downloading games from chess.com API " + ((downloadedGames / amount) * 100).toFixed(0) + "%");
 
         var winsWhite = jsonGames.winsW.length;
         var winsBlack = jsonGames.winsB.length;
@@ -175,9 +183,6 @@ async function load_games(username, amount){
         if (areGamesDone(winsWhite, winsBlack, losesWhite, losesBlack, quantityOfGames)){
             break;
         }
-
-        // TODO talvez exibir no h1 a quantidade de jogos que ja foram baixados tipo: baixando (122/150)
-        // ou a porcentagem
 
         if (provisionalMonth == 0){
             provisionalMonth = 11;
