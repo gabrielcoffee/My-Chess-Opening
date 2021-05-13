@@ -6,6 +6,10 @@ function playerNotFound(username, website){
 
     document.body.appendChild(h1);
 
+    var ul = document.createElement("ul");
+
+    // TODO APPEND NAV LINKS HERE ^^^^^^^^^^
+
     var messageSession = document.createElement("session");
     messageSession.setAttribute("id", "message");
 
