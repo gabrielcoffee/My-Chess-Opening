@@ -35,7 +35,7 @@ model = tf.keras.Sequential()
 model.add(tf.keras.layers.Embedding(30, 256))
 model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=1024)))
 model.add(tf.keras.layers.Dense(128, activation="sigmoid"))
-model.add(tf.keras.layers.Dense(10, activation="linear"))
+model.add(tf.keras.layers.Dense(2, activation="linear"))
 
 model.summary()
 
