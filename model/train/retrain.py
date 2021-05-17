@@ -30,24 +30,18 @@ dataset = tf.data.Dataset.from_tensor_slices((features, labels)).batch(BATCH_SIZ
 
 
 # create the model
-model = tf.keras.Sequential()
-
-model.add(tf.keras.layers.Embedding(30, 256))
-model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=1024)))
-model.add(tf.keras.layers.Dense(128, activation="sigmoid"))
-model.add(tf.keras.layers.Dense(2, activation="linear"))
-
-model.summary()
+model = tf.keras.models.load_model("C:/Users/huhuhu/rnn_bidirectional_model.h5")
 
 model.compile(loss=tf.keras.losses.mae,
     optimizer=tf.keras.optimizers.Adam(),
     metrics=['mse'])
 
+
 # train the model
 history = model.fit(dataset, epochs=20)
 
 # save the model
-model.save("rnn_bidirectional_model.h5")
+model.save("rnn_bidirectional_model2.h5")
 
 # show learning curve
 plt.plot(history.history["loss"])
@@ -56,3 +50,4 @@ plt.title("MAE & MSE over training steps")
 plt.savefig("img.png")
 
 plt.savefig("img.png")
+
