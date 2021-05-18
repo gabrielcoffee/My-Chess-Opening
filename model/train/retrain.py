@@ -32,10 +32,13 @@ dataset = tf.data.Dataset.from_tensor_slices((features, labels)).batch(BATCH_SIZ
 # create the model
 model = tf.keras.models.load_model("C:/Users/huhuhu/rnn_bidirectional_model.h5")
 
-model.compile(loss=tf.keras.losses.mae,
-    optimizer=tf.keras.optimizers.Adam(),
-    metrics=['mse'])
+# our loss function
+def loss_euclidean_distance(y_true, y_pred):
+    return tf.math.sqrt(tf.experimental.numpy.sum(tf.math.square(y_pred - y_true), axis=1))
 
+model.compile(loss=loss_euclidean_distance,
+    optimizer=tf.keras.optimizers.Adam(),
+    metrics=['mae'])
 
 # train the model
 history = model.fit(dataset, epochs=20)
@@ -46,7 +49,7 @@ model.save("rnn_bidirectional_model2.h5")
 # show learning curve
 plt.plot(history.history["loss"])
 plt.plot(history.history["mae"])
-plt.title("MAE & MSE over training steps")
+plt.title("MAE & Loss over training steps")
 plt.savefig("img.png")
 
 plt.savefig("img.png")

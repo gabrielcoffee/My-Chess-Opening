@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 from converter import convert
 
 # parameters
-BATCH_SIZE = 64
-DATASET_NAME = "dataset1"
+BATCH_SIZE = 16
+DATASET_NAME = "test"
 
 # disable gpu to avoid memory bugs
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
@@ -30,14 +30,7 @@ dataset = tf.data.Dataset.from_tensor_slices((features, labels)).batch(BATCH_SIZ
 
 
 # create the model
-model = tf.keras.Sequential()
-
-model.add(tf.keras.layers.Embedding(30, 256))
-model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=1024)))
-model.add(tf.keras.layers.Dense(128, activation="sigmoid"))
-model.add(tf.keras.layers.Dense(2, activation="linear"))
-
-model.summary()
+model = tf.keras.models.load_model("C:/Users/huhuhu/rnn_bidirectional_model3.h5", compile=False)
 
 # our loss function
 def loss_euclidean_distance(y_true, y_pred):
@@ -47,17 +40,5 @@ model.compile(loss=loss_euclidean_distance,
     optimizer=tf.keras.optimizers.Adam(),
     metrics=['mae'])
 
-# train the model
-history = model.fit(dataset, epochs=20)
-
-# save the model
-model.save("rnn_bidirectional_model.h5")
-
-# show learning curve
-plt.plot(history.history["loss"])
-plt.plot(history.history["mae"])
-plt.title("MAE & Loss over training steps")
-plt.savefig("img.png")
-
-plt.savefig("img.png")
-
+# test the model
+history = model.evaluate(dataset)
