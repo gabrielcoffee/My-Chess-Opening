@@ -1,3 +1,6 @@
+var yearJoined;
+var monthJoined;
+
 function updateProgressMessage(newMessage)
 {
     document.getElementById("status").innerHTML = newMessage;
@@ -15,8 +18,30 @@ async function verifyPlayer(username)
         }
         return playerData.json();
     })
+    .then(function (playerData){
+        var joined = playerData.createdAt;
+        var joinedDate = new Date(joined);
+
+        yearJoined = joinedDate.getFullYear();
+        monthJoined = joinedDate.getMonth();
+
+        // subtract 1 from the month to make sure that the first month is included
+        if (monthJoined == 0){
+            monthJoined = 11;
+            yearJoined--;
+        }
+        else{
+            monthJoined--;
+        }
+
+        return playerData;
+    })
     .catch(e => isPlayerValid = false);
     return isPlayerValid;
+}
+
+function currentBatch(timestamp){
+    return "?since=" + timestamp + "&until=" + (timestamp + 2678400000);
 }
 
 async function fetchGames(url)
@@ -44,6 +69,13 @@ async function fetchGames(url)
     return fetcher;
 }
 
+function areGamesDone(winsWhite, winsBlack, losesWhite, losesBlack, quantityOfGames){
+    if (winsWhite == quantityOfGames && winsBlack == quantityOfGames && losesBlack == quantityOfGames && losesWhite == quantityOfGames){
+        return true;
+    }
+    return false;
+}
+
 async function load_games(username, amount)
 {
     
@@ -58,30 +90,91 @@ async function load_games(username, amount)
         updateProgressMessage("Downloading games from lichess.org API");
     }
 
-    var url = "https://lichess.org/api/games/user/" + username;
-    url += "?max=" + amount;
+    var baseUrl = "https://lichess.org/api/games/user/" + username;
 
-    let response = fetchGames(url);
+    var quantityOfGames = parseInt(amount) / 4;  //this value needs to be divided by 4 because there are 4 possible sub-results 
 
-    response.then(function(gamesJson){
-        console.log(gamesJson);
-        var wonGames = [];
-        var games = gamesJson.games;
-        for (var i = 0; i < gamesJson.games.length; i++){
-            if (games[i].black.username == username && games[i].black.result == "win" ||
-                games[i].white.username == username && games[i].white.result == "win"){
-                wonGames.push(games[i]);
+    var jsonGames = {"winsW": [], "winsB": [], "lossW": [], "lossB": []};
+    
+    var downloadedGames = 0;
+
+    updateProgressMessage("Downloading games from lichess.org API 0%");
+
+    // gets the current date to start searching
+    var today = new Date(Date.now());
+    var thisMonth = today.getMonth();
+    var thisYear = today.getFullYear();
+
+    while (true){
+        if (thisMonth == monthJoined && thisYear == yearJoined){
+            // create redirect page
+            updateProgressMessage("Vai jogá fi");
+            break;
+        }
+
+        var currentDate = new Date(thisYear, thisMonth);
+
+        let response = await fetchGames(baseUrl + currentBatch(currentDate.getTime()));
+
+        var games = response.games;
+
+        for (var i = 0; i < games.length; i++){
+            
+            if (games[i].variant != "standard"){
+                continue;
             }
-        }
-        // add a way to verify that we could get a good amount of games with wonGames.length
-        return wonGames;
-    });
-    response.then(function(gamesArray){
-        for (var i = 0; i < gamesArray.games.length; i++){
-            console.log(gamesArray.games[i].pgn);
-        }
-        
-    });
+            if (games[i].players.white.hasOwnProperty("aiLevel") || games[i].players.black.hasOwnProperty("aiLevel")){
+                continue;
+            }
 
-    return response;
+            if (games[i].winner == "white" && games[i].players.white.user.name == username){
+                if (jsonGames.winsW.length != quantityOfGames){
+                    jsonGames.winsW.push(games[i].moves.split(" "));
+                    downloadedGames++;
+                }
+            }
+            else if (games[i].winner == "black" && games[i].players.black.user.name == username){
+                if (jsonGames.winsB.length != quantityOfGames){
+                    jsonGames.winsB.push(games[i].moves.split(" "));
+                    downloadedGames++;
+                }
+            }
+            else if (games[i].winner == "white" && games[i].players.black.user.name == username){
+                if (jsonGames.lossW.length != quantityOfGames){
+                    jsonGames.lossW.push(games[i].moves.split(" "));
+                    downloadedGames++;
+                }
+            }
+            else if(games[i].winner == "black" && games[i].players.white.user.name == username){
+                if (jsonGames.lossB.length != quantityOfGames){
+                    jsonGames.lossB.push(games[i].moves.split(" "));
+                    downloadedGames++;
+                }
+            }
+
+        }
+
+        updateProgressMessage("Downloading games from lichess.org API " + ((downloadedGames / amount) * 100).toFixed(0) + "%");
+
+        var winsWhite = jsonGames.winsW.length;
+        var winsBlack = jsonGames.winsB.length;
+        var losesWhite = jsonGames.lossW.length;
+        var losesBlack = jsonGames.lossB.length;
+
+        if (areGamesDone(winsWhite, winsBlack, losesWhite, losesBlack, quantityOfGames)){
+            break;
+        }        
+
+        
+        if (thisMonth == 0){
+            thisMonth = 11;
+            thisYear--;
+        }
+        else{
+            thisMonth--;
+        }
+
+    }
+
+    return jsonGames;
 }
