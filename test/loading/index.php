@@ -61,12 +61,14 @@
         </script>
 
         <script src="../../scripts/chess.js"></script>
-        <script src="fenDealer.js"></script>
+        <script src="../../scripts/openingDatabase.js"></script>
 
         <script>        
             async function main(){    
-                gameMovesJSON = await load_games(username, amount);
-                console.log(parseFen(gameMovesJSON));
+                var gameMovesJSON = await load_games(username, amount);
+                var fensJSON = getLastBookMove(gameMovesJSON);
+
+                console.log(gameMovesJSON);
             }
         </script>
 

@@ -126,6 +126,7 @@ async function load_games(username, amount){
         
         if (provisionalMonth == monthJoined && year == yearJoined){
             // TODO escrever uma mensagem melhor kakakakakakaka
+            // create redirect page
             updateProgressMessage("Vai jogá fi");
             break;
         }
@@ -147,14 +148,14 @@ async function load_games(username, amount){
 
             // separate the games
             if (games[i].black.username == username && games[i].black.result == "win"){
-                if (jsonGames.winsW.length != quantityOfGames){
-                    jsonGames.winsW.push(split_moves(games[i].pgn));
+                if (jsonGames.winsB.length != quantityOfGames){
+                    jsonGames.winsB.push(split_moves(games[i].pgn));
                     downloadedGames++;
                 }
             }
             else if(games[i].white.username == username && games[i].white.result == "win"){
-                if (jsonGames.winsB.length != quantityOfGames){
-                    jsonGames.winsB.push(split_moves(games[i].pgn));
+                if (jsonGames.winsW.length != quantityOfGames){
+                    jsonGames.winsW.push(split_moves(games[i].pgn));
                     downloadedGames++;
                 }
             }
