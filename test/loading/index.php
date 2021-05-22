@@ -66,7 +66,7 @@
         <script>        
             async function main(){    
                 var gameMovesJSON = await load_games(username, amount);
-                var fensJSON = getLastBookMove(gameMovesJSON);
+                var fensJSON = getLastBookPosition(gameMovesJSON);
 
                 console.log(gameMovesJSON);
             }
