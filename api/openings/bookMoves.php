@@ -7,10 +7,6 @@ header('Content-Type: application/json');
 
 $line = $_GET["line"];
 
-if (is_null($line)){
-  exit('"Line" argument missing');
-}
-
 $servername = "host";
 $username = "user";
 $password = "password";
@@ -22,7 +18,12 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = 'SELECT * FROM book WHERE moves LIKE "'.$line.'%"';
+if (is_null($line)){
+  $sql = 'SELECT * FROM book';
+}
+else{
+  $sql = 'SELECT * FROM book WHERE moves LIKE "'.$line.'%"';
+}
 
 $result = $conn->query($sql);
 

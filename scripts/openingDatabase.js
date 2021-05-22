@@ -2,9 +2,8 @@ var gamesAnalysed = 0;
 var baseUrl = "https://mychessopening.com/api/openings/bookMoves.php?line=";
 
 async function fetchLine(line){
-    var fetcher = await fetch(baseUrl + line, {method: "GET", mode:"no-cors"})
+    var fetcher = await fetch(baseUrl + line, {method: "GET"})
     .then(function(response){
-        console.log(response);
         return response.json();
     })
 
@@ -13,24 +12,30 @@ async function fetchLine(line){
 
 async function checkGame(moves){
     gamesAnalysed++;
-    updateProgressMessage("Identifying position from game " + gamesAnalysed);
+    updateProgressMessage("Identifying opening from game " + gamesAnalysed);
 
     var line = "";
 
     for (var move = 0; move < moves.length; move++){
-        line += moves[move];
+        line += moves[move] + " ";
 
         var bookMove = await fetchLine(line);
+
+        if (!bookMove.isBookMove){
+            break;
+        }
+
+        console.log(bookMove);
     }
 }
 
-function getLastBookMoves(games){
+async function getLastBookMoves(games){
     var whiteWins = games.winsW;
     var blackWins = games.winsB;
     var whiteLosses = games.lossW;
     var blackLosses = games.lossB;
 
     for (var game = 0; game < whiteWins.length; game++){
-        checkGame(whiteWins[game]);
+        await checkGame(whiteWins[game]);
     }
 }
