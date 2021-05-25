@@ -92,8 +92,6 @@ async function load_games(username, amount)
 
     var baseUrl = "https://lichess.org/api/games/user/" + username;
 
-    var quantityOfGames = parseInt(amount) / 4;  //this value needs to be divided by 4 because there are 4 possible sub-results 
-
     var jsonGames = {"winsW": [], "winsB": [], "lossW": [], "lossB": []};
     
     var downloadedGames = 0;

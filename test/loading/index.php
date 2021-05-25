@@ -58,6 +58,9 @@
             function updateProgressMessage(newMessage){
                 document.getElementById("status").innerHTML = newMessage;
             }
+
+            var positions = {"winsW": [], "winsB": [], "lossW": [], "lossB": []};
+            var quantityOfGames = parseInt(amount) / 4;  //this value needs to be divided by 4 because there are 4 possible sub-results 
         </script>
 
         <script src="../../scripts/chess.js"></script>
@@ -66,9 +69,9 @@
         <script>        
             async function main(){    
                 var gameMovesJSON = await load_games(username, amount);
-                var fensJSON = getLastBookMoves(gameMovesJSON);
+                var fensJSON = await getLastBookMoves(gameMovesJSON);
 
-                console.log(gameMovesJSON);
+                console.log(fensJSON);
             }
         </script>
 
