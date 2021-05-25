@@ -65,6 +65,7 @@
 
         <script src="../../scripts/chess.js"></script>
         <script src="../../scripts/openingDatabase.js"></script>
+        <script src="../../scripts/fenDealer.js"></script>
 
         <script>        
             async function main(){    
