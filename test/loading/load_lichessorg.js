@@ -127,29 +127,44 @@ async function load_games(username, amount)
 
             if (games[i].winner == "white" && games[i].players.white.user.name == username){
                 if (jsonGames.winsW.length != quantityOfGames){
-                    jsonGames.winsW.push(games[i].moves.split(" "));
+                    var gameSplited = games[i].moves.split(" ");
+                    if (gameSplited.lenght < 15){
+                        continue;
+                    }
+                    jsonGames.winsW.push(gameSplited);
                     downloadedGames++;
                 }
             }
             else if (games[i].winner == "black" && games[i].players.black.user.name == username){
                 if (jsonGames.winsB.length != quantityOfGames){
-                    jsonGames.winsB.push(games[i].moves.split(" "));
+                    var gameSplited = games[i].moves.split(" ");
+                    if (gameSplited.lenght < 15){
+                        continue;
+                    }
+                    jsonGames.winsB.push(gameSplited);
                     downloadedGames++;
                 }
             }
             else if (games[i].winner == "white" && games[i].players.black.user.name == username){
                 if (jsonGames.lossW.length != quantityOfGames){
-                    jsonGames.lossW.push(games[i].moves.split(" "));
+                    var gameSplited = games[i].moves.split(" ");
+                    if (gameSplited.lenght < 15){
+                        continue;
+                    }
+                    jsonGames.lossW.push(gameSplited);
                     downloadedGames++;
                 }
             }
             else if(games[i].winner == "black" && games[i].players.white.user.name == username){
                 if (jsonGames.lossB.length != quantityOfGames){
-                    jsonGames.lossB.push(games[i].moves.split(" "));
+                    var gameSplited = games[i].moves.split(" ");
+                    if (gameSplited.lenght < 15){
+                        continue;
+                    }
+                    jsonGames.lossB.push(gameSplited);
                     downloadedGames++;
                 }
             }
-
         }
 
         updateProgressMessage("Downloading games from lichess.org API " + ((downloadedGames / amount) * 100).toFixed(0) + "%");

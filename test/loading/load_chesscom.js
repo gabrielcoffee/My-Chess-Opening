@@ -147,25 +147,41 @@ async function load_games(username, amount){
             // separate the games
             if (games[i].black.username == username && games[i].black.result == "win"){
                 if (jsonGames.winsB.length != quantityOfGames){
-                    jsonGames.winsB.push(split_moves(games[i].pgn));
+                    var gameMoves = split_moves(games[i].pgn);
+                    if (gameMoves.length < 15){
+                        continue;
+                    }
+                    jsonGames.winsB.push(gameMoves);
                     downloadedGames++;
                 }
             }
             else if(games[i].white.username == username && games[i].white.result == "win"){
                 if (jsonGames.winsW.length != quantityOfGames){
-                    jsonGames.winsW.push(split_moves(games[i].pgn));
+                    var gameMoves = split_moves(games[i].pgn);
+                    if (gameMoves.length < 15){
+                        continue;
+                    }
+                    jsonGames.winsW.push(gameMoves);
                     downloadedGames++;
                 }
             }
             else if (games[i].white.username == username && games[i].black.result == "win" && losesWhite != quantityOfGames){
                 if (jsonGames.lossW.length != quantityOfGames){
-                    jsonGames.lossW.push(split_moves(games[i].pgn));
+                    var gameMoves = split_moves(games[i].pgn);
+                    if (gameMoves.length < 15){
+                        continue;
+                    }
+                    jsonGames.lossW.push(gameMoves);
                     downloadedGames++;
                 }
             }
             else if (games[i].black.username == username && games[i].white.result == "win" && losesBlack != quantityOfGames){
                 if (jsonGames.lossB.length != quantityOfGames){
-                    jsonGames.lossB.push(split_moves(games[i].pgn));
+                    var gameMoves = split_moves(games[i].pgn);
+                    if (gameMoves.length < 15){
+                        continue;
+                    }
+                    jsonGames.lossB.push(gameMoves);
                     downloadedGames++;
                 }
             }
