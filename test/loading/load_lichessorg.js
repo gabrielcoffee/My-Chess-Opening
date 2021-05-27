@@ -19,6 +19,10 @@ async function verifyPlayer(username)
         return playerData.json();
     })
     .then(function (playerData){
+        if (!playerData.username != username){
+            throw new Error("Try to check capital letters");
+        }
+
         var joined = playerData.createdAt;
         var joinedDate = new Date(joined);
 
@@ -105,7 +109,7 @@ async function load_games(username, amount)
 
     while (true){
         if (thisMonth == monthJoined && thisYear == yearJoined){
-            // create redirect page
+            // TODO create redirect page
             updateProgressMessage("Vai jogá fi");
             break;
         }
