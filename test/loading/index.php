@@ -1,31 +1,41 @@
 <?php
+    session_start();
+    
     $username = $_POST['username'];
     $website = $_POST['website'];
     $amount = $_POST['amount'];
 
-    session_start();
-    $_SESSION["playername"] = $username;
-    $_SESSION["sitename"] = $website;
-
-    echo "<script> \n";
-    
-    echo "var username = '";
-    echo $username;
-
-    echo "';\nvar website = '";
-    echo $website;
-
-    echo "';\nvar amount = '";
-    echo $amount;
-
-    echo "';\n</script>";
-
     if ($website == "lichess.org"){
         echo "<script src='load_lichessorg.js'></script>\n";
     }
-    else{
+    else if ($website == "chess.com"){
         echo "<script src='load_chesscom.js'></script>\n";
     }
+    else{
+        echo "<script>location.href = '../invalidValue/'</script>";
+    }
+
+    if ($amount == "100" or $amount == "200" or $amount == "300" or $amount == "400"){
+        echo "<script> \n";
+    
+        echo "var username = '";
+        echo $username;
+    
+        echo "';\nvar website = '";
+        echo $website;
+    
+        echo "';\nvar amount = '";
+        echo $amount;
+    
+        echo "';\n</script>";
+    }
+    else{
+        echo "<script>location.href = '../invalidValue/'</script>";
+    }
+
+    $_SESSION["playername"] = $username;
+    $_SESSION["sitename"] = $website;
+    $_SESSION["amountofgames"] = $amount;
 
     ?>
 <!DOCTYPE html>

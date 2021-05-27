@@ -1,11 +1,6 @@
 function playerNotFound(username, website){
     document.title = username + " not found";
     
-    var h1 = document.createElement("h1");
-    h1.innerHTML = "Player not Found";
-
-    document.body.appendChild(h1);
-
     var ul = document.createElement("ul");
 
     // TODO APPEND NAV LINKS HERE ^^^^^^^^^^
@@ -77,18 +72,18 @@ function playerNotFound(username, website){
     selects.appendChild(opt1);
 
     var opt2 = document.createElement("option");
-    opt2.innerHTML = 150;
-    opt2.setAttribute("value", "150");
+    opt2.innerHTML = 200;
+    opt2.setAttribute("value", "200");
     selects.appendChild(opt2);
     
     var opt3 = document.createElement("option");
-    opt3.innerHTML = 200;
-    opt3.setAttribute("value", "200");
+    opt3.innerHTML = 300;
+    opt3.setAttribute("value", "300");
     selects.appendChild(opt3);
     
     var opt4 = document.createElement("option");
-    opt4.innerHTML = 300;
-    opt4.setAttribute("value", "300");
+    opt4.innerHTML = 400;
+    opt4.setAttribute("value", "400");
     selects.appendChild(opt4);
 
     formulary.appendChild(selects);
