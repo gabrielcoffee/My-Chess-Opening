@@ -1,3 +1,17 @@
+<?php
+    session_start();
+    if ($_SESSION["amountofgames"] == "100"){
+        echo "<script>var messageText = '";
+        echo "Since you had chosen 100 games, there is not a way for you to make this analysis, go play some games";
+        echo "';</script>";
+    }
+    else{
+        
+        echo "<script>var messageText = '";
+        echo "You can either reduce the amount of games or go play some more";
+        echo "';</script>";
+    }
+    ?>
 <!DOCTYPE html> 
 <html>
     <head>
@@ -20,12 +34,12 @@
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
         <title>
-            Search Interrupted by user
+            Not enough games
         </title>
     </head>
     <body>
         <h1>
-            We couldn't finish the search
+            Not enough games for us to make a good analysis
         </h1>
         
         <li><a href="../../">Home</a></li>
@@ -33,13 +47,11 @@
         <li><a href="../../openings/">Openings</a></li>
         <li><a href="../../about/">About</a></li>
 
-        <session id="message">
+        <session>
             <!--
                 TODO: ESCREVER UMA FRASE MELHOR AQUI KKKKKKKKKK
             -->
-            <p>
-                The page was redirected while we were gathering your games, if you want to 
-                try again use the form bellow: 
+            <p id="message">
             </p>
         </session>
 
@@ -60,5 +72,14 @@
         </form>
 
     </body>
+
+    <script>
+        document.getElementById("message").innerHTML = messageText;
+    </script>
+
+    <?php
+        session_unset();
+        session_destroy();
+    ?>
 
 </html>

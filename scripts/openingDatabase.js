@@ -65,17 +65,33 @@ async function getLastBookMoves(games){
     var whiteLosses = games.lossW;
     var blackLosses = games.lossB;
 
+    var firstPart = splitAmounts(quantityOfGames);
 
-    for (var game = 0; game < quantityOfGames; game++){
+    for (var game = 0; game < firstPart; game++){
         checkGame(whiteWins[game], true, positions.winsW);
     }
-    for (var game = 0; game < quantityOfGames; game++){
+    for (var game = firstPart; game < quantityOfGames; game++){
+        positions.winsW.push(await checkGame(whiteWins[game]));
+    }
+
+    for (var game = 0; game < firstPart; game++){
+        checkGame(blackWins[game], true, positions.winsB);
+    }
+    for (var game = firstPart; game < quantityOfGames; game++){
         positions.winsB.push(await checkGame(blackWins[game]));
     }
-    for (var game = 0; game < quantityOfGames; game++){
+
+    for (var game = 0; game < firstPart; game++){
         checkGame(whiteLosses[game], true, positions.lossW);
     }
-    for (var game = 0; game < quantityOfGames; game++){
+    for (var game = firstPart; game < quantityOfGames; game++){
+        positions.lossW.push(await checkGame(whiteLosses[game]));
+    }
+
+    for (var game = 0; game < firstPart; game++){
+        checkGame(blackLosses[game], true, positions.lossB);
+    }
+    for (var game = firstPart; game < quantityOfGames; game++){
         positions.lossB.push(await checkGame(blackLosses[game]));
     }
 }

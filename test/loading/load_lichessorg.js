@@ -109,8 +109,7 @@ async function load_games(username, amount)
 
     while (true){
         if (thisMonth == monthJoined && thisYear == yearJoined){
-            // TODO create redirect page
-            updateProgressMessage("Vai jogá fi");
+            location.href = "../insufficientGames/";
             break;
         }
 

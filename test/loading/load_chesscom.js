@@ -125,9 +125,7 @@ async function load_games(username, amount){
     while (true){
         
         if (provisionalMonth == monthJoined && year == yearJoined){
-            // TODO escrever uma mensagem melhor kakakakakakaka
-            // create redirect page
-            updateProgressMessage("Vai jogá fi");
+            location.href = "../insufficientGames/";
             break;
         }
 
