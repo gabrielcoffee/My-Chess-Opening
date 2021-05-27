@@ -108,12 +108,14 @@ async function load_games(username, amount){
     if (!isPlayerValid){
         location.href = "../playerNotFound";    // leads to a error message page
     }
+    else{
+        updateProgressMessage("Downloading games from chess.com API 0%");
+    }
 
     var jsonGames = {"winsW": [], "winsB": [], "lossW": [], "lossB": []};
     
     var downloadedGames = 0;
 
-    updateProgressMessage("Downloading games from chess.com API 0%");
 
     // gets the current date to start searching
     var data = new Date(Date.now());
@@ -143,12 +145,15 @@ async function load_games(username, amount){
             if (games[i].rules != "chess"){
                 continue;
             }
+            if (games[i].pgn.split(" ")[25].substr(0, 9) == "abandoned"){
+                continue;
+            }
 
             // separate the games
             if (games[i].black.username == username && games[i].black.result == "win"){
                 if (jsonGames.winsB.length != quantityOfGames){
                     var gameMoves = split_moves(games[i].pgn);
-                    if (gameMoves.length < 15){
+                    if (gameMoves.length < 20){
                         continue;
                     }
                     jsonGames.winsB.push(gameMoves);
@@ -158,7 +163,7 @@ async function load_games(username, amount){
             else if(games[i].white.username == username && games[i].white.result == "win"){
                 if (jsonGames.winsW.length != quantityOfGames){
                     var gameMoves = split_moves(games[i].pgn);
-                    if (gameMoves.length < 15){
+                    if (gameMoves.length < 20){
                         continue;
                     }
                     jsonGames.winsW.push(gameMoves);
@@ -168,7 +173,7 @@ async function load_games(username, amount){
             else if (games[i].white.username == username && games[i].black.result == "win" && losesWhite != quantityOfGames){
                 if (jsonGames.lossW.length != quantityOfGames){
                     var gameMoves = split_moves(games[i].pgn);
-                    if (gameMoves.length < 15){
+                    if (gameMoves.length < 20){
                         continue;
                     }
                     jsonGames.lossW.push(gameMoves);
@@ -178,7 +183,7 @@ async function load_games(username, amount){
             else if (games[i].black.username == username && games[i].white.result == "win" && losesBlack != quantityOfGames){
                 if (jsonGames.lossB.length != quantityOfGames){
                     var gameMoves = split_moves(games[i].pgn);
-                    if (gameMoves.length < 15){
+                    if (gameMoves.length < 20){
                         continue;
                     }
                     jsonGames.lossB.push(gameMoves);

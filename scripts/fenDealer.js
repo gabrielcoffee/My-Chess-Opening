@@ -1,6 +1,8 @@
+const movesForward = 16;
+
 function parseFen(moves, start){
     var board = new Chess();
-    for (var move = start; move < start + 10; move++){
+    for (var move = 0; move < start + movesForward; move++){
         try{
             board.move(moves[move]);
         }
