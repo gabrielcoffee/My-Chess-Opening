@@ -1,16 +1,27 @@
 var gamesAnalysed = 0;
+var savedPos = new Object();
 
 async function fetchLine(line){
-    var baseUrl = "https://mychessopening.com/api/openings/bookMoves.php?line=";
-    var fetcher = await fetch(baseUrl + line, {method: "GET"})
-    .then(function(response){
-        return response.json();
-    })
+    var bookMove;
+    if (savedPos[line] != undefined){
+        bookMove = savedPos[line];
+    }
+    else{        
+        var baseUrl = "https://mychessopening.com/api/openings/bookMoves.php?line=";
+        var fetcher = await fetch(baseUrl + line, {method: "GET"})
+        .then(function(response){
+            return response.json();
+        });
 
-    return fetcher;
+        savedPos[line] = fetcher;
+        
+        bookMove = fetcher;
+    }
+
+    return bookMove;
 }
 
-async function checkGameWW(moves){
+async function checkGame(moves, directlyAppend=false, listToAppend=undefined){
     var line = "";
 
     var lastBookMove;
@@ -36,102 +47,16 @@ async function checkGameWW(moves){
     }
 
     gamesAnalysed++;
-    positions.winsW.push({"opening": lastBookMove, "fen": parseFen(moves, lastBookMoveNumber)});
     
     updateProgressMessage("Identifying opening from game " + gamesAnalysed);
-}
 
-async function checkGameWL(moves){
-    var line = "";
+    var positionObject = {"opening": lastBookMove.positions[0].eco + " " + lastBookMove.positions[0].name + ", " + lastBookMove.positions[0].variation, "fen": parseFen(moves, lastBookMoveNumber)}
 
-    var lastBookMove;
-    var lastBookMoveNumber;
-
-    for (var move = 0; move < moves.length; move++){
-        if (move + 1 != moves.length){
-            line += moves[move] + " ";
-            
-            var bookMove = await fetchLine(line + moves[move+1]);
-            
-            if (!bookMove.isBookMove){
-                lastBookMoveNumber = move;
-                lastBookMove = await fetchLine(line);
-                break;
-            }
-        }
-        else{
-            lastBookMoveNumber = 0;
-            lastBookMove = await fetchLine(line);
-            break;
-        }
+    if (directlyAppend){
+        listToAppend.push(positionObject);
     }
 
-    gamesAnalysed++;
-    positions.lossW.push({"opening": lastBookMove, "fen": parseFen(moves, lastBookMoveNumber)});
-
-    updateProgressMessage("Identifying opening from game " + gamesAnalysed);
-}
-
-async function checkGameBW(moves){
-    var line = "";
-
-    var lastBookMove;
-    var lastBookMoveNumber;
-
-    for (var move = 0; move < moves.length; move++){
-        if (move + 1 != moves.length){
-            line += moves[move] + " ";
-            
-            var bookMove = await fetchLine(line + moves[move+1]);
-            
-            if (!bookMove.isBookMove){
-                lastBookMoveNumber = move;
-                lastBookMove = await fetchLine(line);
-                break;
-            }
-        }
-        else{
-            lastBookMoveNumber = 0;
-            lastBookMove = await fetchLine(line);
-            break;
-        }
-    }
-
-    gamesAnalysed++;
-    positions.winsB.push({"opening": lastBookMove, "fen": parseFen(moves, lastBookMoveNumber)});
-    
-    updateProgressMessage("Identifying opening from game " + gamesAnalysed);
-}
-
-async function checkGameBL(moves){
-    var line = "";
-
-    var lastBookMove;
-    var lastBookMoveNumber;
-
-    for (var move = 0; move < moves.length; move++){
-        if (move + 1 != moves.length){
-            line += moves[move] + " ";
-            
-            var bookMove = await fetchLine(line + moves[move+1]);
-            
-            if (!bookMove.isBookMove){
-                lastBookMoveNumber = move;
-                lastBookMove = await fetchLine(line);
-                break;
-            }
-        }
-        else{
-            lastBookMoveNumber = 0;
-            lastBookMove = await fetchLine(line);
-            break;
-        }
-    }
-
-    gamesAnalysed++;
-    positions.lossB.push({"opening": lastBookMove, "fen": parseFen(moves, lastBookMoveNumber)});
-    
-    updateProgressMessage("Identifying opening from game " + gamesAnalysed);
+    return positionObject;
 }
 
 async function getLastBookMoves(games){
@@ -142,9 +67,15 @@ async function getLastBookMoves(games){
 
 
     for (var game = 0; game < quantityOfGames; game++){
-        checkGameWW(whiteWins[game]);
-        checkGameBW(blackWins[game]);
-        checkGameWL(whiteLosses[game]);
-        checkGameBL(blackLosses[game]);
+        checkGame(whiteWins[game], true, positions.winsW);
+    }
+    for (var game = 0; game < quantityOfGames; game++){
+        positions.winsB.push(await checkGame(blackWins[game]));
+    }
+    for (var game = 0; game < quantityOfGames; game++){
+        checkGame(whiteLosses[game], true, positions.lossW);
+    }
+    for (var game = 0; game < quantityOfGames; game++){
+        positions.lossB.push(await checkGame(blackLosses[game]));
     }
 }
