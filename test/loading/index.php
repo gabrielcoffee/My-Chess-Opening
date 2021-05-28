@@ -73,8 +73,9 @@
             var quantityOfGames = parseInt(amount) / 4;  //this value needs to be divided by 4 because there are 4 possible sub-results 
         </script>
 
+        <script src="openingDatabase.js"></script>
+
         <script src="../../scripts/chess.js"></script>
-        <script src="../../scripts/openingDatabase.js"></script>
         <script src="../../scripts/fenDealer.js"></script>
         <script src="../../scripts/utils.js"></script>
 

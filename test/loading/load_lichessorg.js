@@ -1,6 +1,10 @@
 var yearJoined;
 var monthJoined;
 
+var emptyMonths = 0;
+var lastMonthEmpty = false;
+var sequentialEmptyMonths = 0;
+
 function updateProgressMessage(newMessage)
 {
     document.getElementById("status").innerHTML = newMessage;
@@ -19,7 +23,7 @@ async function verifyPlayer(username)
         return playerData.json();
     })
     .then(function (playerData){
-        if (!playerData.username != username){
+        if (playerData.username != username){
             throw new Error("Try to check capital letters");
         }
 
@@ -54,7 +58,7 @@ async function fetchGames(url)
 
     var myInit = {
         method: 'GET',
-        headers: myHeader,
+        headers: myHeader
     };
 
     let fetcher = await fetch(url, myInit)
@@ -118,6 +122,30 @@ async function load_games(username, amount)
         let response = await fetchGames(baseUrl + currentBatch(currentDate.getTime()));
 
         var games = response.games;
+
+        if (games.length == 0){
+            await sleep(2000);
+            emptyMonths++;
+
+            sequentialEmptyMonths++;
+            lastMonthEmpty = true;
+
+            if (emptyMonths == 5){
+                var answer = window.confirm("It seems like there are 5 months without any games, do you want to continue searching?");
+            }
+            if (sequentialEmptyMonths == 3){
+                var answer = window.confirm("It seems like you haven't been playing for more than 3 consecutive months, do you want to continue searching?");
+            }
+
+            continue;
+        }
+        else{
+            lastMonthEmpty = false;
+            sequentialEmptyMonths = 0;
+        }
+
+
+        console.log(games);
 
         for (var i = 0; i < games.length; i++){
             
