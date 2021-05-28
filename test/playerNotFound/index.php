@@ -33,6 +33,7 @@
         <script src="../../scripts/errormessages.js"></script>
 
         <script>
+        
             async function checkRedirecting(){
                 if (website == "lichess.org"){
                     var isPlayerValid = true;
