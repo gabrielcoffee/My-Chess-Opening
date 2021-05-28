@@ -130,11 +130,20 @@ async function load_games(username, amount)
             sequentialEmptyMonths++;
             lastMonthEmpty = true;
 
-            if (emptyMonths == 5){
-                var answer = window.confirm("It seems like there are 5 months without any games, do you want to continue searching?");
+            if (emptyMonths % 5 == 0){
+                var answer = window.confirm("It seems like there are 5 months without any games, do you want to continue searching? (It might take longer than usual)");
+            
+                if (!answer){
+                    location.href = "../notEnoughRecentGames/";
+                }
             }
-            if (sequentialEmptyMonths == 3){
-                var answer = window.confirm("It seems like you haven't been playing for more than 3 consecutive months, do you want to continue searching?");
+            if (sequentialEmptyMonths % 3 == 0){
+                var answer = window.confirm("It seems like you haven't been playing for more than 3 consecutive months, do you want to continue searching? (It might take longer than usual)");
+            
+                
+                if (!answer){
+                    location.href = "../notEnoughRecentGames/";
+                }
             }
 
             continue;
