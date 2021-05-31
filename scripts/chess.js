@@ -583,6 +583,10 @@ function validate_fen(fen) {
       delete header['FEN']
     }
   }
+  function get(square) {
+    var piece = board[SQUARES[square]]
+    return piece ? { type: piece.type, color: piece.color } : null
+  }
   function generate_moves(options) {
     function add_move(board, moves, from, to, flags) {
       /* if pawn promotion */
@@ -1055,6 +1059,9 @@ function validate_fen(fen) {
     },
     fen: function() {
       return generate_fen()
+    },
+    get: function (square) {
+      return get(square)
     },
     move: function(move, options) {
       /* The move function can be called with in the following parameters:
