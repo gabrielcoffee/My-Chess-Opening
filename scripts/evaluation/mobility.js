@@ -2,7 +2,40 @@ function pinnedDirectionWhite(pos, square){
     if (pos.get(cartezianToSquare(square.x, square.y)) == null){
         return 0;
     }
+    var color = 1;
+    if ("PNBRQK".indexOf(pos.get(cartezianToSquare(square.x, square.y))) < 0){
+        color = -1;
+    }
+    for (var i = 0; i < 8; i++){
+        var ix = (i + (i > 3)) % 3 - 1;
+        var iy = (((i + (i > 3)) / 3) << 0) - 1;
+        var king = false;
+        for (var d = 1; d < 8; d++){
+            var piece =  pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
+            if (piece == "K"){
+                king = true;
+            }
+            if (piece != null){
+                break;
+            }
+        }
+        if (king){
+            for (var d = 1; d < 8; d++){
+                var piece =  pos.get(cartezianToSquare(square.x - d * ix, square.y - d * iy));
+                if (piece == "q"
+                || piece == "b" && ix * iy != 0
+                || piece == "r" && ix * iy == 0){
+                    return Math.abs(ix + iy * 3) * color;
+                }
+                if (piece != null){
+                    break;
+                }
+            }
+        }
+    }
+    return 0;
 }
+
 
 function blockerForKingWhite(pos, square){
     if (pinnedDirectionWhite(pos, square)){
@@ -28,10 +61,9 @@ function mobilityAreaWhite(pos, square){
         (square.y < 4 || pos.get(square.x, square.y + 1) != null)){
         return 0;
     }
-    if (blockerForKingWhite(pos, square)){
+    if (blockerForKingWhite(pos, {x: square.x, y: 7-square.y})){
         return 0;
     }
-    
     return 1;
 }
 
@@ -44,6 +76,8 @@ function mobilityWhite(pos, piece){
             if (!mobilityAreaWhite(pos, position)){
                 continue;
             }
+            
+            
 
         }
     }
