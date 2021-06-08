@@ -36,7 +36,6 @@ function pinnedDirectionWhite(pos, square){
     return 0;
 }
 
-
 function blockerForKingWhite(pos, square){
     if (pinnedDirectionWhite(pos, square)){
         return true;
@@ -68,13 +67,16 @@ function mobilityAreaWhite(pos, square){
 }
 
 function mobilityWhite(pos, piece){
-
+    var v = 0;
     for (var x = 0; x < 8; x++){
         for (var y = 0; y < 8; y++){
             var position = {x:x, y:y};
 
             if (!mobilityAreaWhite(pos, position)){
                 continue;
+            }
+            if (piece == "N" && knightAttack() && pos.get(cartezianToSquare(x, y)) != "Q"){
+                v++;
             }
             
             
