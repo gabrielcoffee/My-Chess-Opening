@@ -21,15 +21,15 @@
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
         <title>
-            MyChessOpening
+            MyChessOpening third-part libraries
         </title>
     </head>
     <body>
         <header>
-            <h1>MyChessOpening</h1>
+            <h1>Third-part libraries</h1>
             <nav>
                 <ul>
-                    <li>Home</li>
+                    <li><a href="../">Home</a></li>
                     <li><a href="test/">Test</a></li>
                     <li><a href="openings/">Openings</a></li>
                     <li><a href="about/">About</a></li>
@@ -37,38 +37,25 @@
             </nav>
         </header>
         
-        <script>
-            function redirecionar(){
-                location.href = "test/"
-            }
-        </script>
-
-        <h2>
-            Openings really matter
-        </h2>
         <p>
-            Despite what Bobby Fischer said about the large opening theory we have nowadays, openings 
-            play a crucial role in the game: It sets how the middle-game - the most important part of the game -
-            is going to be. 
+            This site uses some open-source libraries from other people to avoid having to code a lot of complex functions.
         </p>
         <p>
-            So you better be prepared to play the openings that lead to a middle-game position where you are more comfortable
-            with, and suits your playing style. 
-        </p>
-        <p>
-            In order to help you in this task, we've created an AI that analyses your online games and finds what is the best 
-            opening for you!
+            In this page, is listed all of open-source libraries that have been used to make this website, as well as all http API that
+            are accessed.
         </p>
 
-        <button onclick="redirecionar()">Take the test!</button>
+        <label for="libraries">Open-source libraries</label>
+        <ul id="libraries">
+            <li><a href="https://github.com/jhlywa/chess.js">jhlywa/chess.js</a>: This library helps get the fen of each position and evaluate the position on board</li>
+        </ul>
 
-        <footer>
-            <ul>
-                <li>
-                    <a href="libraries/">Third-part libraries</a>
-                </li>
-            </ul>
-        </footer>
+        <label for="apis">APIs</label>
+        <ul id="apis">
+            <li><a href="https://lichess.org/api">lichess.org/api</a>: Get lichess users games</li>
+            <li><a href="https://www.chess.com/news/view/published-data-api">api.chess.com/pub/player/</a>: Get chess.com users games</li>
+            <li><a href="https://www.mychessopening.com/api/openings/">mychessopening.com/api/openings</a>: Get if a position is a book-known position</li>
+        </ul>
 
     </body>
 </html>
