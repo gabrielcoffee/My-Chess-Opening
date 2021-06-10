@@ -585,7 +585,17 @@ function validate_fen(fen) {
   }
   function get(square) {
     var piece = board[SQUARES[square]]
-    return piece ? { type: piece.type, color: piece.color } : null
+    if (piece){
+      if (piece.color == "w"){
+        return piece.type.toUpperCase();
+      }
+      else{
+        return piece.type;
+      }
+    }
+    else{
+      return null;
+    }
   }
   function generate_moves(options) {
     function add_move(board, moves, from, to, flags) {
