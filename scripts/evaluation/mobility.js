@@ -216,7 +216,7 @@ function mobilityBonusWhite(pos, square){
 function mobilityMGWhite(fen){
     var mobilityValue = 0;
     
-    var pos = new Chess(fen)
+    var pos = new Chess(fen);
 
     for (var x = 0; x < 8; x++){
         for (var y = 0; y < 8; y++){
@@ -234,5 +234,5 @@ function mobilityBlack(fen){
 }
 
 function mobilityMg(fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
-    return mobilityMGWhite(fen) - mobilityBlack(fen);
+    return mobilityMGWhite(fen) - 0;
 }
