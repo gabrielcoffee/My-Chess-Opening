@@ -66,7 +66,114 @@ function mobilityAreaWhite(pos, square){
     return 1;
 }
 
-function mobilityWhite(pos, piece){
+function pinnedWhite(pos, square){
+    if ("PNBRQK".indexOf(pos.get(cartezianToSquare(square.x, square.y))) < 0){
+        return 0;
+    }
+    if (pinnedDirectionWhite(pos, square) > 0){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+function knightAttackWhite(pos, position){
+    // tells how many white knights are attacking that specific square
+
+    var v = 0;
+
+    for (var i = 0; i < 8; i++){
+        var ix = ((i > 3) + 1) * (((i % 4) > 1) * 2 - 1);
+        var iy = (2 - (i > 3)) * ((i % 2 == 0) * 2 - 1);
+
+        var piece = pos.get(cartezianToSquare(position.x + ix, position.y + iy));
+
+        if (piece == "N" && !pinnedWhite(pos, {x: position.x + ix, y: position.y + iy})){
+            v++;
+        }
+    }
+
+    return v;
+}
+
+function bishopXrayAttackWhite(pos, square){
+    // tells how many white bishops are attacking that specific square
+
+    var v = 0;
+
+    for (var i = 0; i < 4; i++){
+        var ix = ((i > 1) * 2 - 1);
+        var iy = ((i % 2 == 0) * 2 - 1);
+    
+        for (var d = 1; d < 8; d++){
+            var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
+
+            if (piece == "B"){
+                var dir = pinnedDirectionWhite(pos, {x: square.x + d * ix, y: square.y + d * iy});
+                if (dir == 0 || Math.abs(ix+iy*3) == dir){
+                    v++;
+                }
+            }
+            else if (piece != null && piece != "Q" && piece != "q"){
+                break;
+            }
+        }
+    }
+    return v;
+}
+
+function rookXrayAttackWhite(pos, square){
+    // tells how many white rooks are attacking that square
+
+    var v = 0;
+
+    for (var i = 0; i < 4; i++){
+        var ix = (i == 0 ? -1 : i == 1 ? 1 : 0);
+        var iy = (i == 2 ? -1 : i == 3 ? 1 : 0);
+        
+        for (var d = 1; d < 8; d++){
+            var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
+
+            if (piece == "R"){
+                var dir = pinnedDirectionWhite(pos, {x: square.x + d * ix, y: square.y + d * iy});
+                if (dir == 0 || Math.abs(ix+iy*3) == dir){
+                    v++;
+                }
+            }
+            else if (piece != null && piece != "Q" && piece != "q"){
+                break;
+            }
+        }
+    }
+
+    return v;
+}
+
+function queenAttackWhite(pos, square){
+    var v = 0;
+
+    for (var i = 0; i < 8; i++){
+        var ix = (i + (i > 3)) % 3 - 1;
+        var iy = (((i + (i > 3)) / 3) << 0) - 1;
+
+        for (var d = 1; d < 8; d++){
+            var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
+
+            if (piece == "Q"){
+                var dir = pinnedDirectionWhite(pos, {x: square.x + d * ix, y: square.y + d * iy});
+                if (dir == 0 || Math.abs(ix+iy*3) == dir){
+                    v++
+                }   
+            }
+            else if (b != null){
+                break;
+            }
+        }
+    }
+}
+
+function mobilityWhite(pos, piece, pieceSquare){
     var v = 0;
     for (var x = 0; x < 8; x++){
         for (var y = 0; y < 8; y++){
@@ -75,17 +182,20 @@ function mobilityWhite(pos, piece){
             if (!mobilityAreaWhite(pos, position)){
                 continue;
             }
-            if (piece == "N" && knightAttack() && pos.get(cartezianToSquare(x, y)) != "Q"){
+            if (piece == "N" && knightAttackWhite(pos, position) && pos.get(cartezianToSquare(x, y)) != "Q"){
                 v++;
             }
-            
-            
-
+            else if (piece == "B" && bishopXrayAttackWhite(pos, position) && pos.get(cartezianToSquare(x, y)) != "Q"){
+                v++;
+            }
+            else if (piece == "R" && rookXrayAttackWhite(pos, position)){
+                v++;
+            }
+            else if (piece == "Q" && queenAttackWhite(pos, position)){
+                v++;
+            }
         }
     }
-
-
-
     return v;
 }
 
@@ -95,21 +205,25 @@ function mobilityBonusWhite(pos, square){
         [-60,-20,2,3,3,11,22,31,40,40,41,48,57,57,62],
         [-30,-12,-8,-9,20,23,23,35,38,53,64,65,65,66,67,67,72,72,77,79,93,108,108,108,110,114,114,116]];
 
-    var i = "NBRQ".indexOf(pos.get(getSquareName(square)));
+    var i = "NBRQ".indexOf(pos.get(cartezianToSquare(square.x, square.y)));
 
     if (i < 0){
         return 0;
     }
-    return bonus[i][mobility(pos, i)];    
+    return bonus[i][mobilityWhite(pos, i, square)];    
 }
 
-function mobilityWhite(fen){
+function mobilityMGWhite(fen){
     var mobilityValue = 0;
     
-    var pos = new Chess()
+    var pos = new Chess(fen)
 
-    for (var square = 0; square < 64; square++){      
-        mobilityValue += mobilityBonus(pos, square);
+    for (var x = 0; x < 8; x++){
+        for (var y = 0; y < 8; y++){
+            var square = {x:x, y:y};
+            mobilityValue += mobilityBonusWhite(pos, square);
+        }      
+        
     }
 
     return mobilityValue;
@@ -119,6 +233,6 @@ function mobilityBlack(fen){
     
 }
 
-function mobility_mg(fen){
-    return mobilityWhite(fen) - mobilityBlack(fen);
+function mobilityMg(fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
+    return mobilityMGWhite(fen) - mobilityBlack(fen);
 }
