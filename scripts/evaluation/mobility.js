@@ -166,7 +166,7 @@ function queenAttackWhite(pos, square){
                     v++
                 }   
             }
-            else if (b != null){
+            else if (piece != null){
                 break;
             }
         }
@@ -210,7 +210,7 @@ function mobilityBonusWhite(pos, square){
     if (i < 0){
         return 0;
     }
-    return bonus[i][mobilityWhite(pos, i, square)];    
+    return bonus[i][mobilityWhite(pos, "NBRQ"[i], square)];    
 }
 
 function mobilityMGWhite(fen){
