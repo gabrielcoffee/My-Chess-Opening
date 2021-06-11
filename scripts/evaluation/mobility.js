@@ -56,7 +56,7 @@ function mobilityAreaWhite(pos, square){
     if (pos.get(cartezianToSquare(square.x + 1, square.y + 1)) == "p"){
         return 0;
     }
-    if (pos.get(cartezianToSquare(square.x + 1, square.y + 1)) == "P" &&
+    if (pos.get(cartezianToSquare(square.x, square.y)) == "P" &&
         (square.y < 4 || pos.get(square.x, square.y + 1) != null)){
         return 0;
     }
@@ -78,7 +78,7 @@ function pinnedWhite(pos, square){
     }
 }
 
-function knightAttackWhite(pos, position){
+function knightAttackWhite(pos, position, originalSquare){
     // tells how many white knights are attacking that specific square
 
     var v = 0;
@@ -89,7 +89,8 @@ function knightAttackWhite(pos, position){
 
         var piece = pos.get(cartezianToSquare(position.x + ix, position.y + iy));
 
-        if (piece == "N" && !pinnedWhite(pos, {x: position.x + ix, y: position.y + iy})){
+        if (piece == "N" && !pinnedWhite(pos, {x: position.x + ix, y: position.y + iy}) &&
+            originalSquare.x == position.x + ix && originalSquare.y == position.y + iy){
             v++;
         }
     }
@@ -97,7 +98,7 @@ function knightAttackWhite(pos, position){
     return v;
 }
 
-function bishopXrayAttackWhite(pos, square){
+function bishopXrayAttackWhite(pos, square, originalSquare){
     // tells how many white bishops are attacking that specific square
 
     var v = 0;
@@ -109,7 +110,7 @@ function bishopXrayAttackWhite(pos, square){
         for (var d = 1; d < 8; d++){
             var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
 
-            if (piece == "B"){
+            if (piece == "B" && originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy){
                 var dir = pinnedDirectionWhite(pos, {x: square.x + d * ix, y: square.y + d * iy});
                 if (dir == 0 || Math.abs(ix+iy*3) == dir){
                     v++;
@@ -123,7 +124,7 @@ function bishopXrayAttackWhite(pos, square){
     return v;
 }
 
-function rookXrayAttackWhite(pos, square){
+function rookXrayAttackWhite(pos, square, originalSquare){
     // tells how many white rooks are attacking that square
 
     var v = 0;
@@ -135,7 +136,7 @@ function rookXrayAttackWhite(pos, square){
         for (var d = 1; d < 8; d++){
             var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
 
-            if (piece == "R"){
+            if (piece == "R" && originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy){
                 var dir = pinnedDirectionWhite(pos, {x: square.x + d * ix, y: square.y + d * iy});
                 if (dir == 0 || Math.abs(ix+iy*3) == dir){
                     v++;
@@ -150,7 +151,7 @@ function rookXrayAttackWhite(pos, square){
     return v;
 }
 
-function queenAttackWhite(pos, square){
+function queenAttackWhite(pos, square, originalSquare){
     var v = 0;
 
     for (var i = 0; i < 8; i++){
@@ -160,7 +161,7 @@ function queenAttackWhite(pos, square){
         for (var d = 1; d < 8; d++){
             var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
 
-            if (piece == "Q"){
+            if (piece == "Q" && originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy){
                 var dir = pinnedDirectionWhite(pos, {x: square.x + d * ix, y: square.y + d * iy});
                 if (dir == 0 || Math.abs(ix+iy*3) == dir){
                     v++
@@ -171,6 +172,7 @@ function queenAttackWhite(pos, square){
             }
         }
     }
+    return v;
 }
 
 function mobilityWhite(pos, piece, pieceSquare){
@@ -178,20 +180,19 @@ function mobilityWhite(pos, piece, pieceSquare){
     for (var x = 0; x < 8; x++){
         for (var y = 0; y < 8; y++){
             var position = {x:x, y:y};
-
             if (!mobilityAreaWhite(pos, position)){
                 continue;
             }
-            if (piece == "N" && knightAttackWhite(pos, position) && pos.get(cartezianToSquare(x, y)) != "Q"){
+            else if (piece == "N" && knightAttackWhite(pos, position, pieceSquare) && pos.get(cartezianToSquare(x, y)) != "Q"){
                 v++;
             }
-            else if (piece == "B" && bishopXrayAttackWhite(pos, position) && pos.get(cartezianToSquare(x, y)) != "Q"){
+            else if (piece == "B" && bishopXrayAttackWhite(pos, position, pieceSquare) && pos.get(cartezianToSquare(x, y)) != "Q"){
                 v++;
             }
-            else if (piece == "R" && rookXrayAttackWhite(pos, position)){
+            else if (piece == "R" && rookXrayAttackWhite(pos, position, pieceSquare)){
                 v++;
             }
-            else if (piece == "Q" && queenAttackWhite(pos, position)){
+            else if (piece == "Q" && queenAttackWhite(pos, position, pieceSquare)){
                 v++;
             }
         }
