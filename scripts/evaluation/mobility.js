@@ -21,7 +21,6 @@ function pinnedWhite(pos, square){
 }
 
 function pinnedBlack(pos, square){
-    console.log("pinnedBlack")
     // tells if the piece is pinned
 
     if ("pnbrqk".indexOf(pos.get(cartezianToSquare(square.x, square.y))) < 0){
@@ -56,7 +55,6 @@ function knightAttackWhite(pos, position, originalSquare){
 }
 
 function knightAttackBlack(pos, position, originalSquare){
-    console.log("knightAttackBlack")
     // tells how many black knights are attacking that specific square
 
     var v = 0;
@@ -103,7 +101,6 @@ function bishopXrayAttackWhite(pos, square, originalSquare){
 }
 
 function bishopXrayAttackBlack(pos, square, originalSquare){
-    console.log("bishopXrayAttackBlack")
     // tells how many black bishops are attacking that specific square
 
     var v = 0;
@@ -157,10 +154,6 @@ function rookXrayAttackWhite(pos, square, originalSquare){
 }
 
 function rookXrayAttackBlack(pos, square, originalSquare){
-    console.log("rookXrayAttackBlack")
-    console.log(pos)
-    console.log(square)
-    console.log(originalSquare)
     // tells how many black rooks are attacking that square
 
     var v = 0;
@@ -214,7 +207,6 @@ function queenAttackWhite(pos, square, originalSquare){
 }
 
 function queenAttackBlack(pos, square, originalSquare){
-    console.log("queenAttackBlack")
     // tells how many black queens are attacking that specific square
 
     var v = 0;
@@ -281,7 +273,6 @@ function pinnedDirectionWhite(pos, square){
 }
 
 function pinnedDirectionBlack(pos, square){
-    console.log("pinnedDirectionBlack")
     // tells in which direction the piece is pinned
 
     if (pos.get(cartezianToSquare(square.x, square.y)) == null){
@@ -331,8 +322,6 @@ function blockerForKingWhite(pos, square){
 }
 
 function blockerForKingBlack(pos, square){
-    
-    console.log("blockerForKingBlack")
     // checks if the piece is a blocker for the black king
 
     if (pinnedDirectionBlack(pos, square)){
@@ -367,7 +356,6 @@ function mobilityAreaWhite(pos, square){
 }
 
 function mobilityAreaBlack(pos, square){
-    console.log("mobilityAreaBlack")
     // checks if the square is part of the mobility area for the black pieces
 
     if (pos.get(cartezianToSquare(square.x, square.y)) == "k"){
@@ -420,13 +408,11 @@ function mobilityWhite(pos, piece, pieceSquare){
 }
 
 function mobilityBlack(pos, piece, pieceSquare){
-    
-    console.log("mobilityBlack")
     // tells how many squares are being attacked for a black piece
 
     var v = 0;
     for (var x = 0; x < 8; x++){
-        for (var y = 0; y < 8; x++){
+        for (var y = 0; y < 8; y++){
             var position = {x:x, y:y};
 
             if (!mobilityAreaBlack(pos, position)){
@@ -446,7 +432,6 @@ function mobilityBlack(pos, piece, pieceSquare){
             }
         }
     }
-
     return v;
 }
 
@@ -467,7 +452,6 @@ function mobilityBonusWhite(pos, square){
 }
 
 function mobilityBonusBlack(pos, square){
-    console.log("mobilityBonusBlack")
     // converts the amount of avaliable squares to a pre-defined value
 
     var bonus = [[-62,-53,-12,-4,3,13,22,28,33],
@@ -480,6 +464,7 @@ function mobilityBonusBlack(pos, square){
     if (i < 0){
         return 0;
     }  
+
     return bonus[i][mobilityBlack(pos, "nbrq"[i], square)];
 }
 
@@ -501,8 +486,6 @@ function mobilityMGWhite(fen){
 }
 
 function mobilityMGBlack(fen){
-    
-    console.log("mobilityMGBlack")
     // tells the mobility for black pieces
 
     var mobilityValue = 0;
@@ -521,5 +504,5 @@ function mobilityMGBlack(fen){
 
 function mobilityMg(fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
     // calculates the mobility value
-    return 0 - mobilityMGBlack(fen);
+    return mobilityMGWhite(fen) - mobilityMGBlack(fen);
 }
