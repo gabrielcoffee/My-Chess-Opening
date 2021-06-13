@@ -349,7 +349,7 @@ function mobilityAreaWhite(pos, square){
         (square.y < 4 || pos.get(cartezianToSquare(square.x, square.y + 1)) != null)){
         return false;
     }
-    if (blockerForKingWhite(pos, {x: square.x, y: 7+square.y})){
+    if (blockerForKingBlack(pos, {x: square.x, y: 7+square.y})){
         return false;
     }
     return true;
@@ -374,7 +374,7 @@ function mobilityAreaBlack(pos, square){
         (square.y > 3 || pos.get(cartezianToSquare(square.x, square.y)) != null)){
             return false;
     }
-    if (blockerForKingBlack(pos, {x: square.x, y: 7+square.y})){
+    if (blockerForKingWhite(pos, {x: square.x, y: 7-square.y})){
         return false;
     }
     return true;
