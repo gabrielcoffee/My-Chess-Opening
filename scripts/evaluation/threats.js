@@ -372,6 +372,41 @@ function weakQueenProtectionWhite(pos, square){
     return 1;
 }
 
+function minorThreatWhite(pos, square){
+    var type = "pnbrqk".indexOf(pos.get(cartezianToSquare(square.x, square.y)));
+
+    if (type < 0){
+        return 0;
+    }
+
+    if (!knightAttackWhite(pos, square) && !bishopXrayAttackBlack(pos, square)){
+        return 0;
+    }
+    else if (pos.get(cartezianToSquare(square.x, square.y)) == "p"
+            || !(pos.get(cartezianToSquare(square.x - 1, square.y + 1)) == "p"
+            || pos.get(cartezianToSquare(square.x + 1, square.y + 1)) == "p"
+            || (attackWhite(pos, square) <= 1 && attackBlack(pos, {x: square.x, y: 7+square.y}) > 1))){
+        return 0;
+    }
+    return type + 1;
+}
+
+function rookThreatWhite(pos, square){
+    var type = "pnbrqk".indexOf(pos.get(cartezianToSquare(square.x, square.y)));
+
+    if (type < 0){
+        return 0;
+    }
+    if (!weakEnemiesWhite(pos, square)){
+        return 0;
+    }
+    else if (!rookXrayAttackWhite(pos, square)){
+        return 0;
+    }
+
+    return type + 1;
+}
+
 function threatsWhite(pos){
     var v = 0;
     v += 69 * hangingWhite(pos);
@@ -386,9 +421,10 @@ function threatsWhite(pos){
     for (var x = 0; x < 8; x++){
         for (var y = 0; y < 8; y++){
             var s = {x:x, y:y};
+            v += [0,5,57,77,88,79,0][minorThreatWhite(pos, s)];
+            v += [0,3,37,42,0,58,0][rookThreatWhite(pos, s)];
         }
     }
-
     return v;
 }
 
