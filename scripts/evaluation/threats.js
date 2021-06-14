@@ -1,6 +1,6 @@
-function pawnPushThreatWhite(pos, square){
+function pawnPushThreat(pos, square){
     if (square == null){
-        return sumFunction(pos, pawnPushThreatWhite);
+        return sumFunction(pos, pawnPushThreat);
     }
 
     if ("pnbrqk".indexOf(pos.get(cartezianToSquare(square.x, square.y))) < 0){
@@ -12,7 +12,7 @@ function pawnPushThreatWhite(pos, square){
         && pos.get(cartezianToSquare(square.x + ix, square.y - 1)) == null
         && pos.get(cartezianToSquare(square.x + ix + 1, square.y)) != "p"
         && pos.get(cartezianToSquare(square.x + ix - 1, square.y)) != "p"
-        && (attackWhite(pos, {x: square.x + ix, y: square.y - 1}) || !attackBlack(pos, {x: square.x + ix, y: 6 + square.y}))){
+        && (attack(pos, {x: square.x + ix, y: square.y - 1}) || !attack(colorflip(pos), {x: square.x + ix, y: 6 - square.y}))){
             return 1;
         }
         else if (square.y == 4
@@ -21,53 +21,53 @@ function pawnPushThreatWhite(pos, square){
         && pos.get(cartezianToSquare(square.x + ix, square.y - 1)) == null
         && pos.get(cartezianToSquare(square.x + ix - 1, square.y)) != "p"
         && pos.get(cartezianToSquare(square.x + ix + 1, square.y)) != "p"
-        && (attackWhite(pos, {x: square.x + ix, y: square.y - 1}) || !attackBlack(pos, {x: square.x + ix, y: 6 + square.y}))){
+        && (attack(pos, {x: square.x + ix, y: square.y - 1}) || !attack(colorflip(pos), {x: square.x + ix, y: 6 - square.y}))){
             return 1;
         }
     }
     return 0;
 }
 
-function threatSafePawnWhite(pos, square){
+function threatSafePawn(pos, square){
     if (square == null){
-        return sumFunction(pos, threatSafePawnWhite);
+        return sumFunction(pos, threatSafePawn);
     }
 
     else if ("nbrq".indexOf(pos.get(cartezianToSquare(square.x, square.y))) < 0){
         return 0;
     }
 
-    else if (!pawnAttackWhite(pos, square)){
+    else if (!pawnAttack(pos, square)){
         return 0;
     }
 
-    else if (safePawnWhite(pos, {x: square.x-1, y: square.y-1}) || safePawnWhite(pos, {x: square.x+1, y: square.y-1})){
+    else if (safePawn(pos, {x: square.x-1, y: square.y-1}) || safePawn(pos, {x: square.x+1, y: square.y-1})){
         return 1;
     }
 
     return 0;
 }
 
-function safePawnWhite(pos, square){
+function safePawn(pos, square){
     if (square == null){
-        return sumFunction(pos, safePawnWhite);
+        return sumFunction(pos, safePawn);
     }
 
     if (pos.get(cartezianToSquare(square.x, square.y)) != "P"){
         return 0;
     }  
-    else if (attackWhite(pos, square)){
+    else if (attack(pos, square)){
         return 1;
     }
-    else if (!attackBlack(pos), {x: square.x, y: square.y}){
+    else if (!attack(colorflip(pos)), {x: square.x, y: 7-square.y}){
         return 1;
     }
     return 0;
 }
 
-function queenCountWhite(pos, square){
+function queenCount(pos, square){
     if (square == null){
-        return sumFunction(pos, queenCountWhite);
+        return sumFunction(pos, queenCount);
     }
     if (pos.get(cartezianToSquare(square.x, square.y)) == "Q"){
         return 1;
@@ -75,17 +75,7 @@ function queenCountWhite(pos, square){
     return 0;
 }
 
-function queenCountBlack(pos, square){
-    if (square == null){
-        return sumFunction(pos, queenCountBlack);
-    }
-    if (pos.get(cartezianToSquare(square.x, square.y)) == "q"){
-        return 1;
-    }
-    return 0;
-}
-
-function queenAttackDiagonalWhite(pos, square, originalSquare){
+function queenAttackDiagonal(pos, square, originalSquare){
     var v = 0;
 
     for (var i = 0; i < 8; i++){
@@ -100,7 +90,7 @@ function queenAttackDiagonalWhite(pos, square, originalSquare){
             var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
             if (piece == "Q"
                 && (originalSquare == null || originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy)){
-                var dir = pinnedDirectionWhite(pos, {x: square.x + d * ix, y: square.y + d * ix});
+                var dir = pinnedDirection(pos, {x: square.x + d * ix, y: square.y + d * ix});
                 if (dir == 0 || Math.abs(ix+iy*3) == dir){
                     v++;
                 }
@@ -113,40 +103,14 @@ function queenAttackDiagonalWhite(pos, square, originalSquare){
     return v;
 }
 
-function queenAttackDiagonalBlack(pos, square, originalSquare){
-    var v = 0;
-
-    for (var i = 0; i < 8; i++){
-        var ix = (i + (i > 3)) % 3 - 1;
-        var iy = (((i + (i > 3)) / 3) << 0) - 1;
-    
-        if (ix == 0 || iy == 0){
-            continue;
-        }
-
-        for (var d = 1; d < 8; d++){
-            var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
-            if (piece == "q"
-                && (originalSquare == null || originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy)){
-                var dir = pinnedDirectionBlack(pos, {x: square.x + d * ix, y: square.y + d * ix});
-                if (dir == 0 || Math.abs(ix+iy*3) == dir){
-                    v++;
-                }
-            }
-            if (piece != null){
-                break;
-            }
-        }
-    }
-    return v;
-}
-
-function sliderOnQueenWhite(pos, square){
+function sliderOnQueen(pos, square){
     if (square == null){
-        return sumFunction(pos, sliderOnQueenWhite);
+        return sumFunction(pos, sliderOnQueen);
     }
 
-    if (queenCountBlack(pos) < 1){
+    var posFlipped = colorflip(pos);
+
+    if (queenCount(posFlipped) < 1){
         return 0;
     }
     else if (pos.get(cartezianToSquare(square.x, square.y)) == "P"){
@@ -158,48 +122,47 @@ function sliderOnQueenWhite(pos, square){
     else if (pos.get(cartezianToSquare(square.x - 1, square.y + 1)) == "p"){
         return 0;
     }
-    else if (attackWhite(pos, square) <= 1){
+    else if (attack(pos, square) <= 1){
         return 0;
     }
-    else if (!mobilityAreaWhite(pos, square)){
+    else if (!mobilityArea(pos, square)){
         return 0;
     }
 
-    var diagonal = queenAttackDiagonalBlack(pos, {x: square.x, y: square.y});
-    var v = queenCountWhite(pos) == 0 ? 2 : 1;
+    var diagonal = queenAttackDiagonal(posFlipped, {x: square.x, y: 7-square.y});
+    var v = queenCount(pos) < 1 ? 2 : 1;
 
-    if (diagonal && bishopXrayAttackWhite(pos, square)){
-        console.log(cartezianToSquare(square.x, square.y))
+    if (diagonal && bishopXrayAttack(pos, square)){
         return v;
     }
     else if (!diagonal &&
-        rookXrayAttackWhite(pos, square) &&
-        queenAttackBlack(pos, {x: square.x, y: square.y})){
+        rookXrayAttack(pos, square) &&
+        queenAttack(posFlipped, {x: square.x, y: 7-square.y})){
         return v;
     }
 
     return 0;
 }
 
-function kingThreatWhite(pos, square){
+function kingThreat(pos, square){
     if (square == null){
-        return sumFunction(pos, kingThreatWhite);
+        return sumFunction(pos, kingThreat);
     }
     
     if ("pnbrqk".indexOf(pos.get(cartezianToSquare(square.x, square.y)))){
         return 0;
     }
-    else if (!weakEnemiesWhite(pos, square)){
+    else if (!weakEnemies(pos, square)){
         return 0;
     }
-    else if (!kingAttackWhite(pos, square)){
+    else if (!kingAttack(pos, square)){
         return 0;
     }
 
     return 1;
 }
 
-function pawnAttackWhite(pos, square){
+function pawnAttack(pos, square){
     var v = 0;
 
     if (pos.get(cartezianToSquare(square.x - 1, square.y - 1)) ==  "P"){
@@ -212,20 +175,7 @@ function pawnAttackWhite(pos, square){
     return v;
 }
 
-function pawnAttackBlack(pos, square){
-    var v = 0;
-
-    if (pos.get(cartezianToSquare(square.x - 1, square.y + 1)) ==  "p"){
-        v++;
-    }
-    if (pos.get(cartezianToSquare(square.x + 1, square.y + 1)) == "p"){
-        v++;
-    }
-
-    return v;
-}
-
-function kingAttackWhite(pos, square){
+function kingAttack(pos, square){
     var v = 0;
     
     for (var i = 0; i < 8; i++){
@@ -240,48 +190,20 @@ function kingAttackWhite(pos, square){
     return v;
 }
 
-function kingAttackBlack(pos, square){
+function attack(pos, square){
     var v = 0;
 
-    for (var i = 0; i < 8; i++){
-        var ix = (i + (i > 3)) % 3 - 1;
-        var iy = (((i + (i > 3)) / 3) << 0) - 1;
-        
-        if (pos.get(cartezianToSquare(square.x + ix, square.y + iy)) == "k"){
-            v++;
-        }
-    }
-    
-    return v;
-}
-
-function attackWhite(pos, square){
-    var v = 0;
-
-    v += pawnAttackWhite(pos, square);
-    v += kingAttackWhite(pos, square);
-    v += knightAttackWhite(pos, square);
-    v += bishopXrayAttackWhite(pos, square);
-    v += rookXrayAttackWhite(pos, square);
-    v += queenAttackWhite(pos, square);
+    v += pawnAttack(pos, square);
+    v += kingAttack(pos, square);
+    v += knightAttack(pos, square);
+    v += bishopXrayAttack(pos, square);
+    v += rookXrayAttack(pos, square);
+    v += queenAttack(pos, square);
 
     return v;
 }
 
-function attackBlack(pos, square){
-    var v = 0;
-
-    v += pawnAttackBlack(pos, square);
-    v += kingAttackBlack(pos, square);
-    v += knightAttackBlack(pos, square);
-    v += bishopXrayAttackBlack(pos, square);
-    v += rookXrayAttackBlack(pos, square);
-    v += queenAttackBlack(pos, square);
-
-    return v;
-}
-
-function weakEnemiesWhite(pos, square){
+function weakEnemies(pos, square){
     if ("pnbrqk".indexOf(pos.get(cartezianToSquare(square.x, square.y))) < 0){
         return 0;
     }
@@ -291,37 +213,40 @@ function weakEnemiesWhite(pos, square){
     else if (pos.get(cartezianToSquare(square.x + 1, square.y + 1)) == "p"){
         return 0;
     }
-    else if (!attackWhite(pos, square)){
+    else if (!attack(pos, square)){
         return 0;
     }
-    else if (attackWhite(pos, square) <= 1 &&
-             attackBlack(pos, {x: square.x, y: square.y}) > 1){
+    else if (attack(pos, square) <= 1 &&
+             attack(colorflip(pos), {x: square.x, y: 7-square.y}) > 1){
         return 0;
     }
     return 1;
 }
 
-function hangingWhite(pos, square){
+function hanging(pos, square){
     if (square == null){
-        return sumFunction(pos, hangingWhite);
+        return sumFunction(pos, hanging);
     }
-    if (!weakEnemiesWhite(pos, square)){
+    if (!weakEnemies(pos, square)){
         return 0;
     }
     else if (pos.get(cartezianToSquare(square.x, square.y)) != "p" &&
-            attackWhite(pos, square) > 1){
+            attack(pos, square) > 1){
         return 1;
     }
-    else if (!attackBlack(pos, {x:square.x, y: square.y})){
+    else if (attack(colorflip(pos), {x:square.x, y: 7-square.y})){
         return 1;
     }
     return 0;
 }
 
-function knightOnQueenWhite(pos, square){
+function knightOnQueen(pos, square){
     if (square == null){
-        return sumFunction(pos, knightOnQueenWhite);
+        return sumFunction(pos, knightOnQueen);
     }
+
+    var posFlipped = colorflip(pos);
+
     var qx = -1, qy = -1;
     for (var x = 0; x < 8; x++){
         for (var y = 0; y < 8; y++){
@@ -334,7 +259,7 @@ function knightOnQueenWhite(pos, square){
             }
         }
     }
-    if (queenCountBlack(pos) < 1){
+    if (queenCount(posFlipped) < 1){
         return 0;
     }
     else if (pos.get(cartezianToSquare(square.x, square.y) == "P")){
@@ -346,17 +271,17 @@ function knightOnQueenWhite(pos, square){
     else if (pos.get(cartezianToSquare(square.x + 1, square.y + 1)) == "p"){
         return 0;
     }
-    else if (attackWhite(pos, square) <= 1 && attackBlack(pos, {x: square.x, y: square.y}) > 1){
+    else if (attack(pos, square) <= 1 && attack(posFlipped, {x: square.x, y: 7-square.y}) > 1){
         return 0;
     }
-    else if (!mobilityAreaWhite(pos, square)){
+    else if (!mobilityArea(pos, square)){
         return 0;
     }
-    else if (!knightAttackWhite(pos, square)){
+    else if (!knightAttack(pos, square)){
         return 0;
     }
 
-    var v = queenCountWhite(pos) == 0 ? 2 : 1;
+    var v = queenCount(pos) == 0 ? 2 : 1;
     
     if (Math.abs(qx+square.x) == 2 && Math.abs(qy-square.y) == 1){
         return v;
@@ -368,102 +293,103 @@ function knightOnQueenWhite(pos, square){
     return 0;
 }
 
-function restrictedWhite(pos, square){
+function restricted(pos, square){
     if (square == null){
-        return sumFunction(pos, restrictedWhite);
+        return sumFunction(pos, restricted);
     }
 
-    if (attackWhite(pos, square) == 0){
+    var posFlipped = colorflip(pos);
+
+    if (attack(pos, square) == 0){
         return 0;
     }
-    else if (!attackBlack(pos, {x: square.x, y: square.y})){
+    else if (!attack(posFlipped, {x: square.x, y: 7-square.y})){
         return 0;
     }
-    else if (pawnAttackBlack(pos, {x: square.x, y: square.y}) > 0){
+    else if (pawnAttack(posFlipped, {x: square.x, y: 7-square.y}) > 0){
         return 0;
     }
-    else if (attackBlack(pos, {x: square.x, y: square.y}) > 1 && attackWhite(pos, square) == 1){
+    else if (attack(posFlipped, {x: square.x, y: 7-square.y}) > 1 && attack(pos, square) == 1){
         return 0;
     }
     return 1;
 }
 
-function weakQueenProtectionWhite(pos, square){
+function weakQueenProtection(pos, square){
     if (square == null){
-        return sumFunction(pos, weakEnemiesWhite);
+        return sumFunction(pos, weakQueenProtection);
     }
 
-    if (!weakEnemiesWhite(pos, square)){
+    if (!weakEnemies(pos, square)){
         return 0;
     }
-    else if (!queenAttackBlack(pos, {x: square.x, y: square.y})){
+    else if (!queenAttack(colorflip(pos), {x: square.x, y: 7-square.y})){
         return 0;
     }
 
     return 1;
 }
 
-function minorThreatWhite(pos, square){
+function minorThreat(pos, square){
     var type = "pnbrqk".indexOf(pos.get(cartezianToSquare(square.x, square.y)));
 
     if (type < 0){
         return 0;
     }
 
-    if (!knightAttackWhite(pos, square) && !bishopXrayAttackBlack(pos, square)){
+    if (!knightAttack(pos, square) && !bishopXrayAttack(pos, square)){
         return 0;
     }
     else if (pos.get(cartezianToSquare(square.x, square.y)) == "p"
             || !(pos.get(cartezianToSquare(square.x - 1, square.y + 1)) == "p"
             || pos.get(cartezianToSquare(square.x + 1, square.y + 1)) == "p"
-            || (attackWhite(pos, square) <= 1 && attackBlack(pos, {x: square.x, y: square.y}) > 1))){
+            || (attack(pos, square) <= 1 && attack(colorflip(pos), {x: square.x, y: 7-square.y}) > 1))){
         return 0;
     }
     return type + 1;
 }
 
-function rookThreatWhite(pos, square){
+function rookThreat(pos, square){
     var type = "pnbrqk".indexOf(pos.get(cartezianToSquare(square.x, square.y)));
 
     if (type < 0){
         return 0;
     }
-    if (!weakEnemiesWhite(pos, square)){
+    if (!weakEnemies(pos, square)){
         return 0;
     }
-    else if (!rookXrayAttackWhite(pos, square)){
+    else if (!rookXrayAttack(pos, square)){
         return 0;
     }
 
     return type + 1;
 }
 
-function threatsWhite(pos){
+function threats(pos){
     var v = 0;
-    v += 69 * hangingWhite(pos);
-    v += kingThreatWhite(pos) > 0 ? 24 : 0;
-    v += 48 * pawnPushThreatWhite(pos);
-    v += 173 * threatSafePawnWhite(pos);
-    v += 60 * sliderOnQueenWhite(pos);
-    v += 16 * knightOnQueenWhite(pos);
-    v += 7 * restrictedWhite(pos);
-    v += 14 * weakQueenProtectionWhite(pos);
+    v += 69 * hanging(pos);
+    v += kingThreat(pos) > 0 ? 24 : 0;
+    v += 48 * pawnPushThreat(pos);
+    v += 173 * threatSafePawn(pos);
+    v += 60 * sliderOnQueen(pos);
+    v += 16 * knightOnQueen(pos);
+    v += 7 * restricted(pos);
+    v += 14 * weakQueenProtection(pos);
 
     for (var x = 0; x < 8; x++){
         for (var y = 0; y < 8; y++){
             var s = {x:x, y:y};
-            v += [0,5,57,77,88,79,0][minorThreatWhite(pos, s)];
-            v += [0,3,37,42,0,58,0][rookThreatWhite(pos, s)];
+            v += [0,5,57,77,88,79,0][minorThreat(pos, s)];
+            v += [0,3,37,42,0,58,0][rookThreat(pos, s)];
         }
     }
     return v;
 }
 
-function threatsBlack(pos){
-    return 0;
-}
-
 function threatsMG(fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
     var pos = new Chess(fen);
-    return threatsWhite(pos) - threatsBlack(pos);
+
+    console.log(threats(pos));
+    console.log(threats(colorflip(pos)));
+    return threats(pos) - threats(colorflip(pos));
 }
