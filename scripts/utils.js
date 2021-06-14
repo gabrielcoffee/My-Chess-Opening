@@ -41,3 +41,15 @@ function cartezianToSquare(x, y){
                    ['a8','b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8']];
     return squares[y][x];
 }
+
+function sumFunction(pos, func){
+    var sum = 0;
+
+    for (var x = 0; x < 8; x++){
+        for (var y = 0; y < 8; y++){
+            sum += func(pos, {x:x, y:y});
+        }
+    }
+
+    return sum;
+}

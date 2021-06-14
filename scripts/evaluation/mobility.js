@@ -46,7 +46,7 @@ function knightAttackWhite(pos, position, originalSquare){
         var piece = pos.get(cartezianToSquare(position.x + ix, position.y + iy));
 
         if (piece == "N" && !pinnedWhite(pos, {x: position.x + ix, y: position.y + iy}) &&
-            originalSquare.x == position.x + ix && originalSquare.y == position.y + iy){
+            (originalSquare == null || originalSquare.x == position.x + ix && originalSquare.y == position.y + iy)){
             v++;
         }
     }
@@ -66,7 +66,7 @@ function knightAttackBlack(pos, position, originalSquare){
         var piece = pos.get(cartezianToSquare(position.x + ix, position.y + iy));
 
         if (piece == "n" && !pinnedBlack(pos, {x: position.x + ix, y: position.y + iy}) &&
-            originalSquare.x == position.x + ix && originalSquare.y == position.y + iy){
+            (originalSquare == null || originalSquare.x == position.x + ix && originalSquare.y == position.y + iy)){
             v++;
         }
     }
@@ -86,7 +86,7 @@ function bishopXrayAttackWhite(pos, square, originalSquare){
         for (var d = 1; d < 8; d++){
             var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
 
-            if (piece == "B" && originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy){
+            if (piece == "B" && (originalSquare == null || originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy)){
                 var dir = pinnedDirectionWhite(pos, {x: square.x + d * ix, y: square.y + d * iy});
                 if (dir == 0 || Math.abs(ix+iy*3) == dir){
                     v++;
@@ -112,7 +112,7 @@ function bishopXrayAttackBlack(pos, square, originalSquare){
         for (var d = 1; d < 8; d++){
             var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
 
-            if (piece == "b" && originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy){
+            if (piece == "b" && (originalSquare == null || originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy)){
                 var dir = pinnedDirectionBlack(pos, {x: square.x + d * ix, y: square.y + d * iy});
                 if (dir == 0 || Math.abs(ix+iy*3) == dir){
                     v++;
@@ -138,7 +138,7 @@ function rookXrayAttackWhite(pos, square, originalSquare){
         for (var d = 1; d < 8; d++){
             var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
 
-            if (piece == "R" && originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy){
+            if (piece == "R" && (originalSquare == null || originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy)){
                 var dir = pinnedDirectionWhite(pos, {x: square.x + d * ix, y: square.y + d * iy});
                 if (dir == 0 || Math.abs(ix+iy*3) == dir){
                     v++;
@@ -165,7 +165,7 @@ function rookXrayAttackBlack(pos, square, originalSquare){
         for (var d = 1; d < 8; d++){
             var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
 
-            if (piece == "r" && originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy){
+            if (piece == "r" && (originalSquare == null || originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy)){
                 var dir = pinnedDirectionBlack(pos, {x: square.x + d * ix, y: square.y + d * iy});
                 if (dir == 0 || Math.abs(ix+iy*3) == dir){
                     v++;
@@ -192,7 +192,7 @@ function queenAttackWhite(pos, square, originalSquare){
         for (var d = 1; d < 8; d++){
             var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
 
-            if (piece == "Q" && originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy){
+            if (piece == "Q" && (originalSquare == null || originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy)){
                 var dir = pinnedDirectionWhite(pos, {x: square.x + d * ix, y: square.y + d * iy});
                 if (dir == 0 || Math.abs(ix+iy*3) == dir){
                     v++
@@ -218,7 +218,7 @@ function queenAttackBlack(pos, square, originalSquare){
         for (var d = 1; d < 8; d++){
             var piece = pos.get(cartezianToSquare(square.x + d * ix, square.y + d * iy));
 
-            if (piece == "q" && originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy){
+            if (piece == "q" && (originalSquare == null || originalSquare.x == square.x + d * ix && originalSquare.y == square.y + d * iy)){
                 var dir = pinnedDirectionBlack(pos, {x: square.x + d * ix, y: square.y + d * iy});
                 if (dir == 0 || Math.abs(ix+iy*3) == dir){
                     v++
@@ -349,7 +349,7 @@ function mobilityAreaWhite(pos, square){
         (square.y < 4 || pos.get(cartezianToSquare(square.x, square.y + 1)) != null)){
         return false;
     }
-    if (blockerForKingWhite(pos, {x: square.x, y: 7-square.y})){
+    if (blockerForKingBlack(pos, {x: square.x, y: square.y})){
         return false;
     }
     return true;
@@ -374,7 +374,7 @@ function mobilityAreaBlack(pos, square){
         (square.y > 3 || pos.get(cartezianToSquare(square.x, square.y)) != null)){
             return false;
     }
-    if (blockerForKingBlack(pos, {x: square.x, y: 7-square.x})){
+    if (blockerForKingWhite(pos, {x: square.x, y: square.y})){
         return false;
     }
     return true;
