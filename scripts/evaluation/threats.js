@@ -59,7 +59,7 @@ function safePawnWhite(pos, square){
     else if (attackWhite(pos, square)){
         return 1;
     }
-    else if (!attackBlack(pos), {x: square.x, y: 7+square.y}){
+    else if (!attackBlack(pos), {x: square.x, y: square.y}){
         return 1;
     }
     return 0;
@@ -165,15 +165,16 @@ function sliderOnQueenWhite(pos, square){
         return 0;
     }
 
-    var diagonal = queenAttackDiagonalBlack(pos, {x: square.x, y: 7 + square.y});
+    var diagonal = queenAttackDiagonalBlack(pos, {x: square.x, y: square.y});
     var v = queenCountWhite(pos) == 0 ? 2 : 1;
 
     if (diagonal && bishopXrayAttackWhite(pos, square)){
+        console.log(cartezianToSquare(square.x, square.y))
         return v;
     }
     else if (!diagonal &&
         rookXrayAttackWhite(pos, square) &&
-        queenAttackBlack(pos, {x: square.x, y: 7+square.y})){
+        queenAttackBlack(pos, {x: square.x, y: square.y})){
         return v;
     }
 
@@ -225,29 +226,33 @@ function pawnAttackBlack(pos, square){
 }
 
 function kingAttackWhite(pos, square){
+    var v = 0;
+    
     for (var i = 0; i < 8; i++){
         var ix = (i + (i > 3)) % 3 - 1;
         var iy = (((i + (i > 3)) / 3) << 0) - 1;
         
         if (pos.get(cartezianToSquare(square.x + ix, square.y + iy)) == "K"){
-            return 1;
+            v++;
         }
     }
     
-    return 0;
+    return v;
 }
 
 function kingAttackBlack(pos, square){
+    var v = 0;
+
     for (var i = 0; i < 8; i++){
         var ix = (i + (i > 3)) % 3 - 1;
         var iy = (((i + (i > 3)) / 3) << 0) - 1;
         
         if (pos.get(cartezianToSquare(square.x + ix, square.y + iy)) == "k"){
-            return 1;
+            v++;
         }
     }
     
-    return 0;
+    return v;
 }
 
 function attackWhite(pos, square){
@@ -290,7 +295,7 @@ function weakEnemiesWhite(pos, square){
         return 0;
     }
     else if (attackWhite(pos, square) <= 1 &&
-             attackBlack(pos, {x: square.x, y: 7+square.y}) > 1){
+             attackBlack(pos, {x: square.x, y: square.y}) > 1){
         return 0;
     }
     return 1;
@@ -307,7 +312,7 @@ function hangingWhite(pos, square){
             attackWhite(pos, square) > 1){
         return 1;
     }
-    else if (!attackBlack(pos, {x:square.x, y: 7+square.y})){
+    else if (!attackBlack(pos, {x:square.x, y: square.y})){
         return 1;
     }
     return 0;
@@ -341,7 +346,7 @@ function knightOnQueenWhite(pos, square){
     else if (pos.get(cartezianToSquare(square.x + 1, square.y + 1)) == "p"){
         return 0;
     }
-    else if (attackWhite(pos, square) <= 1 && attackBlack(pos, {x: square.x, y: 7-square.y}) > 1){
+    else if (attackWhite(pos, square) <= 1 && attackBlack(pos, {x: square.x, y: square.y}) > 1){
         return 0;
     }
     else if (!mobilityAreaWhite(pos, square)){
@@ -371,16 +376,15 @@ function restrictedWhite(pos, square){
     if (attackWhite(pos, square) == 0){
         return 0;
     }
-    else if (!attackBlack(pos, {x: square.x, y: 7+square.y})){
+    else if (!attackBlack(pos, {x: square.x, y: square.y})){
         return 0;
     }
-    else if (pawnAttackBlack(pos, {x: square.x, y: 7+square.y}) > 0){
+    else if (pawnAttackBlack(pos, {x: square.x, y: square.y}) > 0){
         return 0;
     }
-    else if (attackBlack(pos, {x: square.x, y: 7+square.y}) > 1 && attackWhite(pos, square) == 1){
+    else if (attackBlack(pos, {x: square.x, y: square.y}) > 1 && attackWhite(pos, square) == 1){
         return 0;
     }
-    console.log(square)
     return 1;
 }
 
@@ -392,7 +396,7 @@ function weakQueenProtectionWhite(pos, square){
     if (!weakEnemiesWhite(pos, square)){
         return 0;
     }
-    else if (!queenAttackBlack(pos, {x: square.x, y: 7 + square.y})){
+    else if (!queenAttackBlack(pos, {x: square.x, y: square.y})){
         return 0;
     }
 
@@ -412,7 +416,7 @@ function minorThreatWhite(pos, square){
     else if (pos.get(cartezianToSquare(square.x, square.y)) == "p"
             || !(pos.get(cartezianToSquare(square.x - 1, square.y + 1)) == "p"
             || pos.get(cartezianToSquare(square.x + 1, square.y + 1)) == "p"
-            || (attackWhite(pos, square) <= 1 && attackBlack(pos, {x: square.x, y: 7+square.y}) > 1))){
+            || (attackWhite(pos, square) <= 1 && attackBlack(pos, {x: square.x, y: square.y}) > 1))){
         return 0;
     }
     return type + 1;
@@ -459,7 +463,7 @@ function threatsBlack(pos){
     return 0;
 }
 
-function threatsMG(fen){
+function threatsMG(fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
     var pos = new Chess(fen);
     return threatsWhite(pos) - threatsBlack(pos);
 }
