@@ -372,17 +372,6 @@ function in_checkmate() {
 function in_stalemate() {
   return !in_check() && generate_moves().length === 0
 }
-function remove(square) {
-  var piece = get(square)
-  board[SQUARES[square]] = null
-  if (piece && piece.type === KING) {
-    kings[piece.color] = EMPTY
-  }
-
-  update_setup(generate_fen())
-
-  return piece
-}
 function build_move(board, from, to, flags, promotion) {
   var move = {
     color: turn,
@@ -424,6 +413,14 @@ function put(piece, square) {
   }
 
   var sq = SQUARES[square]
+
+  /* don't let the user place more than one king */
+  if (
+    piece.type == KING &&
+    !(kings[piece.color] == EMPTY || kings[piece.color] == sq)
+  ) {
+    return false
+  }
 
   board[sq] = { type: piece.type, color: piece.color }
   if (piece.type === KING) {
@@ -1075,9 +1072,6 @@ function validate_fen(fen) {
     },
     get: function (square) {
       return get(square)
-    },
-    remove: function (square) {
-      return remove(square)
     },
     move: function(move, options) {
       /* The move function can be called with in the following parameters:
