@@ -78,6 +78,9 @@
         <script src="../../scripts/chess.js"></script>
         <script src="../../scripts/fenDealer.js"></script>
         <script src="../../scripts/utils.js"></script>
+        <script src="../../scripts/evaluation/mobility.js"></script>
+        <script src="../../scripts/evaluation/threats.js"></script>
+        <script src="../../scripts/evaluation/taperedEval.js"></script>
 
         <script>        
             async function main(){    
