@@ -153,9 +153,6 @@ async function load_games(username, amount)
             sequentialEmptyMonths = 0;
         }
 
-
-        console.log(games);
-
         for (var i = 0; i < games.length; i++){
             
             if (games[i].variant != "standard"){

@@ -109,7 +109,7 @@ function safePawnWhite(pos, square){
     else if (attackWhite(pos, square)){
         return 1;
     }
-    else if (!attackBlack(pos), {x: square.x, y: square.y}){
+    else if (!attackBlack(pos, {x: square.x, y: square.y})){
         return 1;
     }
     return 0;
@@ -126,7 +126,7 @@ function safePawnBlack(pos, square){
     else if (attackBlack(pos, square)){
         return 1;
     }
-    else if (!attackWhite(pos), {x: square.x, y: square.y}){
+    else if (!attackWhite(pos, {x: square.x, y: square.y})){
         return 1;
     }
     return 0;
@@ -236,7 +236,6 @@ function sliderOnQueenWhite(pos, square){
     var v = queenCountWhite(pos) == 0 ? 2 : 1;
 
     if (diagonal && bishopXrayAttackWhite(pos, square)){
-        console.log(cartezianToSquare(square.x, square.y))
         return v;
     }
     else if (!diagonal &&
@@ -768,7 +767,7 @@ function threatsBlack(pos){
     return v;
 }
 
-function threatsMG(fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
+function threatsMg(fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
     var pos = new Chess(fen);
     var mg = threatsWhite(pos) - threatsBlack(pos);
     var eg = 0; //we are only evaluating positions at the end of the opening and the beginning of the middlegame
