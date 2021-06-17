@@ -468,12 +468,10 @@ function mobilityBonusBlack(pos, square){
     return bonus[i][mobilityBlack(pos, "nbrq"[i], square)];
 }
 
-function mobilityMGWhite(fen){
+function mobilityMGWhite(pos){
     // tells the mobility value for the white pieces
 
     var mobilityValue = 0;
-    
-    var pos = new Chess(fen);
 
     for (var x = 0; x < 8; x++){
         for (var y = 0; y < 8; y++){
@@ -485,12 +483,10 @@ function mobilityMGWhite(fen){
     return mobilityValue;
 }
 
-function mobilityMGBlack(fen){
+function mobilityMGBlack(pos){
     // tells the mobility for black pieces
 
     var mobilityValue = 0;
-
-    var pos = new Chess(fen);
 
     for (var x = 0; x < 8; x++){
         for (var y = 0; y < 8; y++){
@@ -503,6 +499,14 @@ function mobilityMGBlack(fen){
 }
 
 function mobilityMg(fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
-    // calculates the mobility value
-    return mobilityMGWhite(fen) - mobilityMGBlack(fen);
+    var pos = new Chess(fen);
+    var mg = mobilityMGWhite(pos) - mobilityMGBlack(pos);
+    var eg = 0; //we are only evaluating positions at the end of the opening and the beginning of the middlegame
+    var p = phase(pos);
+    var rule50moves = rule50(pos);
+    var v =(((mg * p + ((eg * (128 - p)) << 0)) / 128) << 0);
+    v = ((v / 16) << 0) * 16;
+    v += tempo(pos);
+    v = (v * (100 - rule50moves) / 100) << 0;
+    return v;
 }
