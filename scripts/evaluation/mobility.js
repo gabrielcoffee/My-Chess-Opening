@@ -508,5 +508,5 @@ function mobilityMg(fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 
     v = ((v / 16) << 0) * 16;
     v += tempo(pos);
     v = (v * (100 - rule50moves) / 100) << 0;
-    return v;
+    return v / 200;
 }
