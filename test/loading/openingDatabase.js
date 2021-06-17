@@ -59,6 +59,19 @@ async function checkGame(moves, directlyAppend=false, listToAppend=undefined){
     return positionObject;
 }
 
+function splitAmounts(amount){
+    switch (amount){
+        case 25:
+            return 13;
+        case 50:
+            return 25;
+        case 75:
+            return 38;
+        case 100:
+            return 50;
+    }
+}
+
 async function getLastBookMoves(games){
     var whiteWins = games.winsW;
     var blackWins = games.winsB;
@@ -66,6 +79,8 @@ async function getLastBookMoves(games){
     var blackLosses = games.lossB;
 
     var firstPart = splitAmounts(quantityOfGames);
+
+    var positions = {"winsW": [], "winsB": [], "lossW": [], "lossB": []};
 
     for (var game = 0; game < firstPart; game++){
         checkGame(whiteWins[game], true, positions.winsW);
@@ -94,4 +109,6 @@ async function getLastBookMoves(games){
     for (var game = firstPart; game < quantityOfGames; game++){
         positions.lossB.push(await checkGame(blackLosses[game]));
     }
+
+    return positions;
 }

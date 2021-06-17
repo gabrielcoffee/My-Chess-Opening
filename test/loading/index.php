@@ -69,15 +69,14 @@
                 document.getElementById("status").innerHTML = newMessage;
             }
 
-            var positions = {"winsW": [], "winsB": [], "lossW": [], "lossB": []};
             var quantityOfGames = parseInt(amount) / 4;  //this value needs to be divided by 4 because there are 4 possible sub-results 
         </script>
 
+        <script src="evaluater.js"></script>
         <script src="openingDatabase.js"></script>
-
         <script src="../../scripts/chess.js"></script>
-        <script src="../../scripts/fenDealer.js"></script>
         <script src="../../scripts/utils.js"></script>
+        <script src="../../scripts/fenDealer.js"></script>
         <script src="../../scripts/evaluation/mobility.js"></script>
         <script src="../../scripts/evaluation/threats.js"></script>
         <script src="../../scripts/evaluation/taperedEval.js"></script>
@@ -86,8 +85,8 @@
             async function main(){    
                 var gameMovesJSON = await load_games(username, amount);
                 var fensJSON = await getLastBookMoves(gameMovesJSON);
-
-                console.log(fensJSON);
+                var evaluatedPositions = addEvaluation(fensJSON);
+                console.log(evaluatedPositions);
             }
         </script>
 
