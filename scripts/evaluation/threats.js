@@ -770,9 +770,13 @@ function threatsBlack(pos){
 
 function threatsMG(fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
     var pos = new Chess(fen);
-    var v1 = threatsWhite(pos);
-    var v2 = threatsBlack(pos);
-    console.log(v1);
-    console.log(v2);
-    return v1 - v2;
+    var mg = threatsWhite(pos) - threatsBlack(pos);
+    var eg = 0; //we are only evaluating positions at the end of the opening and the beginning of the middlegame
+    var p = phase(pos);
+    var rule50moves = rule50(pos);
+    var v = (((mg * p + ((eg * (128 - p)) << 0)) / 128) << 0);
+    v = ((v / 16) << 0) * 16;
+    v += tempo(pos);
+    v = (v * (100 - rule50moves) / 100) << 0;
+    return v;
 }

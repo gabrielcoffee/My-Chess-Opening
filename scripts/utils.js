@@ -50,6 +50,27 @@ function sumFunction(pos, func){
             sum += func(pos, {x:x, y:y});
         }
     }
-
     return sum;
+}
+
+function colorflip(pos){
+    for (var x = 0; x < 8; x++){
+        for (var y = 0; y < 8; y++){
+            var piece = pos.get(cartezianToSquare(x, y));
+            pos.remove(cartezianToSquare(x, y));
+            var color;
+            if (piece == null){
+                continue;
+            }
+            if (piece == piece.toLowerCase()){
+                color = "w";
+            }
+            else{
+                color = "b";
+            }
+
+            pos.put({"type": piece.toLowerCase(), "color": color}, cartezianToSquare(x, 7-y));
+        }
+    }
+    return pos;
 }
