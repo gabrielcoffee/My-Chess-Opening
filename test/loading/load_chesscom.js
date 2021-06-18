@@ -154,7 +154,7 @@ async function load_games(username, amount){
                     if (gameMoves.length < 20){
                         continue;
                     }
-                    jsonGames.winsB.push(gameMoves);
+                    jsonGames.winsB.push({"moves":gameMoves, "white": games[i].white.username, "black": games[i].black.username});
                     downloadedGames++;
                 }
             }
@@ -164,7 +164,7 @@ async function load_games(username, amount){
                     if (gameMoves.length < 20){
                         continue;
                     }
-                    jsonGames.winsW.push(gameMoves);
+                    jsonGames.winsW.push({"moves":gameMoves, "white": games[i].white.username, "black": games[i].black.username});
                     downloadedGames++;
                 }
             }
@@ -174,7 +174,7 @@ async function load_games(username, amount){
                     if (gameMoves.length < 20){
                         continue;
                     }
-                    jsonGames.lossW.push(gameMoves);
+                    jsonGames.lossW.push({"moves":gameMoves, "white": games[i].white.username, "black": games[i].black.username});
                     downloadedGames++;
                 }
             }
@@ -184,7 +184,7 @@ async function load_games(username, amount){
                     if (gameMoves.length < 20){
                         continue;
                     }
-                    jsonGames.lossB.push(gameMoves);
+                    jsonGames.lossB.push({"moves":gameMoves, "white": games[i].white.username, "black": games[i].black.username});
                     downloadedGames++;
                 }
             }
