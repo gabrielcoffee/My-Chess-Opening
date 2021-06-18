@@ -4,3 +4,4 @@ que que a gente tem que fazer:
 * css da vida (fazer os css para mobile primeiro depois desktop)
 * traduzir o site
 * colocar o google analytics no site
+* personalizar paginas de erro
