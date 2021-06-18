@@ -21,8 +21,9 @@ async function fetchLine(line){
     return bookMove;
 }
 
-async function checkGame(moves, directlyAppend=false, listToAppend=undefined){
+async function checkGame(JSONObject, directlyAppend=false, listToAppend=undefined){
     var line = "";
+    var moves = JSONObject.moves;
 
     var lastBookMove;
     var lastBookMoveNumber;
@@ -50,7 +51,9 @@ async function checkGame(moves, directlyAppend=false, listToAppend=undefined){
     
     updateProgressMessage("Identifying opening from game " + gamesAnalysed);
 
-    var positionObject = {"opening": lastBookMove.positions[0].eco + " " + lastBookMove.positions[0].name + ", " + lastBookMove.positions[0].variation, "fen": parseFen(moves, lastBookMoveNumber)}
+    var positionObject = {"opening": lastBookMove.positions[0].eco + " " + lastBookMove.positions[0].name + ", " 
+                            + lastBookMove.positions[0].variation, "fen": parseFen(moves, lastBookMoveNumber), 
+                            "white": JSONObject.white, "black": JSONObject.black};
 
     if (directlyAppend){
         listToAppend.push(positionObject);
