@@ -72,6 +72,7 @@
             var quantityOfGames = parseInt(amount) / 4;  //this value needs to be divided by 4 because there are 4 possible sub-results 
         </script>
 
+        <script src="cluster.js"></script>
         <script src="evaluater.js"></script>
         <script src="openingDatabase.js"></script>
         <script src="../../scripts/chess.js"></script>
@@ -86,7 +87,8 @@
                 var gameMovesJSON = await load_games(username, amount);
                 var fensJSON = await getLastBookMoves(gameMovesJSON);
                 var evaluatedPositions = addEvaluation(fensJSON);
-                console.log(evaluatedPositions);
+                var clusteredPositions = distribute(evaluatedPositions);
+                console.log(clusteredPositions);
             }
         </script>
 
