@@ -1,7 +1,5 @@
 que que a gente tem que fazer:
 * html do site resposta
-* separar a quantidade certa de resultados das partidas carregadas no load_lichess.js
-* fazer um catalogo de aberturas
 * escrever a página "sobre"
 * css da vida (fazer os css para mobile primeiro depois desktop)
 * traduzir o site
