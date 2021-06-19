@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<!-- this page was only created to populate the threats and mobility columns at the openings database -->
+<!-- since it has already fulfilled it purpose, i'll deny direct acess to it inside the site to avoid overworking the server -->
+
+<html>
+    <head>
+        <script src="../../scripts/chess.js"></script>
+        <script src="../../scripts/utils.js"></script>
+        <script src="../../scripts/fenDealer.js"></script>
+        <script src="../../scripts/evaluation/mobility.js"></script>
+        <script src="../../scripts/evaluation/threats.js"></script>
+        <script src="../../scripts/evaluation/taperedEval.js"></script>
+    </head>
+
+    <script>
+        async function fetchGames(){
+            var fetcher = await fetch("https://mychessopening.com/api/inserting_evaluations/getAllGames.php")
+                            .then(function(response){
+                                return response.json();
+                            });
+            return fetcher;
+        }
+        async function main(){
+            var games = await fetchGames();
+
+            var positions = games.positions;
+
+            for (var index = 0; index < positions.length; index++){
+                var moves = positions[index].moves.split(" ");
+                var fen = getFen(moves);
+                var threats = threatsMg(fen);
+                var mobility = mobilityMg(fen);
+                console.log(threats);
+                console.log(mobility);
+                var data = new FormData();
+                data.append("threats", threats);
+                data.append("mobility", mobility);
+                data.append("id", index);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://mychessopening.com/api/inserting_evaluations/insertData.php", true);
+                xhr.onload = function (){
+                    console.log(index);
+                }   
+                xhr.send(data);
+
+            }
+            console.log(games);
+        }
+    </script>
+
+    <body>
+        <script>
+            main();
+        </script>
+    </body>
+</html>
