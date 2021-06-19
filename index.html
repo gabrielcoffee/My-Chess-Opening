@@ -25,8 +25,11 @@
         </title>
     </head>
     <body>
-        <header>
+        <header id="header">
             <h1>MyChessOpening</h1>
+            <div id="profile">
+
+            </div>
             <nav>
                 <ul>
                     <li>Home</li>
@@ -75,5 +78,28 @@
             </ul>
         </footer>
 
+        <script>
+            function onclicklogin(){
+                location.href="login/";
+            }
+
+            function onclickregister(){
+                location.href="register/";
+            }
+
+            var cookies = document.cookie;
+            if (cookies.indexOf("loginId") < 0){
+                var loginButtons = document.getElementById("profile");
+                var loginButton = document.createElement("button");
+                loginButton.setAttribute("onclick", "onclicklogin()");
+                loginButton.innerHTML="Login";
+                loginButtons.appendChild(loginButton);
+                var registerButton = document.createElement("button");
+                registerButton.setAttribute("onclick", "onclickregister()");
+                registerButton.innerHTML="Register";
+                loginButtons.appendChild(registerButton);
+            }
+
+        </script>
     </body>
 </html>

@@ -3,9 +3,6 @@
 // this page was only created to populate the threats and mobility columns at the openings database
 // since it has already fulfilled it purpose, i'll deny direct acess to it inside the site to avoid overworking the server
 
-header("Access-Control-Allow-Origin: https://mychessopening.com");
-header("Access-Control-Allow-Origin: http://mychessopening.com");
-header("Vary: Origin");
 header("Access-Control-Allow-Methods: POST");
 
 $servername = "host";
