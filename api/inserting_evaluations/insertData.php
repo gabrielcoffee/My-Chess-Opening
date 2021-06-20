@@ -5,7 +5,7 @@
 
 header("Access-Control-Allow-Methods: POST");
 
-$servername = host";
+$servername = "host";
 $username = "user";
 $password = "password";
 $database = "db";

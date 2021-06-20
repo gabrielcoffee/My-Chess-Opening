@@ -23,6 +23,9 @@
             Register your account
         </title>
         <script>
+            var interval1;
+            var interval2;
+            var interval3;
             var emailOK = null;
             var passwordOK = null;
             var password2OK = null;
@@ -74,12 +77,12 @@
             function onclickconfirm(){
                 password2OK = false;
                 checkifpasswordisequal();
-                setInterval(checkifpasswordisequal, 2000);
+                interval1 = setInterval(checkifpasswordisequal, 2000);
             }
             function onclickpassword(){
                 passwordOK = false;
                 checkifpasswordis8();
-                setInterval(checkifpasswordis8, 1000)
+                interval2 = setInterval(checkifpasswordis8, 1000)
             }
             function acceptTerms(){
                 termsAccepted = !termsAccepted;
@@ -87,7 +90,7 @@
             function onclickemail(){
                 emailOK = false;
                 checkifemailexists();
-                setInterval(checkifemailexists, 5000);
+                interval3 = setInterval(checkifemailexists, 5000);
 
             }
             function checkNsubmit(){
@@ -98,21 +101,29 @@
                     alert("Please read and accept our terms and conditions before registering");
                 }
                 else if (emailOK && password2OK && passwordOK ){
+                    clearInterval(interval1);
+                    clearInterval(interval2);
+                    clearInterval(interval3);
                     var emailadress = document.getElementById("email").value;
                     var password = document.getElementById("password").value;
-                    var name = document.getElementById("username").value;
+                    var name = document.getElementById("username1").value;
+                    var l_name = document.getElementById("username2").value;
                     var data = new FormData();
                     data.append("email", emailadress);
                     data.append("password", password);
-                    data.append("username", name);
+                    data.append("firstname", name);
+                    data.append("lastname", l_name);
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", "https://mychessopening.com/api/register_account/register.php", true);
                     xhr.onload = function (){
                         var form = document.getElementById("userdata");
                         form.remove();
-                        var title = document.create("p");
+                        var title = document.createElement("p");
                         title.innerHTML = "A confirmation email was sent to " + emailadress;
+                        var subt = document.createElement("p");
+                        subt.innerHTML = "If you didn't find it, please check your SPAM box";
                         document.body.appendChild(title);
+                        document.body.appendChild(subt);
                     }   
                     xhr.send(data);
                 }
@@ -136,12 +147,14 @@
         </header>
 
         <form id="userdata">
-            <label for="username">Your name</label>
-            <input type="text" name="username" placeholder="Enter your name" id="username">
+            <label for="username1">First name</label>
+            <input type="text" name="firstname" placeholder="Name" id="username1">
+            <label for="username2">Last name</label>
+            <input type="text" name="lastname" placeholder="Last name" id="username2">
             <label for="email">Email</label>
             <input type="email" name="email" placeholder="example@mail.com" id="email" onclick="onclickemail()" autocomplete="username">
             <span id="exists" style="visibility: hidden;">A email with this account already exists, <a href="../reset_password/">click here</a> to recover your password</span>
-            <label for="password">Passoword</label>
+            <label for="password">Passoword (please don't use the same password that you use in other sites)</label> <!--make this warning somewhere else-->
             <input type="password" name="password" placeholder="At least 8 characters" id="password" onclick="onclickpassword()" autocomplete="new-password">
             <span id="long" style="visibility: hidden;">Your password has to be at least 8-characters long</span>
             <label for="password2">Confirm your password</label>

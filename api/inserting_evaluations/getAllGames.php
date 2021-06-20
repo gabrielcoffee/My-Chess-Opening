@@ -6,7 +6,7 @@
 
 header("Access-Control-Allow-Methods: GET");
 
-$servername = host";
+$servername = "host";
 $username = "user";
 $password = "password";
 $database = "db";

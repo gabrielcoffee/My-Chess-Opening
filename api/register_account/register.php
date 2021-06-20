@@ -7,11 +7,12 @@ header("Vary: Origin");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST");
 
-$user = $_POST["username"];
+$userfirstname = $_POST["firstname"];
+$userlastname = $_POST["lastname"];
 $email = $_POST["email"];
 $pwd = $_POST["password"];
 
-$servername = host";
+$servername = "host";
 $username = "user";
 $password = "password";
 $database = "db";
@@ -33,10 +34,32 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = 'INSERT INTO notConfirmed (name, email, password, confirmation, created) VALUES ("'.$user.'","'.$email.'","'.$pwd.'","'.$confirmId.'","'.$today.'")';
+$sql = 'INSERT INTO notConfirmed (name, surname, email, password, confirmation, created) VALUES ("'.$userfirstname.'","'.$userlastname.'","'.$email.'","'.$pwd.'","'.$confirmId.'","'.$today.'")';
 
 $conn->query($sql);
 
-echo $sql;
+$mymail = "accounts@mychessopening.com";
+$subj = "Verify your account";
+$message = '
+  <html>
+    <head>
+      <title>Check your account</title>
+    </head>
+    <body>
+      <p>
+        To start using MyChessOpening you have to verify your
+        email account by <a href="https://mychessopening.com/confirm?confirmId='.$confirmId.'">clicking this link</a>
+      </p>
+    </body>
+  </html>
+';
+
+$headers = "MIME-Version: 1.0" . "\r\n"; 
+$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n"; 
+$headers .= 'From: '.$mymail; 
+
+mail($email, $subj, $message, $headers);
+
+echo $userfirstname;
 
 ?>

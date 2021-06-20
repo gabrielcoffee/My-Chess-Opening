@@ -9,7 +9,7 @@ header("Access-Control-Allow-Methods: GET");
 
 $line = $_GET["line"];
 
-$servername = host";
+$servername = "host";
 $username = "user";
 $password = "password";
 $database = "db";
