@@ -56,7 +56,7 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "https://mychessopening.com/api/register_account/emailExists.php", true);
                 xhr.onload = function (){
-                    var responseObj = xhr.response;
+                    var responseObj = JSON.parse(xhr.response);
                     if (responseObj.exists){
                         emailOK = false;
                         document.getElementById("exists").style.visibility = "visible";
@@ -91,6 +91,9 @@
 
             }
             function checkNsubmit(){
+                checkifemailexists();
+                checkifpasswordis8();
+                checkifpasswordisequal();
                 if (!termsAccepted){
                     alert("Please read and accept our terms and conditions before registering");
                 }
@@ -105,7 +108,11 @@
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", "https://mychessopening.com/api/register_account/register.php", true);
                     xhr.onload = function (){
-                        location.href = "confirm/";
+                        var form = document.getElementById("userdata");
+                        form.remove();
+                        var title = document.create("p");
+                        title.innerHTML = "A confirmation email was sent to " + emailadress;
+                        document.body.appendChild(title);
                     }   
                     xhr.send(data);
                 }
@@ -128,7 +135,7 @@
             </nav>
         </header>
 
-        <form>
+        <form id="userdata">
             <label for="username">Your name</label>
             <input type="text" name="username" placeholder="Enter your name" id="username">
             <label for="email">Email</label>
@@ -142,7 +149,7 @@
             <span id="matching" style="visibility: hidden;">These passwords don't match</span>
             <label>I confirm that I have read and accepted the <a href="../terms/">Terms and conditions</a> of this site</label>
             <input type="checkbox" id="terms" name="terms" onclick="acceptTerms()">
-            <button onclick="checkNsubmit()">Register</button>
         </form>
+        <button onclick="checkNsubmit()">Register</button>
     </body>
 </html>

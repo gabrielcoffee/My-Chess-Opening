@@ -9,6 +9,10 @@ header("Access-Control-Allow-Methods: POST");
 
 $email = $_POST["email"];
 
+if (is_null($email)){
+  die("No email provided");
+}
+
 $servername = host";
 $username = "user";
 $password = "password";
@@ -21,12 +25,14 @@ if ($conn->connect_error) {
 }
 
 $sql = 'SELECT * FROM accounts WHERE email='.$email;
-
 $result = $conn->query($sql);
+$size1 = $result->num_rows;
 
-$size = $result->num_rows;
+$sql = 'SELECT * FROM notConfirmed WHERE email='.$email;
+$result = $conn->query($sql);
+$size2 = $result->num_rows;
 
-if ($size > 0){
+if ($size1 + $size2 > 0){
     echo '{"exists": false}';
 }
 else{

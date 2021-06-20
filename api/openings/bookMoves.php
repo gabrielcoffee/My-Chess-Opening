@@ -1,5 +1,4 @@
 <?php
-
 header("Access-Control-Allow-Origin: https://mychessopening.com");
 header("Access-Control-Allow-Origin: https://www.mychessopening.com");
 header("Access-Control-Allow-Origin: http://mychessopening.com");
@@ -10,7 +9,7 @@ header("Access-Control-Allow-Methods: GET");
 
 $line = $_GET["line"];
 
-$servername = "host";
+$servername = host";
 $username = "user";
 $password = "password";
 $database = "db";
