@@ -1,5 +1,4 @@
 <?php
-
 header("Access-Control-Allow-Origin: https://mychessopening.com");
 header("Access-Control-Allow-Origin: https://www.mychessopening.com");
 header("Access-Control-Allow-Origin: http://mychessopening.com");

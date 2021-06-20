@@ -4,7 +4,6 @@
 // it returns all of the games to a javascript file that will evaluate them and post the value
 // since it has already fulfilled it purpose, i'll deny direct acess to it inside the site to avoid overworking the server
 
-header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: GET");
 
 $servername = "host";
