@@ -23,6 +23,48 @@
             Register your account
         </title>
         <script>
+            function inexistentEmail(){
+                document.getElementById("result").innerHTML = "Couldn't find a account with that email, create a new account by ";
+                var link = document.createElement("a");
+                link.setAttribute("href", "../register/");
+                link.innerHTML = "clicking here";
+                document.getElementById("result").appendChild(link);
+            }
+            function wrongPassword(){
+                document.getElementById("result").innerHTML = "Wrong password, if you forgot it, you can reset it ";
+                var link = document.createElement("a");
+                link.setAttribute("href", "../reset_password/");
+                link.innerHTML = "here";
+                document.getElementById("result").appendChild(link);
+            }
+            function authenticated(){
+                var data = new FormData();
+                data.append("email", username);
+                data.append("password", password);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://mychessopening.com/api/login/", true);
+                xhr.onload = function (){
+                    var responseObj = JSON.parse(xhr.response);
+                    var error_message = responseObj.error_msg;
+                    switch (error_message){
+                        case "inexistent email":
+                            inexistentEmail();
+                            break;
+                        case "wrong password":
+                            wrongPassword();
+                            break;
+                        case "none":
+                            var loginId = responseObj.id;
+                            var until = responseObj.until;
+                            document.cookie = "loginId="+loginId+"; expires="+until+"; path=../";
+                            location.href = "../";
+                            break;
+                    }
+                }   
+                xhr.send(data);
+            }
+        </script>
+        <script>
             function log_in(){
                 var username = document.getElementById("email").value;
                 var password = document.getElementById("password").value;
@@ -33,7 +75,19 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "https://mychessopening.com/api/authenticate/", true);
                 xhr.onload = function (){
-                    
+                    var responseObj = JSON.parse(xhr.response);
+                    var error_message = responseObj.error_msg;
+                    switch (error_message){
+                        case "inexistent email":
+                            inexistentEmail();
+                            break;
+                        case "wrong password":
+                            wrongPassword();
+                            break;
+                        case "none":
+                            authenticated();
+                            break;
+                    }
                 }   
                 xhr.send(data);
             }
@@ -53,6 +107,7 @@
         </header>
 
         <form id="userdata">
+            <span id="result"></span>
             <label for="email">Email</label>
             <input type="email" name="email" placeholder="example@mail.com" id="email" autocomplete="username">
             <label for="password">Password</label> 

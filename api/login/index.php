@@ -25,7 +25,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = 'SELECT password FROM accounts WHERE email="'.$email.'"';
+$sql = 'SELECT id, password FROM accounts WHERE email="'.$email.'"';
 
 $result = $conn->query($sql);
 
@@ -36,11 +36,28 @@ if ($result->num_rows == 0){
 else{
     while($row = $result->fetch_assoc()){
         $hashed_password = $row["password"];
+        $accountID = $row["id"];
     }
     $authenticated = password_verify($password_no_hash, $hashed_password);
+    $today = date("Y-m-d H:i:s");
+    $day = date("d", $today);
+    $month = date("m", $today);
+    $year = (int)date("Y", $today);
+    $until = date("Y-m-d H:i:s", strval($year+1).'-'.$month.'-'$day);
 
+    $letters = ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890;
+
+    function rand_chars($c, $l, $u = FALSE) {
+        if (!$u) for ($s = '', $i = 0, $z = strlen($c)-1; $i < $l; $x = rand(0,$z), $s .= $c{$x}, $i++);
+        else for ($i = 0, $z = strlen($c)-1, $s = $c{rand(0,$z)}, $i = 1; $i != $l; $x = rand(0,$z), $s .= $c{$x}, $s = ($s{$i} == $s{$i-1} ? substr($s,0,-1) : $s), $i=strlen($s));
+        return $s;
+    }
+
+    $logId = rand_chars($letters, 8);
+    
     if ($authenticated){
-        echo '{"error_msg":"none"}';
+        $sql = 'INSERT INTO logged (accountId, logId, since, until) VALUES ('.$accountID.','.$logId.','.$today.','.$until.')';
+        echo '{"error_msg":"none", "id":"'.$logId'", "expires":"'.$until.'"}';
     }
     else{
         echo '{"error_msg":"wrong password"}';
