@@ -6,3 +6,5 @@ que que a gente tem que fazer:
 * colocar o google analytics no site
 * personalizar paginas de erro
 * melhorar o design dos emails
+* melhorar o design da pagina de confirmação
+* melhorar o design do login e register
