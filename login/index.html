@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="apple-touch-icon" sizes="57x57" href="../icon/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="../icon/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="../icon/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="../icon/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="../icon/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="../icon/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="../icon/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="../icon/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="../icon/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="../icon/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../icon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="../icon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../icon/favicon-16x16.png">
+        <link rel="manifest" href="../icon/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="../icon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <meta charset="utf-8">
+        <title>
+            Register your account
+        </title>
+        <script>
+            function inexistentEmail(){
+                document.getElementById("result").innerHTML = "Couldn't find a account with that email, create a new account by ";
+                var link = document.createElement("a");
+                link.setAttribute("href", "../register/");
+                link.innerHTML = "clicking here";
+                document.getElementById("result").appendChild(link);
+            }
+            function wrongPassword(){
+                document.getElementById("result").innerHTML = "Wrong password, if you forgot it, you can reset it ";
+                var link = document.createElement("a");
+                link.setAttribute("href", "../reset_password/");
+                link.innerHTML = "here";
+                document.getElementById("result").appendChild(link);
+            }
+            function authenticated(){
+                var data = new FormData();
+                data.append("email", username);
+                data.append("password", password);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://mychessopening.com/api/login/", true);
+                xhr.onload = function (){
+                    var responseObj = JSON.parse(xhr.response);
+                    var error_message = responseObj.error_msg;
+                    switch (error_message){
+                        case "inexistent email":
+                            inexistentEmail();
+                            break;
+                        case "wrong password":
+                            wrongPassword();
+                            break;
+                        case "none":
+                            var loginId = responseObj.id;
+                            var until = responseObj.until;
+                            document.cookie = "loginId="+loginId+"; expires="+until+"; path=../";
+                            location.href = "../";
+                            break;
+                    }
+                }   
+                xhr.send(data);
+            }
+        </script>
+        <script>
+            function log_in(){
+                var username = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+                
+                var data = new FormData();
+                data.append("email", username);
+                data.append("password", password);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://mychessopening.com/api/authenticate/", true);
+                xhr.onload = function (){
+                    var responseObj = JSON.parse(xhr.response);
+                    var error_message = responseObj.error_msg;
+                    switch (error_message){
+                        case "inexistent email":
+                            inexistentEmail();
+                            break;
+                        case "wrong password":
+                            wrongPassword();
+                            break;
+                        case "none":
+                            authenticated();
+                            break;
+                    }
+                }   
+                xhr.send(data);
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <h1>MyChessOpening</h1>
+            <nav>
+                <ul>
+                    <li><a href="../">Home</a></li>
+                    <li><a href="../test/">Test</a></li>
+                    <li href="../openings/">Openings</li>
+                    <li href="../about/">About</li>
+                </ul>
+            </nav>
+        </header>
+
+        <form id="userdata">
+            <span id="result"></span>
+            <label for="email">Email</label>
+            <input type="email" name="email" placeholder="example@mail.com" id="email" autocomplete="username">
+            <label for="password">Password</label> 
+            <input type="password" name="password" placeholder="At least 8 characters" id="password" autocomplete="password">
+            <p>Forgot your password? <a href="../reset_password/">Reset it here</a></p>
+        </form>
+        <button onclick="log_in()">Login</button>
+    </body>
+</html>

@@ -11,6 +11,10 @@ $userlastname = $_POST["lastname"];
 $email = $_POST["email"];
 $pass_no_hash = $_POST["password"];
 
+if (is_null($userfirstname) || is_null($userlastname) || is_null($email) || is_null($pass_no_hash)){
+  die("Invalid input");
+}
+
 $pwd = password_hash($pass_no_hash, PASSWORD_DEFAULT);
 
 $servername = "host";

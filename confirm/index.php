@@ -10,7 +10,7 @@ header("Access-Control-Allow-Methods: GET");
 
 $id = $_GET["confirmId"];
 
-if (strlen($id) != 32){
+if (strlen($id) != 32 || is_null($id)){
     header('Status: 302 Moved Temporaly', false, 302);
     header('Location: ../');
 }
