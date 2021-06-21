@@ -10,7 +10,9 @@ header("Access-Control-Allow-Methods: POST");
 $userfirstname = $_POST["firstname"];
 $userlastname = $_POST["lastname"];
 $email = $_POST["email"];
-$pwd = $_POST["password"];
+$pass_no_hash = $_POST["password"];
+
+$pwd = password_hash($pass_no_hash, PASSWORD_DEFAULT);
 
 $servername = "host";
 $username = "user";
