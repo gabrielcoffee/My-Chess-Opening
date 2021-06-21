@@ -4,7 +4,6 @@ header("Access-Control-Allow-Origin: https://www.mychessopening.com");
 header("Access-Control-Allow-Origin: http://mychessopening.com");
 header("Access-Control-Allow-Origin: http://www.mychessopening.com");
 header("Vary: Origin");
-header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST");
 
 $userfirstname = $_POST["firstname"];
@@ -61,7 +60,5 @@ $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 $headers .= 'From: '.$mymail; 
 
 mail($email, $subj, $message, $headers);
-
-echo $userfirstname;
 
 ?>
