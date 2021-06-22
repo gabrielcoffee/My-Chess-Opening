@@ -79,6 +79,22 @@
         </footer>
 
         <script>
+            // i got this usefull function from https://www.w3schools.com/js/js_cookies.asp
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for(let i = 0; i <ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
             function onclicklogin(){
                 location.href="login/";
             }
@@ -99,7 +115,35 @@
                 registerButton.innerHTML="Register";
                 loginButtons.appendChild(registerButton);
             }
-
+            else{
+                var loginId = getCookie("loginId");
+                var data = new FormData();
+                data.append("loginId", loginId);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://mychessopening.com/api/login/checkIfLogged.php", true);
+                xhr.onload = function (){
+                    var responseObj = JSON.parse(xhr.response);
+                    var isLogged = responseObj.logged;
+                    if (isLogged){  
+                        var username = responseObj.username;
+                        var profile = document.getElementById("profile");
+                        
+                    }
+                    else{
+                        document.cookie = "loginId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                        var loginButtons = document.getElementById("profile");
+                        var loginButton = document.createElement("button");
+                        loginButton.setAttribute("onclick", "onclicklogin()");
+                        loginButton.innerHTML="Login";
+                        loginButtons.appendChild(loginButton);
+                        var registerButton = document.createElement("button");
+                        registerButton.setAttribute("onclick", "onclickregister()");
+                        registerButton.innerHTML="Register";
+                        loginButtons.appendChild(registerButton);  
+                    }
+                }
+                xhr.send(data); 
+            }  
         </script>
     </body>
 </html>

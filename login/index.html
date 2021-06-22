@@ -38,6 +38,9 @@
                 document.getElementById("result").appendChild(link);
             }
             function authenticated(){
+                var username = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+
                 var data = new FormData();
                 data.append("email", username);
                 data.append("password", password);
@@ -56,7 +59,8 @@
                         case "none":
                             var loginId = responseObj.id;
                             var until = responseObj.until;
-                            document.cookie = "loginId="+loginId+"; expires="+until+"; path=../";
+                            document.cookie = "loginId="+loginId+"; expires="+until+"; path=/";
+                            console.log(responseObj.sql);
                             location.href = "../";
                             break;
                     }

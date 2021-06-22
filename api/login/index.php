@@ -43,7 +43,7 @@ else{
     $day = date("d", $today);
     $month = date("m", $today);
     $year = (int)date("Y", $today);
-    $until = date("Y-m-d H:i:s", strval($year+1).'-'.$month.'-'$day);
+    $until = date("Y-m-d H:i:s", strval($year+1).'-'.$month.'-'.$day);
 
     $letters = ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890;
 
@@ -56,8 +56,9 @@ else{
     $logId = rand_chars($letters, 8);
     
     if ($authenticated){
-        $sql = 'INSERT INTO logged (accountId, logId, since, until) VALUES ('.$accountID.','.$logId.','.$today.','.$until.')';
-        echo '{"error_msg":"none", "id":"'.$logId'", "expires":"'.$until.'"}';
+        $sql = 'INSERT INTO logged (accountId, logId, since, until) VALUES ('.$accountID.',"'.$logId.'","'.$today.'","'.$until.'")';
+        $conn->query($sql);
+        echo '{"error_msg":"none", "id":"'.$logId.'", "expires":"'.$until.'"}';
     }
     else{
         echo '{"error_msg":"wrong password"}';
