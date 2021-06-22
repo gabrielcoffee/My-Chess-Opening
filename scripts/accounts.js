@@ -26,23 +26,30 @@ function createProfileMenu(username){
     var options = document.createElement("ul");
     var label = document.createElement("li");
     var labelTitle = document.createElement("a");
+    labelTitle.setAttribute("href", "#");
     labelTitle.innerHTML = username;
     label.appendChild(labelTitle);
-    options.appendChild(label);
     var submenu = document.createElement("ul");
     var item1 = document.createElement("li");
     var item1Name = document.createElement("a");
+    item1Name.setAttribute("href", "#");
     item1Name.innerHTML = "Profile"; 
+    item1.appendChild(item1Name);
     var item2 = document.createElement("li");
     var item2Name = document.createElement("a");
-    item2Name.innerHTML = "Your analysis";
+    item2Name.setAttribute("href", "#");
+    item2Name.innerHTML = "Your analysis"; 
+    item2.appendChild(item2Name);
     var item3 = document.createElement("li");
     var item3Name = document.createElement("a");
-    item3Name.innerHTML = "Log out";
+    item3Name.setAttribute("href", "#");
+    item3Name.innerHTML = "Log out"; 
+    item3.appendChild(item3Name);
     submenu.appendChild(item1);
     submenu.appendChild(item2);
     submenu.appendChild(item3);
-    options.appendChild(submenu);
+    label.appendChild(submenu);
+    options.appendChild(label);
     menu.appendChild(options);
     parent.appendChild(menu);
 }
@@ -75,15 +82,16 @@ function profile(){
             }
             else{
                 document.cookie = "loginId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 var loginButtons = document.getElementById("profile");
-                var loginButton = document.createElement("button");
-                loginButton.setAttribute("onclick", "onclicklogin()");
+                var loginButton = document.createElement("a");
+                loginButton.setAttribute("href", "login/");
                 loginButton.innerHTML="Login";
                 loginButtons.appendChild(loginButton);
-                var registerButton = document.createElement("button");
-                registerButton.setAttribute("onclick", "onclickregister()");
+                var registerButton = document.createElement("a");
+                registerButton.setAttribute("href", "register/");
                 registerButton.innerHTML="Register";
-                loginButtons.appendChild(registerButton);  
+                loginButtons.appendChild(registerButton);
             }
         }
         xhr.send(data); 
