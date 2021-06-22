@@ -39,7 +39,7 @@ else{
   while ($row = $result->fetch_assoc()){
     $name = $row["name"];
   }
-  echo '{"logged": true, "name": "'.$name.'"}';
+  echo '{"logged": true}';
 }
 
 ?>

@@ -25,7 +25,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = 'SELECT id, password FROM accounts WHERE email="'.$email.'"';
+$sql = 'SELECT id, name, password FROM accounts WHERE email="'.$email.'"';
 
 $result = $conn->query($sql);
 
@@ -36,6 +36,7 @@ if ($result->num_rows == 0){
 else{
     while($row = $result->fetch_assoc()){
         $hashed_password = $row["password"];
+        $firstname = $row["name"];
         $accountID = $row["id"];
     }
     $authenticated = password_verify($password_no_hash, $hashed_password);
@@ -58,7 +59,7 @@ else{
     if ($authenticated){
         $sql = 'INSERT INTO logged (accountId, logId, since, until) VALUES ('.$accountID.',"'.$logId.'","'.$today.'","'.$until.'")';
         $conn->query($sql);
-        echo '{"error_msg":"none", "id":"'.$logId.'", "expires":"'.$until.'"}';
+        echo '{"error_msg":"none", "name":"'.$firstname.'", "id":"'.$logId.'", "expires":"'.$until.'"}';
     }
     else{
         echo '{"error_msg":"wrong password"}';

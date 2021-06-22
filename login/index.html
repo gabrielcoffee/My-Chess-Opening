@@ -58,8 +58,10 @@
                             break;
                         case "none":
                             var loginId = responseObj.id;
+                            var username = responseObj.name;
                             var until = responseObj.until;
                             document.cookie = "loginId="+loginId+"; expires="+until+"; path=/";
+                            document.cookie = "username="+username+"; expires="+until+"; path=/";
                             console.log(responseObj.sql);
                             location.href = "../";
                             break;
