@@ -41,10 +41,14 @@ else{
     }
     $authenticated = password_verify($password_no_hash, $hashed_password);
     $today = date("Y-m-d H:i:s");
-    $day = date("d", $today);
-    $month = date("m", $today);
-    $year = (int)date("Y", $today);
-    $until = date("Y-m-d H:i:s", strval($year+1).'-'.$month.'-'.$day);
+    $date2 = new DateTime($today);
+    
+    $day = (int)$date2->format('d');
+    $month = (int)$date2->format('m');
+    $year = (int)$date2->format('Y') + 1;
+    
+    $date2->setDate($year, $month, $day);
+    $until = $date2->format('Y-m-d H:i:s');
 
     $letters = ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890;
 

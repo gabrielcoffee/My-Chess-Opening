@@ -52,12 +52,12 @@
                     document.getElementById("long").style.visibility = "hidden";
                 }
             }
-            function checkifemailexists(){
+            function checkifemailexists(synced = true){
                 var emailadress = document.getElementById("email").value;
                 var data = new FormData();
                 data.append("email", emailadress);
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://mychessopening.com/api/register_account/emailExists.php", true);
+                xhr.open("POST", "https://mychessopening.com/api/register_account/emailExists.php", synced);
                 xhr.onload = function (){
                     var responseObj = JSON.parse(xhr.response);
                     if (responseObj.exists){
@@ -94,7 +94,7 @@
 
             }
             function checkNsubmit(){
-                checkifemailexists();
+                checkifemailexists(false);
                 checkifpasswordis8();
                 checkifpasswordisequal();
                 if (!termsAccepted){
@@ -107,21 +107,19 @@
                     var emailadress = document.getElementById("email").value;
                     var password = document.getElementById("password").value;
                     var name = document.getElementById("username1").value;
-                    var l_name = document.getElementById("username2").value;
                     var data = new FormData();
                     data.append("email", emailadress);
                     data.append("password", password);
-                    data.append("firstname", name);
-                    data.append("lastname", l_name);
+                    data.append("name", name);
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", "https://mychessopening.com/api/register_account/register.php", true);
-                    xhr.onload = function (){
+                    xhr.onreadystatechange = function (){
                         var form = document.getElementById("userdata");
                         form.remove();
                         var title = document.createElement("p");
                         title.innerHTML = "A confirmation email was sent to " + emailadress;
                         var subt = document.createElement("p");
-                        subt.innerHTML = "If you didn't find it, please check your SPAM box";
+                        subt.innerHTML = "It can take until 5 minutes to be delivered. If you didn't find it, please check your SPAM box";
                         document.body.appendChild(title);
                         document.body.appendChild(subt);
                     }   
@@ -147,10 +145,8 @@
         </header>
 
         <form id="userdata">
-            <label for="username1">First name</label>
-            <input type="text" name="firstname" placeholder="Name" id="username1">
-            <label for="username2">Last name</label>
-            <input type="text" name="lastname" placeholder="Last name" id="username2">
+            <label for="username1">Username</label>
+            <input type="text" name="firstname" placeholder="Name" id="username1" autocomplete="username">
             <label for="email">Email</label>
             <input type="email" name="email" placeholder="example@mail.com" id="email" onclick="onclickemail()" autocomplete="username">
             <span id="exists" style="visibility: hidden;">An account with this email already exists, <a href="../reset_password/">click here</a> to recover your password</span>

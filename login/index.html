@@ -46,7 +46,7 @@
                 data.append("password", password);
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "https://mychessopening.com/api/login/", true);
-                xhr.onload = function (){
+                xhr.onreadystatechange = function (){
                     var responseObj = JSON.parse(xhr.response);
                     var error_message = responseObj.error_msg;
                     switch (error_message){
