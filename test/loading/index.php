@@ -88,6 +88,8 @@
                 var fensJSON = await getLastBookMoves(gameMovesJSON);
                 var evaluatedPositions = addEvaluation(fensJSON);
                 var clusteredPositions = distribute(evaluatedPositions);
+                clusteredPositions.playerName = username;
+                clusteredPositions.playerElo = getPlayerElo();
                 console.log(clusteredPositions);
             }
         </script>

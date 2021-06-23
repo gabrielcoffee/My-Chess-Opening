@@ -34,6 +34,10 @@ function correctMonth(month){
     }
 }
 
+function getPlayerElo(){
+
+}
+
 // turns an pgn string into an array of moves
 function split_moves(pgn){
     var moves = [];
@@ -65,6 +69,7 @@ async function verifyPlayer(username){
         return playerData.json();
     })
     .then(function (playerData){
+        console.log(playerData);
         // this piece of code gets when the user first joined chess.com in order to set the time limit for our search
         var joined = playerData.joined;
         var joinedDate = new Date(joined * 1000);
@@ -148,23 +153,23 @@ async function load_games(username, amount){
             }
 
             // separate the games
-            if (games[i].black.username == username && games[i].black.result == "win"){
-                if (jsonGames.winsB.length != quantityOfGames){
-                    var gameMoves = split_moves(games[i].pgn);
-                    if (gameMoves.length < 20){
-                        continue;
-                    }
-                    jsonGames.winsB.push({"moves":gameMoves, "white": games[i].white.username, "black": games[i].black.username});
-                    downloadedGames++;
-                }
-            }
-            else if(games[i].white.username == username && games[i].white.result == "win"){
+            if(games[i].white.username == username && games[i].white.result == "win" && winsBlack != quantityOfGames){
                 if (jsonGames.winsW.length != quantityOfGames){
                     var gameMoves = split_moves(games[i].pgn);
                     if (gameMoves.length < 20){
                         continue;
                     }
                     jsonGames.winsW.push({"moves":gameMoves, "white": games[i].white.username, "black": games[i].black.username});
+                    downloadedGames++;
+                }
+            }
+            else if (games[i].black.username == username && games[i].black.result == "win" && winsWhite != quantityOfGames){
+                if (jsonGames.winsB.length != quantityOfGames){
+                    var gameMoves = split_moves(games[i].pgn);
+                    if (gameMoves.length < 20){
+                        continue;
+                    }
+                    jsonGames.winsB.push({"moves":gameMoves, "white": games[i].white.username, "black": games[i].black.username});
                     downloadedGames++;
                 }
             }
