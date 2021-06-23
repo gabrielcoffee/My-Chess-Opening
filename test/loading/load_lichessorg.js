@@ -5,12 +5,23 @@ var emptyMonths = 0;
 var lastMonthEmpty = false;
 var sequentialEmptyMonths = 0;
 
+// i'll use this variable as global because i'll need this data after the usage of these functions
+var elo;
+
 function updateProgressMessage(newMessage){
     document.getElementById("status").innerHTML = newMessage;
 }
 
-function getPlayerElo(){
+//this function will save the elo of the player as the average between the 3 clocks;
+function saveHighestElo(obj){
+    var blitz = obj.perfs.blitz.rating;
+    var rapid = obj.perfs.rapid.rating;
+    var classical = obj.perfs.classical.rating;
+    elo = (blitz+rapid+classical)/3;
+}
 
+function getPlayerElo(){
+    return elo;
 }
 
 async function verifyPlayer(username){
@@ -25,7 +36,7 @@ async function verifyPlayer(username){
         return playerData.json();
     })
     .then(function (playerData){
-        console.log(playerData);
+        saveHighestElo(playerData);
         if (playerData.username != username){
             throw new Error("Try to check capital letters");
         }

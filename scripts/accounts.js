@@ -42,7 +42,7 @@ function createProfileMenu(username){
     item2.appendChild(item2Name);
     var item3 = document.createElement("li");
     var item3Name = document.createElement("a");
-    item3Name.setAttribute("href", "#");
+    item3Name.setAttribute("href", "logout?id=" + loginId);
     item3Name.innerHTML = "Log out"; 
     item3.appendChild(item3Name);
     submenu.appendChild(item1);

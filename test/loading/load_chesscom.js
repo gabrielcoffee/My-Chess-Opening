@@ -4,6 +4,9 @@
 var yearJoined;
 var monthJoined;
 
+// i'll use this variable as global because i'll need this data after the usage of these functions
+var elo;
+
 // converts the Date.month() output to our known months
 function correctMonth(month){
     switch(month){
@@ -34,8 +37,17 @@ function correctMonth(month){
     }
 }
 
-function getPlayerElo(){
+//this function will save the elo of the player as the average between the 3 clocks;
+function saveHighestElo(obj){
+    var bullet = obj.chess_bullet.last.rating;
+    var blitz = obj.chess_blitz.last.rating;
+    var rapid = obj.chess_rapid.last.rating;
 
+    elo = (bullet+blitz+rapid)/3;
+}
+
+function getPlayerElo(){
+    return elo;
 }
 
 // turns an pgn string into an array of moves
@@ -59,7 +71,7 @@ function areGamesDone(winsWhite, winsBlack, losesWhite, losesBlack, quantityOfGa
 // checks if the player exists
 async function verifyPlayer(username){
     var isPlayerValid = true;
-    var url = "https://api.chess.com/pub/player/"+ username;
+    var url = "https://api.chess.com/pub/player/"+ username + "/stats";
     
     var fetcher = await fetch(url, {method: 'GET'})
     .then(function(playerData){
@@ -69,7 +81,7 @@ async function verifyPlayer(username){
         return playerData.json();
     })
     .then(function (playerData){
-        console.log(playerData);
+        saveHighestElo(playerData);
         // this piece of code gets when the user first joined chess.com in order to set the time limit for our search
         var joined = playerData.joined;
         var joinedDate = new Date(joined * 1000);
