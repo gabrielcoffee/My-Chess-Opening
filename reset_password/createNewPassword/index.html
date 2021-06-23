@@ -38,7 +38,7 @@
 
                 var data = new FormData();
                 data.append("password", password);
-                data.append("confirmId", resetId);
+                data.append("resetId", resetId);
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "https://mychessopening.com/api/reset/updatePassword.php", true);
                 xhr.onreadystatechange = function (){
@@ -56,11 +56,11 @@
 
                 if (pass1 == pass2){
                     passwordConfirmed = true;
-                    document.getElementById("matching").style.visibility = "visible";
+                    document.getElementById("matching").style.visibility = "hidden";
                 }
                 else{
                     passwordConfirmed = false;
-                    document.getElementById("matching").style.visibility = "hidden";
+                    document.getElementById("matching").style.visibility = "visible";
                 }
             }
             function onclickpass2(){

@@ -10,8 +10,8 @@ header("Access-Control-Allow-Methods: POST");
 $password_no_hash = $_POST["password"];
 $resetId = $_POST["resetId"];
 
-if (is_null($password_no_hash) || is_null($confirmId)){
-    die("Invalid input");
+if (is_null($password_no_hash) || is_null($resetId)){
+    die('{"message": "Invalid id"}');
 }
 
 $servername = "host";
@@ -48,7 +48,10 @@ while ($row = $result->fetch_assoc()){
     $id = $row["id"];
 }
 
-$sql = 'DELETE logged WHERE accountId="'.$id.'"';
+$sql = 'DELETE FROM logged WHERE accountId="'.$id.'"';
+$conn->query($sql);
+
+$sql = 'DELETE FROM toReset WHERE resetId="'.$resetId.'"';
 $conn->query($sql);
 
 echo '{"message":"Password reset sucessfully"}';

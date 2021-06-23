@@ -26,7 +26,7 @@ $conn = new mysqli($servername, $username, $password, $database);
 $sql = 'SELECT * FROM notConfirmed WHERE email="'.$email.'"';
 $result = $conn->query($sql);
 
-if ($result->num_rows !=){
+if ($result->num_rows != 0){
   die("Email already send");
 }
 
