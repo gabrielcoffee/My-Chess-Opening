@@ -5,13 +5,15 @@ var emptyMonths = 0;
 var lastMonthEmpty = false;
 var sequentialEmptyMonths = 0;
 
-function updateProgressMessage(newMessage)
-{
+function updateProgressMessage(newMessage){
     document.getElementById("status").innerHTML = newMessage;
 }
 
-async function verifyPlayer(username)
-{
+function getPlayerElo(){
+
+}
+
+async function verifyPlayer(username){
     var isPlayerValid = true;
     var url = "https://lichess.org/api/user/"+ username;
 
@@ -23,6 +25,7 @@ async function verifyPlayer(username)
         return playerData.json();
     })
     .then(function (playerData){
+        console.log(playerData);
         if (playerData.username != username){
             throw new Error("Try to check capital letters");
         }
@@ -52,8 +55,7 @@ function currentBatch(timestamp){
     return "?since=" + timestamp + "&until=" + (timestamp + 2678400000);
 }
 
-async function fetchGames(url)
-{
+async function fetchGames(url){
     var myHeader = new Headers({'Accept': 'application/x-ndjson'});
 
     var myInit = {
@@ -84,8 +86,7 @@ function areGamesDone(winsWhite, winsBlack, losesWhite, losesBlack, quantityOfGa
     return false;
 }
 
-async function load_games(username, amount)
-{
+async function load_games(username, amount){
     
     updateProgressMessage("Searching player");
 
@@ -161,8 +162,9 @@ async function load_games(username, amount)
             if (games[i].players.white.hasOwnProperty("aiLevel") || games[i].players.black.hasOwnProperty("aiLevel")){
                 continue;
             }
-
-            if (games[i].winner == "white" && games[i].players.white.user.name == username){
+            
+            //separate the games
+            if (games[i].winner == "white" && games[i].players.white.user.name == username && winsWhite != quantityOfGames){
                 if (jsonGames.winsW.length != quantityOfGames){
                     var gameSplited = games[i].moves.split(" ");
                     if (gameSplited.lenght < 15){
@@ -172,7 +174,7 @@ async function load_games(username, amount)
                     downloadedGames++;
                 }
             }
-            else if (games[i].winner == "black" && games[i].players.black.user.name == username){
+            else if (games[i].winner == "black" && games[i].players.black.user.name == username && winsBlack != quantityOfGames){
                 if (jsonGames.winsB.length != quantityOfGames){
                     var gameSplited = games[i].moves.split(" ");
                     if (gameSplited.lenght < 15){
@@ -182,7 +184,7 @@ async function load_games(username, amount)
                     downloadedGames++;
                 }
             }
-            else if (games[i].winner == "white" && games[i].players.black.user.name == username){
+            else if (games[i].winner == "black" && games[i].players.white.user.name == username && losesWhite != quantityOfGames){
                 if (jsonGames.lossW.length != quantityOfGames){
                     var gameSplited = games[i].moves.split(" ");
                     if (gameSplited.lenght < 15){
@@ -192,7 +194,7 @@ async function load_games(username, amount)
                     downloadedGames++;
                 }
             }
-            else if(games[i].winner == "black" && games[i].players.white.user.name == username){
+            else if(games[i].winner == "white" && games[i].players.black.user.name == username && losesBlack != quantityOfGames){
                 if (jsonGames.lossB.length != quantityOfGames){
                     var gameSplited = games[i].moves.split(" ");
                     if (gameSplited.lenght < 15){
