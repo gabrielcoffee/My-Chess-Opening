@@ -22,15 +22,21 @@
         <title>
             Register your account
         </title>
-        
         <script>
-            function checkifemailexists(){
+            var emailOK;
+
+            function onclickemail(){
+                setInterval(checkifemailexists, 1000);
+            }
+        </script>
+        <script>
+            function checkifemailexists(synced = true){
                 var emailadress = document.getElementById("email").value;
                 var data = new FormData();
                 data.append("email", emailadress);
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "https://mychessopening.com/api/register_account/emailExists.php", true);
-                xhr.onload = function (){
+                xhr.onreadystatechange = function (){
                     var responseObj = JSON.parse(xhr.response);
                     if (responseObj.exists){
                         emailOK = false;
@@ -45,8 +51,8 @@
                         var data = new FormData();
                         data.append("email", emailadress);
                         var xhr = new XMLHttpRequest();
-                        xhr.open("POST", "https://mychessopening.com/api/reset/sendEmail.php", true);
-                        xhr.onload = function (){
+                        xhr.open("POST", "https://mychessopening.com/api/reset/sendEmail.php", synced);
+                        xhr.onreadystatechange = function (){
                             var form = document.getElementById("userdata");
                             form.remove();
                             var title = document.createElement("p");
@@ -64,14 +70,15 @@
         </script>
         <script>
             function checkNsubmit(){
-                if (emailOK && password2OK && passwordOK ){
+                checkifemailexists(false);
+                if (emailOK){
                     var emailadress = document.getElementById("email").value;
                     
                     var data = new FormData();
                     data.append("email", emailadress);
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", "https://mychessopening.com/api/reset/sendEmail.php", true);
-                    xhr.onload = function (){
+                    xhr.onreadystatechange = function (){
                         var form = document.getElementById("userdata");
                         form.remove();
                         var title = document.createElement("p");

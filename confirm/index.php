@@ -76,7 +76,7 @@ if ($result->num_rows == 0){
 }
 else{
     while ($row = $result->fetch_assoc()){
-        $sql = 'INSERT INTO accounts (name, surname, email, password, created) VALUES ("'.$row["name"].'","'.$row["surname"].'","'.$row["email"].'","'.$row["password"].'","'.$row["created"].'")';
+        $sql = 'INSERT INTO accounts (name, email, password, created) VALUES ("'.$row["name"].'","'.$row["email"].'","'.$row["password"].'","'.$row["created"].'")';
         $conn->query($sql);
         $sql = 'DELETE FROM `notConfirmed` WHERE `notConfirmed`.`id` ='.$row["id"];
         $conn->query($sql);

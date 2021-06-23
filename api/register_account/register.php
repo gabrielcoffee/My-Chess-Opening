@@ -6,12 +6,11 @@ header("Access-Control-Allow-Origin: http://www.mychessopening.com");
 header("Vary: Origin");
 header("Access-Control-Allow-Methods: POST");
 
-$userfirstname = $_POST["firstname"];
-$userlastname = $_POST["lastname"];
+$userfirstname = $_POST["name"];
 $email = $_POST["email"];
 $pass_no_hash = $_POST["password"];
 
-if (is_null($userfirstname) || is_null($userlastname) || is_null($email) || is_null($pass_no_hash)){
+if (is_null($userfirstname) || is_null($email) || is_null($pass_no_hash)){
   die("Invalid input");
 }
 
@@ -21,6 +20,15 @@ $servername = "host";
 $username = "user";
 $password = "password";
 $database = "db";
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+$sql = 'SELECT * FROM notConfirmed WHERE email="'.$email.'"';
+$result = $conn->query($sql);
+
+if ($result->num_rows !=){
+  die("Email already send");
+}
 
 $letters = ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890;
 
@@ -33,13 +41,11 @@ function rand_chars($c, $l, $u = FALSE) {
 $confirmId = rand_chars($letters, 32);
 $today = date("Y-m-d H:i:s");
 
-$conn = new mysqli($servername, $username, $password, $database);
-
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = 'INSERT INTO notConfirmed (name, surname, email, password, confirmation, created) VALUES ("'.$userfirstname.'","'.$userlastname.'","'.$email.'","'.$pwd.'","'.$confirmId.'","'.$today.'")';
+$sql = 'INSERT INTO notConfirmed (name, email, password, confirmation, created) VALUES ("'.$userfirstname.'","'.$email.'","'.$pwd.'","'.$confirmId.'","'.$today.'")';
 
 $conn->query($sql);
 
