@@ -56,16 +56,19 @@ function createProfileMenu(username){
 
 function profile(){
     var cookies = document.cookie;
-    if (cookies.indexOf("loginId") < 0 && cookies.indexOf("username") < 0){
+    if (cookies.indexOf("loginId") < 0 || cookies.indexOf("username") < 0){
+        document.cookie = "loginId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         var loginButtons = document.getElementById("profile");
         var loginButton = document.createElement("a");
-        loginButton.setAttribute("href", "login/");
+        loginButton.setAttribute("href", "https://mychessopening.com/login/");
         loginButton.innerHTML="Login";
         loginButtons.appendChild(loginButton);
         var registerButton = document.createElement("a");
-        registerButton.setAttribute("href", "register/");
+        registerButton.setAttribute("href", "https://mychessopening.com/register/");
         registerButton.innerHTML="Register";
         loginButtons.appendChild(registerButton);
+        return false;
     }
     else{
         loginId = getCookie("loginId");
@@ -79,19 +82,21 @@ function profile(){
             if (isLogged){  
                 var username = getCookie("username");   
                 createProfileMenu(username);
+                return true;
             }
             else{
                 document.cookie = "loginId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 var loginButtons = document.getElementById("profile");
                 var loginButton = document.createElement("a");
-                loginButton.setAttribute("href", "login/");
+                loginButton.setAttribute("href", "https://mychessopening.com/login/");
                 loginButton.innerHTML="Login";
                 loginButtons.appendChild(loginButton);
                 var registerButton = document.createElement("a");
-                registerButton.setAttribute("href", "register/");
+                registerButton.setAttribute("href", "https://mychessopening.com/register/");
                 registerButton.innerHTML="Register";
                 loginButtons.appendChild(registerButton);
+                return false;
             }
         }
         xhr.send(data); 
