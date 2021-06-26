@@ -9,3 +9,4 @@ que que a gente tem que fazer:
 * melhorar o design da pagina de confirmação
 * melhorar o design do login e register
 * maybe create a bot for you to play against in loading? (after everything is done)
+* escrever a pagina de informações de contato
