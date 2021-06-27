@@ -19,6 +19,11 @@
         <meta name="msapplication-TileImage" content="../icon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
+
+        <link rel="stylesheet" type="text/css" href="../styles/profileMenu.css">
+
+        <script src="../scripts/accounts.js"></script>
+
         <title>
             MyChessOpening Terms
         </title>
@@ -26,6 +31,9 @@
     <body>
         <header>
             <h1>MyChessOpening</h1>
+            <div id="profile">
+
+            </div>
             <nav>
                 <ul>
                     <li><a href="../">Home</a></li>
@@ -35,6 +43,7 @@
                 </ul>
             </nav>
         </header>
+
         <h2>Terms</h2>
 
         <h3>1. Introduction</h3>
@@ -463,6 +472,9 @@
 
         </session>
 
+        <script>
+            await profile();
+        </script>
 
     </body>
 </html>
