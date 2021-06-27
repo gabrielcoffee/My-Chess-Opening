@@ -10,3 +10,12 @@ que que a gente tem que fazer:
 * melhorar o design do login e register
 * maybe create a bot for you to play against in loading? (after everything is done)
 * escrever a pagina de informações de contato
+* add recaptcha to the forms (register & test)
+* encode utf-8 in the php files
+* check form boxes only if they are selected at register and login
+* add spinners while the page is loading
+* login with google id api
+* solve possible issues with quotes in php
+* reponsive home buttons at the header
+* create the profile page
+* create your analysis page
