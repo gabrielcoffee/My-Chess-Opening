@@ -30,25 +30,51 @@
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
 
+        <link rel="stylesheet" type="text/css" href="../../styles/profileMenu.css">
+
+        <script src="../../scripts/accounts.js"></script>
         <script src="../../scripts/errormessages.js"></script>
 
         <script>
-        
+
+            async function verifyPlayerLichess(name){
+                var isPlayerValid = true;
+                var url = "https://lichess.org/api/user/"+ username;
+
+                var fetcher = await fetch(url, {method: 'GET'})
+                .then(function(playerData){
+                    console.log(playerData.ok);
+                    if (!playerData.ok){
+                        throw new Error("Player not found");
+                    }
+                    return playerData.json();
+                })
+                .catch(function(err){
+                    isPlayerValid = false;
+                });
+                return isPlayerValid;
+            }
+
+            async function verifyPlayerChessCom(name){
+                var isPlayerValid = true;
+                var url = "https://api.chess.com/pub/player/"+ name;
+                
+                var fetcher = await fetch(url, {method: 'GET'})
+                .then(function(playerData){
+                    if (!playerData.ok){
+                        throw new Error("Player not found");
+                    }
+                    return playerData.json();
+                })
+                .catch(function(err){
+                    isPlayerValid = false;
+                });
+                return isPlayerValid;
+            }
+
             async function checkRedirecting(){
                 if (website == "lichess.org"){
-                    var isPlayerValid = true;
-                    var url = "https://lichess.org/api/user/"+ username;
-
-                    var fetcher = await fetch(url, {method: 'GET'})
-                    .then(function(playerData){
-                        if (!playerData.ok){
-                            throw new Error("Player not found");
-                        }
-                        return playerData.json();
-                    })
-                    .catch(e => isPlayerValid = false);
-                    
-                    if (isPlayerValid){
+                    if (await verifyPlayerLichess(username)){
                         location.href = "../searchInterrupted";
                     }
                     else{
@@ -56,19 +82,8 @@
                     }
                 }   
                 else{
-                    var isPlayerValid = true;
-                    var url = "https://api.chess.com/pub/player/"+ username;
-                    
-                    var fetcher = await fetch(url, {method: 'GET'})
-                    .then(function(playerData){
-                        if (!playerData.ok){
-                            throw new Error("Player not found");
-                        }
-                        return playerData.json();
-                    })
-                    .catch(e => isPlayerValid = false);
-                    if (isPlayerValid){
-                        location.href = "../searchInterrupted/";
+                    if (await verifyPlayerChessCom(username)){
+                        location.href = "../searchInterrupted";
                     }
                     else{
                         playerNotFound(username, website);
@@ -86,9 +101,35 @@
     </head>
 
     <body>
-    
+        <header>
+            <h1>MyChessOpening</h1>
+            <div id="profile">
+
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../../">Home</a></li>
+                    <li><a href="../../test/">Test</a></li>
+                    <li href="../../openings/">Openings</li>
+                    <li href="../../about/">About</li>
+                </ul>
+            </nav>
+        </header>
+
+        <h2>Player not found</h2>
     </body>
     
+    <script>
+        async function main(){
+            var profiler = await profile();
+            if (!profiler){
+                location.href = "../../";
+            }
+        }
+
+        main();
+    </script>
+
     <?php
         session_unset();
         session_destroy();
