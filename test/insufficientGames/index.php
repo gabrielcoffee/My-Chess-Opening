@@ -6,7 +6,6 @@
         echo "';</script>";
     }
     else{
-        
         echo "<script>var messageText = '";
         echo "You can either reduce the amount of games or go play some more";
         echo "';</script>";
@@ -33,19 +32,34 @@
         <meta name="msapplication-TileImage" content="../../icon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
+
+        <link rel="stylesheet" type="text/css" href="../../styles/profileMenu.css">
+
+        <script src="../../scripts/accounts.js"></script>
+
         <title>
             Not enough games
         </title>
     </head>
-    <body>
-        <h1>
-            Not enough games for us to make a good analysis
-        </h1>
-        
-        <li><a href="../../">Home</a></li>
-        <li><a href="../../test/">Test</a></li>
-        <li><a href="../../openings/">Openings</a></li>
-        <li><a href="../../about/">About</a></li>
+    <body>       
+        <header>
+            <h1>MyChessOpening</h1>
+            <div id="profile">
+
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../../">Home</a></li>
+                    <li><a href="../../test/">Test</a></li>
+                    <li href="../../openings/">Openings</li>
+                    <li href="../../about/">About</li>
+                </ul>
+            </nav>
+        </header>
+
+        <h2>
+            Not enough games avaliable to make a good analysis
+        </h2>
 
         <session>
             <!--
@@ -75,6 +89,17 @@
 
     <script>
         document.getElementById("message").innerHTML = messageText;
+    </script>
+
+    <script>
+        async function main(){
+            var profiler = await profile();
+            if (!profiler){
+                location.href = "../../";
+            }
+        }
+
+        main();
     </script>
 
     <?php

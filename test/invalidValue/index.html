@@ -19,27 +19,41 @@
         <meta name="msapplication-TileImage" content="../../icon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
+
+        <link rel="stylesheet" type="text/css" href="../../styles/profileMenu.css">
+
+        <script src="../../scripts/accounts.js"></script>
+
         <title>
-            Invalid values
+            Invalid request
         </title>
     </head>
     <body>
-        <h1>
-            It seems like the values passed to the server had been altered
-        </h1>
+        <header>
+            <h1>MyChessOpening</h1>
+            <div id="profile">
+
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../../">Home</a></li>
+                    <li><a href="../../test/">Test</a></li>
+                    <li href="../../openings/">Openings</li>
+                    <li href="../../about/">About</li>
+                </ul>
+            </nav>
+        </header>
         
-        <li><a href="../../">Home</a></li>
-        <li><a href="../../test/">Test</a></li>
-        <li><a href="../../openings/">Openings</a></li>
-        <li><a href="../../about/">About</a></li>
+        <h2>
+            The request you made was somehow invalid
+        </h2>
 
         <session id="message">
             <!--
                 TODO: ESCREVER UMA FRASE MELHOR AQUI KKKKKKKKKK
             -->
             <p>
-                The page was redirected while we were gathering your games, if you want to 
-                try again use the form bellow: 
+                Please to do it again using the form bellow
             </p>
         </session>
 
@@ -58,6 +72,17 @@
             </select>
             <input type="submit" value="Analyse games">
         </form>
+
+        <script>
+            async function main(){
+                var profiler = await profile();
+                if (!profiler){
+                    location.href = "../../";
+                }
+            }
+    
+            main();
+        </script>
 
     </body>
 

@@ -1,8 +1,6 @@
 function playerNotFound(username, website){
     document.title = username + " not found";
     
-    var ul = document.createElement("ul");
-
     // TODO APPEND NAV LINKS HERE ^^^^^^^^^^
 
     var messageSession = document.createElement("session");

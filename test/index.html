@@ -70,23 +70,28 @@
         </form>
 
         <script>
-            if (!profile()){
-                document.getElementById("desc").remove();
-                document.getElementById("request").remove();
+            async function createHeader(){
+                if (!await profile()){
+                    document.getElementById("desc").remove();
+                    document.getElementById("request").remove();
 
-                var msg = document.createElement("p");
-                msg.innerHTML = "You need to be logged in an account in order to request an analysis, you can do this by clicking these links:";
-                document.body.appendChild(msg);
-                var loginButtons = document.getElementById("profile");
-                var loginButton = document.createElement("a");
-                loginButton.setAttribute("href", "https://mychessopening.com/login/");
-                loginButton.innerHTML="Login";
-                document.body.appendChild(loginButton);
-                var registerButton = document.createElement("a");
-                registerButton.setAttribute("href", "https://mychessopening.com/register/");
-                registerButton.innerHTML="Register";
-                document.body.appendChild(registerButton);
+                    var msg = document.createElement("p");
+                    msg.innerHTML = "You need to be logged in an account in order to request an analysis, you can do this by clicking these links:";
+                    document.body.appendChild(msg);
+                    var loginButtons = document.getElementById("profile");
+                    var loginButton = document.createElement("a");
+                    loginButton.setAttribute("href", "https://mychessopening.com/login/");
+                    loginButton.innerHTML="Login";
+                    document.body.appendChild(loginButton);
+                    var registerButton = document.createElement("a");
+                    registerButton.setAttribute("href", "https://mychessopening.com/register/");
+                    registerButton.innerHTML="Register";
+                    document.body.appendChild(registerButton);
+                }
             }
+
+            createHeader();
+            
         </script>
 
     </body>
