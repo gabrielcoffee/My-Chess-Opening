@@ -181,7 +181,13 @@ async function load_games(username, amount){
                     if (gameSplited.lenght < 15){
                         continue;
                     }
-                    jsonGames.winsW.push({"moves": gameSplited, "white": games[i].players.white.user.name, "black": games[i].players.black.user.name});
+                    try{
+                        jsonGames.winsW.push({"moves": gameSplited, "white": games[i].players.white.user.name, "black": games[i].players.black.user.name});
+                    }
+                    catch (e){
+                        jsonGames.winsW.push({"moves": gameSplited, "white": username, "black": "unknown"});
+                    }
+                    
                     downloadedGames++;
                 }
             }
@@ -191,7 +197,13 @@ async function load_games(username, amount){
                     if (gameSplited.lenght < 15){
                         continue;
                     }
-                    jsonGames.winsB.push({"moves": gameSplited, "white": games[i].players.white.user.name, "black": games[i].players.black.user.name});
+                    try{   
+                        jsonGames.winsB.push({"moves": gameSplited, "white": games[i].players.white.user.name, "black": games[i].players.black.user.name});
+                    }
+                    catch (e){
+                        jsonGames.winsB.push({"moves": gameSplited, "white": "unknown", "black": username});
+                    }
+
                     downloadedGames++;
                 }
             }
@@ -201,7 +213,13 @@ async function load_games(username, amount){
                     if (gameSplited.lenght < 15){
                         continue;
                     }
-                    jsonGames.lossW.push({"moves": gameSplited, "white": games[i].players.white.user.name, "black": games[i].players.black.user.name});
+                    try{
+                        jsonGames.lossW.push({"moves": gameSplited, "white": games[i].players.white.user.name, "black": games[i].players.black.user.name});
+                    }
+                    catch (e){
+                        jsonGames.lossW.push({"moves": gameSplited, "white": username, "black": "unknown"});
+                    }
+                    
                     downloadedGames++;
                 }
             }
@@ -211,7 +229,13 @@ async function load_games(username, amount){
                     if (gameSplited.lenght < 15){
                         continue;
                     }
-                    jsonGames.lossB.push({"moves": gameSplited, "white": games[i].players.white.user.name, "black": games[i].players.black.user.name});
+                    try{
+                        jsonGames.lossB.push({"moves": gameSplited, "white": games[i].players.white.user.name, "black": games[i].players.black.user.name});
+                    }
+                    catch (e){
+                        jsonGames.winsB.push({"moves": gameSplited, "white": "unknown", "black": username});
+                    }
+                    
                     downloadedGames++;
                 }
             }
