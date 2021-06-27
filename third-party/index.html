@@ -20,13 +20,21 @@
         <meta name="msapplication-TileImage" content="icon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
         <meta charset="utf-8">
+
+        <link rel="stylesheet" type="text/css" href="../styles/profileMenu.css">
+
+        <script src="../scripts/accounts.js"></script>
+
         <title>
-            MyChessOpening third-part libraries
+            MyChessOpening third-part code
         </title>
     </head>
     <body>
         <header>
-            <h1>Third-part libraries</h1>
+            <h1>MyChessOpening</h1>
+            <div id="profile">
+
+            </div>
             <nav>
                 <ul>
                     <li><a href="../">Home</a></li>
@@ -36,31 +44,45 @@
                 </ul>
             </nav>
         </header>
+
+        <h2>Third party code</h2>
         
         <p>
-            This site uses some open-source libraries from other people to avoid having to code a lot of complex functions.
+            This site uses some open-source code from other people to avoid having to code a lot of complex functions.
         </p>
         <p>
-            In this page, is listed all of open-source libraries that have been used to make this website, as well as all http API that
-            are accessed.
+            In this page, I have listed all of open-source libraries that have been used to make this website, as well as all HTTP APIs that
+            are accessed during the usage of the website.
         </p>
 
-        <label for="libraries">Open-source libraries</label>
-        <ul id="libraries">
+        <h3>Open-source frameworks</h3>
+        <ul>
             <li><a href="https://github.com/jhlywa/chess.js">jhlywa/chess.js</a>: This library helps get the fen of each position and evaluate the position on board</li>
         </ul>
 
-        <label for="apis">APIs</label>
-        <ul id="apis">
+        <h3>HTTP APIs</h3>
+        <ul>
             <li><a href="https://lichess.org/api">lichess.org/api</a>: Get lichess users games</li>
             <li><a href="https://www.chess.com/news/view/published-data-api">api.chess.com/pub/player/</a>: Get chess.com users games</li>
             <li><a href="https://www.mychessopening.com/api/openings/">mychessopening.com/api/openings</a>: Get if a position is a book-known position</li>
         </ul>
 
-        <label for="references">references</label>
-        <ul id="references">
+        <h3>Other repositories</h3>
+        <ul>
+            <li><a href="https://github.com/fatorius/Clusterer">fatorius/Clusterer</a>: Used to cluster all of the openings</li>
+        </ul>
+
+        <h3>References</h3>
+        <ul>
             <li><a href="https://hxim.github.io/Stockfish-Evaluation-Guide/">Stockfish Evaluation Guide</a>: Used as reference to recreate Stockfish's static evaluation function</li>
         </ul>
+
+        <script>
+            async function main(){  
+                await profile();
+            }
+            main();
+        </script>
 
     </body>
 </html>
