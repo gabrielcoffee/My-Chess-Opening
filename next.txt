@@ -19,3 +19,4 @@ que que a gente tem que fazer:
 * reponsive home buttons at the header
 * create the profile page
 * create your analysis page
+* solve issues on the http cookies
