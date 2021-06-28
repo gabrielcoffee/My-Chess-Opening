@@ -163,6 +163,9 @@ async function load_games(username, amount){
             if (games[i].pgn.split(" ")[25].substr(0, 9) == "abandoned"){
                 continue;
             }
+            if (games[i].pgn.split(" ")[8].indexOf("SetUp") > 0){
+                continue;
+            }
 
             // separate the games
             if(games[i].white.username == username && games[i].white.result == "win" && winsBlack != quantityOfGames){
