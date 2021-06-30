@@ -95,7 +95,7 @@
                 var data = new FormData();
                 data.append("pos", JSON.stringify(clusteredPositions));
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://mychessopening.com/api/analysis/", true); 
+                xhr.open("POST", "https://mychessopening.com/api/analysis/insert.php", true); 
                 xhr.send(data);
             }
         </script>
