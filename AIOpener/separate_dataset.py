@@ -2,8 +2,10 @@ import json
 import numpy as np
 from statistics import mode
 
+FILE_PATH = input("File path: ")
+
 # import the json file
-file = open("G:/Documentos/Projects/Chess-Opening-Finder/datasets/AIOpener/jun2021.json")
+file = open(FILE_PATH)
 obj = json.load(file)
 file.close()
 
