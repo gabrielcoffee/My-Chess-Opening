@@ -5,6 +5,8 @@ import separate_dataset as dt
 BATCH_SIZE = 1
 EPOCHS = 10
 
+SIZE = dt.size_of_the_dataset
+
 dataset1 = tf.data.Dataset.from_tensor_slices(((dt.winsW), (dt.openingsW))).batch(BATCH_SIZE)
 dataset2 = tf.data.Dataset.from_tensor_slices(((dt.winsB), (dt.openingsW))).batch(BATCH_SIZE)
 dataset3 = tf.data.Dataset.from_tensor_slices(((dt.defeatsW), (dt.openingsD))).batch(BATCH_SIZE)
@@ -25,4 +27,6 @@ model.fit(dataset2, epochs=EPOCHS)
 model.fit(dataset3, epochs=EPOCHS)
 model.fit(dataset4, epochs=EPOCHS)
 
-tfjs.converters.save_keras_model(model, "G:/Documentos/Chess-Opening-Finder/model/400")
+model.save("last_version-{}.h5".format(SIZE*4))
+
+tfjs.converters.save_keras_model(model, "G:/Documentos/Chess-Opening-Finder/model/{}/".format(SIZE*4))

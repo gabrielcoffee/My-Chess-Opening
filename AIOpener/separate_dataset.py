@@ -2,8 +2,12 @@ import json
 import numpy as np
 from statistics import mode
 
+FILE_PATH = input("File path: ")
+
+size_of_the_dataset = int(int(input("Size of the dataset: "))/4)
+
 # import the json file
-file = open("G:/Documentos/Projects/Chess-Opening-Finder/datasets/AIOpener/jun2021.json")
+file = open(FILE_PATH)
 obj = json.load(file)
 file.close()
 
@@ -31,17 +35,21 @@ for set in obj:
 
     opw = []
     opb = []
-    
-    for game in winsw:
+
+    for a in range(size_of_the_dataset):
+        game = winsw[a]
         final_array_winsW.append([game["threats"],game["mobility"]])
         opw.append([game["threats"],game["mobility"]])
-    for game in winsb:
+    for a in range(size_of_the_dataset):
+        game = winsb[a]
         final_array_winsB.append([game["threats"],game["mobility"]])
         opw.append([game["threats"],game["mobility"]])
-    for game in defeatw:
+    for a in range(size_of_the_dataset):
+        game = defeatw[a]
         final_array_defeatsW.append([game["threats"],game["mobility"]])
         opb.append([game["threats"],game["mobility"]])
-    for game in defeatb:
+    for a in range(size_of_the_dataset):
+        game = defeatb[a]
         final_array_defeatsB.append([game["threats"],game["mobility"]])
         opb.append([game["threats"],game["mobility"]])
 
