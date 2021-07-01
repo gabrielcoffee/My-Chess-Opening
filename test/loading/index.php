@@ -66,6 +66,7 @@
         <script>
             // changes the message displayed at the document h1
             function updateProgressMessage(newMessage){
+                document.title = newMessage;
                 document.getElementById("status").innerHTML = newMessage;
             }
 
@@ -94,6 +95,7 @@
                 
                 var data = new FormData();
                 data.append("pos", JSON.stringify(clusteredPositions));
+                data.appemd("qntt", amount);
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "https://mychessopening.com/api/analysis/insert.php", true); 
                 xhr.send(data);

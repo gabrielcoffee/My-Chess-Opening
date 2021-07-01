@@ -8,6 +8,7 @@ header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST");
 
 $pos = $_POST["pos"];
+$amount = $_POST["qntt"];
 
 
 if (is_null($pos)){
@@ -25,10 +26,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = 'INSERT INTO jsons (jsons) VALUES ("'.addslashes($pos).'")';
+$sql = 'INSERT INTO json'.$amount.' (json) VALUES ("'.addslashes($pos).'")';
 
 $result = $conn->query($sql);
-
-echo $sql;
 
 ?>
