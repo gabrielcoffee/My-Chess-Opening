@@ -21,6 +21,7 @@ class CapablancAI{
 }
 
 async function createModel(){
+    updateStatusMessage("CapablancAI is making a prediction");
     model = new CapablancAI(amount);
     await model.getModel();
 

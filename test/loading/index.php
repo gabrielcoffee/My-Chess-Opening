@@ -79,9 +79,10 @@
         <script src="openingDatabase.js"></script>
         <script src="../../scripts/chess.js"></script>
         <script src="../../scripts/utils.js"></script>
+        <script src="../../scripts/accounts.js"></script>
         <script src="../../scripts/fenDealer.js"></script>
-        <script src="../../scripts/evaluation/mobility.js"></script>
         <script src="../../scripts/evaluation/threats.js"></script>
+        <script src="../../scripts/evaluation/mobility.js"></script>
         <script src="../../scripts/evaluation/taperedEval.js"></script>
 
         <!-- importing tensorflow -->
@@ -98,14 +99,24 @@
                 clusteredPositions.playerElo = getPlayerElo();
 
                 var model = await createModel(amount);
-                console.log(model.makePrediction(clusteredPositions.winsW));
+                var result = model.makePrediction(clusteredPositions.winsW);
                 
-                /*var data = new FormData();
+                var data = new FormData();
                 data.append("pos", JSON.stringify(clusteredPositions));
                 data.append("qntt", amount);
+                data.append("threats", results[0]);
+                data.append("mobility", results[1]);
+                data.append("name", username);
+                data.append("user", getCookie("username"));
+                data.append("elo", getPlayerElo());
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "https://mychessopening.com/api/analysis/insert.php", true); 
-                xhr.send(data);*/
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                        location.href = "https://mychessopening.com/result?a="xhr.responseText;
+                    }
+                }
+                xhr.send(data);
             }
         </script>
 
