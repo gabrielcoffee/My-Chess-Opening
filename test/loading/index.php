@@ -73,6 +73,7 @@
             var quantityOfGames = parseInt(amount) / 4;  //this value needs to be divided by 4 because there are 4 possible sub-results 
         </script>
 
+        <script src="nn.js"></script>
         <script src="cluster.js"></script>
         <script src="evaluater.js"></script>
         <script src="openingDatabase.js"></script>
@@ -83,6 +84,10 @@
         <script src="../../scripts/evaluation/threats.js"></script>
         <script src="../../scripts/evaluation/taperedEval.js"></script>
 
+        <!-- importing tensorflow -->
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis/dist/tfjs-vis.umd.min.js"></script>
+
         <script>        
             async function main(){    
                 var gameMovesJSON = await load_games(username, amount);
@@ -91,14 +96,16 @@
                 var clusteredPositions = distribute(evaluatedPositions);
                 clusteredPositions.playerName = username;
                 clusteredPositions.playerElo = getPlayerElo();
-                console.log(clusteredPositions);
+
+                var model = await createModel(amount);
+                console.log(model.makePrediction(clusteredPositions.winsW));
                 
-                var data = new FormData();
+                /*var data = new FormData();
                 data.append("pos", JSON.stringify(clusteredPositions));
-                data.appemd("qntt", amount);
+                data.append("qntt", amount);
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "https://mychessopening.com/api/analysis/insert.php", true); 
-                xhr.send(data);
+                xhr.send(data);*/
             }
         </script>
 
