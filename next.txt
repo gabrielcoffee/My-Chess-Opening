@@ -20,3 +20,4 @@ que que a gente tem que fazer:
 * create the profile page
 * create your analysis page
 * solve issues on the http cookies
+* solve tf model loading on http
