@@ -73,15 +73,21 @@
             var quantityOfGames = parseInt(amount) / 4;  //this value needs to be divided by 4 because there are 4 possible sub-results 
         </script>
 
+        <script src="nn.js"></script>
         <script src="cluster.js"></script>
         <script src="evaluater.js"></script>
         <script src="openingDatabase.js"></script>
         <script src="../../scripts/chess.js"></script>
         <script src="../../scripts/utils.js"></script>
+        <script src="../../scripts/accounts.js"></script>
         <script src="../../scripts/fenDealer.js"></script>
-        <script src="../../scripts/evaluation/mobility.js"></script>
         <script src="../../scripts/evaluation/threats.js"></script>
+        <script src="../../scripts/evaluation/mobility.js"></script>
         <script src="../../scripts/evaluation/taperedEval.js"></script>
+
+        <!-- importing tensorflow -->
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis/dist/tfjs-vis.umd.min.js"></script>
 
         <script>        
             async function main(){    
@@ -91,13 +97,25 @@
                 var clusteredPositions = distribute(evaluatedPositions);
                 clusteredPositions.playerName = username;
                 clusteredPositions.playerElo = getPlayerElo();
-                console.log(clusteredPositions);
+
+                var model = await createModel(amount);
+                var result = model.makePrediction(clusteredPositions.winsW);
                 
                 var data = new FormData();
                 data.append("pos", JSON.stringify(clusteredPositions));
-                data.appemd("qntt", amount);
+                data.append("qntt", amount);
+                data.append("threats", results[0]);
+                data.append("mobility", results[1]);
+                data.append("name", username);
+                data.append("user", getCookie("username"));
+                data.append("elo", getPlayerElo());
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "https://mychessopening.com/api/analysis/insert.php", true); 
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                        location.href = "https://mychessopening.com/result?a="xhr.responseText;
+                    }
+                }
                 xhr.send(data);
             }
         </script>
